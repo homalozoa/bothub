@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Public GitHub Atom entry shape with observed title/link/time only; body intentionally omitted. -->
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <entry>
+    <id>tag:github.com,2008:Repository/36535105/release-humble-20260914</id>
+    <title>ROS 2 Humble Hawksbill - Patch Release 15</title>
+    <updated>2026-09-14T18:34:12Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/ros2/ros2/releases/tag/release-humble-20260914"/>
+  </entry>
+</feed>

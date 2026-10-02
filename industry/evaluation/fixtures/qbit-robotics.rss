@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Observed public feed metadata; no article body is copied. Second entry is a synthetic bad-date case. -->
+<rss version="2.0"><channel><title>量子位</title>
+  <item>
+    <title>刚刚，GPT-6 Astra接上宇树G1，把厨房收拾了！</title>
+    <link>https://www.qbitai.com/2026/09/499493.html</link>
+    <pubDate>Wed, 30 Sep 2026 07:54:54 +0000</pubDate>
+    <description>让GPT把机器人技能当工具调用</description>
+  </item>
+  <item>
+    <title>Synthetic fixture with an invalid date</title>
+    <link>https://example.invalid/fixture/bad-date</link>
+    <pubDate>unknown-date</pubDate>
+  </item>
+</channel></rss>
