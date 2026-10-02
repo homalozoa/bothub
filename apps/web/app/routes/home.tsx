@@ -64,6 +64,8 @@ export default function Home() {
         </div>
       </div>
 
+      <p className="mb-3 text-[12px] leading-relaxed text-ink-4">内容由模型自动筛选与摘要，附原文供核对。精选关注编辑价值，热点反映传播讨论。</p>
+
       {data.hot && <HotTopics entries={data.hot} />}
 
       <h2 className="mt-6 text-[20px] font-bold text-ink lg:hidden">{filters.tag ? title : "最新精选"}</h2>

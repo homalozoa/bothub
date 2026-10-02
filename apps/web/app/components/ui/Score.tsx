@@ -15,8 +15,8 @@ export function ScoreLabel({ score, compact = false }: { score: number | null; c
   const tier = TIERS.find((t) => value >= t.min)!;
   return (
     <span
-      title={`AI 评分 ${value}/100`}
-      aria-label={`AI 评分 ${value} 分`}
+      title={`模型编辑评分 ${value}/100，仅用于排序；不代表事实核验概率`}
+      aria-label={`模型编辑评分 ${value} 分`}
       className={`inline-flex h-[20px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-2 ring-1 ring-inset ${tier.className}`}
     >
       {!compact && (

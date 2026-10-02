@@ -122,7 +122,7 @@ export default function ItemPage() {
   const bodyHtml = lang === "zh" ? (item.body?.zh ?? item.body?.original) : (item.body?.original ?? item.body?.zh);
   const bodyLabel = !item.body ? null : lang === "zh" && item.body.zhKind === "translation" ? "正文 · AI 翻译" : lang === "original" && hasTranslation ? "正文 · 原文" : "正文";
   const isX = item.channel === "x" && !!item.x;
-  const publishedIso = item.publishedAt ?? item.discoveredAt;
+  const publishedIso = item.publishedAt;
   const summaryOnly = item.readingMode === "summary-only";
   const showOutline = item.outline.length >= 3;
   const originalLabel = isX ? "在 X 查看原推" : "打开原文";
@@ -197,13 +197,11 @@ export default function ItemPage() {
       <div className="mt-1 text-[12.5px] leading-relaxed text-ink-3">
         {isX ? `@${item.x!.handle} · X` : item.author ?? hostOf(item.links.original)}
       </div>
-      <div className="mt-3 text-[12px] text-ink-4">发布时间</div>
-      <time dateTime={publishedIso} className="mono mt-0.5 block text-[12.5px] text-ink-2">
-        {fullDateTime(publishedIso)}
-      </time>
-      <div className="mt-0.5 text-[12px] text-ink-4" suppressHydrationWarning>
-        {relativeTime(publishedIso)}
-      </div>
+      <div className="mt-3 text-[12px] text-ink-4">原文发布时间</div>
+      {publishedIso ? <time dateTime={publishedIso} className="mono mt-0.5 block text-[12.5px] text-ink-2">{fullDateTime(publishedIso)}</time> : <p className="mt-0.5 text-[12.5px] text-ink-3">未知</p>}
+      <div className="mt-3 text-[12px] text-ink-4">首次收录时间</div>
+      <time dateTime={item.discoveredAt} className="mono mt-0.5 block text-[12.5px] text-ink-2">{fullDateTime(item.discoveredAt)}</time>
+      <p className="mt-1 text-[12px] text-ink-4">时间以 UTC+08:00 展示，收录时间不代表事件发生时间。</p>
     </RailSection>
   );
   const outline = showOutline && (
@@ -287,8 +285,8 @@ export default function ItemPage() {
             {isX && <span>· @{item.x!.handle} · X</span>}
             {item.author && !isX && <span>· {item.author}</span>}
             <span>·</span>
-            <time dateTime={publishedIso} className="mono">{fullDateTime(publishedIso)}</time>
-            <span suppressHydrationWarning>· {relativeTime(publishedIso)}</span>
+            {publishedIso ? <time dateTime={publishedIso} className="mono">{fullDateTime(publishedIso)}（UTC+08:00）</time> : <span>原文发布时间未知</span>}
+            {publishedIso && <span suppressHydrationWarning>· {relativeTime(publishedIso)}</span>}
             {item.selected && (
               <span className="ml-1 lg:hidden">
                 <SelectedBadge />
@@ -301,6 +299,12 @@ export default function ItemPage() {
             )}
           </div>
           {!isX && <h1 className="text-[26px] font-bold leading-[1.38] tracking-[-0.01em] text-ink lg:text-[32px] lg:leading-[1.34] xl:text-[36px] xl:leading-[1.3]">{item.title}</h1>}
+          <p className="mt-3 text-[12px] leading-relaxed text-ink-4">模型自动生成摘要与编辑评分，请结合原文中的实验条件和限制阅读。双次评分属于筛选流程。</p>
+          <details className="mt-3 text-[12px] leading-relaxed text-ink-4 2xl:hidden">
+            <summary className="cursor-pointer">来源与时间</summary>
+            <p className="mt-2">来源身份：{item.source.firstParty ? "当事方一手陈述" : "媒体或其他公开来源"}；此身份不代表独立事实核验。</p>
+            <p>原文发布时间：{publishedIso ? fullDateTime(publishedIso) : "未知"}；首次收录：{fullDateTime(item.discoveredAt)}（UTC+08:00）。收录时间不代表事件发生时间。</p>
+          </details>
           {!isX && item.originalTitle && <p className="mt-2.5 text-[14px] leading-relaxed text-ink-4">{item.originalTitle}</p>}
 
           {item.summary && (
