@@ -128,12 +128,20 @@ test("report publication and its receipt commit together and recovery reuses the
   assert.equal((await sql`SELECT status FROM receipts WHERE subject = 'report:daily:2024-05-02'`)[0]!.status, "completed");
 });
 
-test("empty older gaps cannot starve a later daily, weekly or monthly, and failures remain visible", async () => {
+test("empty older daily gaps are recovered as valid editions before later daily, weekly and monthly", async () => {
   await sql`INSERT INTO reports (kind, key, window_start, window_end, content, generated_at) VALUES ('daily', '2024-01-23', now(), now(), '{}', now())`;
   await item("2024-01-22T12:00:00Z");
   await item("2024-02-01T12:00:00Z");
-  await assert.rejects(catchUpReports(new Date("2024-02-02T03:00:00Z")), /report catch-up:/);
+  const result = await catchUpReports(new Date("2024-02-02T03:00:00Z"), 30);
+  assert.deepEqual(result.failed, []);
+  assert.ok(result.generated.includes("daily:2024-01-24"));
   for (const [kind, key] of [["daily", "2024-02-02"], ["weekly", "2024-W04"], ["monthly", "2024-01"]]) {
     assert.ok(await report(kind!, key!), `${kind} ${key} was recovered past the empty gaps`);
   }
+});
+
+test("actual missing period material remains a visible catch-up failure", async () => {
+  await item("2024-02-01T12:00:00Z");
+  await assert.rejects(catchUpReports(new Date("2024-02-02T03:00:00Z")), /report catch-up:/);
+  assert.ok(await report("daily", "2024-02-02"), "a valid daily is still written when a period fails");
 });

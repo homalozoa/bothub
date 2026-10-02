@@ -1,4 +1,4 @@
-// Daily, weekly and monthly reports. Windows are Beijing calendar based and written into the report;
+// Daily, weekly and monthly reports. Windows use the configured publication calendar;
 // missed schedule points are caught up; regeneration creates a revision. The editors' prompts are in
 // the industry pack (industry/prompts/report-*.md), the sections follow its categories.
 import { z } from "zod";
@@ -6,7 +6,8 @@ import { SITE } from "@aihot/industry/site";
 import { CATEGORIES } from "@aihot/industry/taxonomy";
 import { promptText, promptVersion } from "../editorial/prompts.ts";
 import { modelFor } from "../editorial/models.ts";
-import { addDays, beijingDate, beijingMidnight, isoWeekLabel, isoWeekRange } from "@aihot/contracts/time";
+import { addDays, isoWeekLabel, isoWeekRange } from "@aihot/contracts/time";
+import { REPORT_SCHEDULE, calendarInstant, calendarParts, dailyWindow } from "./calendar.ts";
 import { sql } from "../db.ts";
 import { Conflict } from "../audit.ts";
 import { chatJson, ModelOutputError } from "../providers/llm.ts";
@@ -32,7 +33,8 @@ export interface ReportEntry {
   firstParty: boolean;
   role: string;
   score: number | null;
-  publishedAt: string;
+  publishedAt: string | null;
+  discoveredAt: string;
 }
 
 export interface Candidate extends ReportEntry {
@@ -54,10 +56,10 @@ export async function candidates(start: Date, end: Date): Promise<Candidate[]> {
     await tx`SELECT pg_advisory_xact_lock(hashtext('report_candidates'))`;
     return tx<{
       id: string; title: string; summary: string | null; url: string; category: string | null; score: number | null; first_party: boolean;
-      source_id: string; source_name: string; source_kind: string; fact_public_id: string | null; story_public_id: string | null; at: Date; backfill: boolean;
+      source_id: string; source_name: string; source_kind: string; fact_public_id: string | null; story_public_id: string | null; published_at: Date | null; discovered_at: Date; backfill: boolean;
     }[]>`
       SELECT p.article_id AS id, p.title, p.summary, p.url, p.category, p.score, p.first_party, s.id AS source_id, s.name AS source_name,
-             s.kind AS source_kind, f.public_id AS fact_public_id, st.public_id::text AS story_public_id, p.timeline_at AS at, p.backfill
+             s.kind AS source_kind, f.public_id AS fact_public_id, st.public_id::text AS story_public_id, p.published_at, p.discovered_at, p.backfill
       FROM publications p JOIN sources s ON s.id = p.source_id
       LEFT JOIN facts f ON f.id = p.fact_id LEFT JOIN stories st ON st.id = f.story_id
       -- Attribute each item by the later of arrival and release; either range can use its index.
@@ -74,7 +76,7 @@ export async function candidates(start: Date, end: Date): Promise<Candidate[]> {
     const c: Candidate = {
       itemId: r.id, factId: r.fact_public_id, storyPublicId: r.story_public_id, title: r.title, summary: r.summary ?? "",
       sourceName: r.source_name, sourceUrl: r.url, sourceId: r.source_id, firstParty: r.first_party, role: roleOf(r.source_kind, r.first_party),
-      score: r.score === null ? null : Number(r.score), publishedAt: r.at.toISOString(), category: r.category, factKey: key,
+      score: r.score === null ? null : Number(r.score), publishedAt: r.published_at?.toISOString() ?? null, discoveredAt: r.discovered_at.toISOString(), category: r.category, factKey: key,
     };
     const prev = byFact.get(key);
     if (!prev || Number(c.firstParty) - Number(prev.firstParty) > 0 || (c.firstParty === prev.firstParty && (c.score ?? 0) > (prev.score ?? 0))) byFact.set(key, c);
@@ -83,18 +85,18 @@ export async function candidates(start: Date, end: Date): Promise<Candidate[]> {
 }
 
 /** Facts and items already covered by recent editions are not repeated. */
-async function recentlyCovered(kind: "daily", before: string, days = 7): Promise<Set<string>> {
-  const rows = await sql<{ content: Record<string, any> }[]>`
-    SELECT content FROM reports WHERE kind = ${kind} AND key < ${before} AND key >= ${addDays(before, -days)}`;
+async function recentlyCovered(kind: "daily", before: string, days = 14) {
+  const rows = await sql<{ key: string; content: Record<string, any> }[]>`
+    SELECT key, content FROM reports WHERE kind = ${kind} AND key < ${before} AND key >= ${addDays(before, -days)} ORDER BY key DESC`;
   const out = new Set<string>();
   for (const r of rows) {
-    for (const s of r.content.sections ?? []) for (const it of s.items ?? []) {
+    for (const it of [...(r.content.sections ?? []).flatMap((s: any) => s.items ?? []), ...(r.content.flashes ?? [])]) {
       if (it.itemId) out.add(`a:${it.itemId}`);
       if (it.factId) out.add(it.factId);
       if (it.clusterId) out.add(`c:${it.clusterId}`);
     }
   }
-  return out;
+  return { ids: out, editions: rows.map((r) => ({ date: r.key, title: r.content.lead?.title ?? "", summary: r.content.lead?.leadParagraph ?? "" })) };
 }
 
 const LeadSchema = z.object({
@@ -103,18 +105,22 @@ const LeadSchema = z.object({
   highlights: z.array(z.union([z.number(), z.string()])).max(6).catch([]),
 });
 
-async function writeLead(kind: string, key: string, entries: ReportEntry[], model: string) {
-  const list = entries.slice(0, 30).map((e, i) => `${i + 1}. ${e.title}｜${e.summary.slice(0, 120)}`).join("\n");
+async function writeLead(kind: string, key: string, entries: ReportEntry[], model: string, recent: Array<{ date: string; title: string; summary: string }> = []) {
+  const list = entries.slice(0, 5).map((e, i) => `${i + 1}. ${e.title}｜${e.summary}\n来源：${e.sourceName}（${e.firstParty ? "当事方原始材料" : e.role}）；原始发布时间：${e.publishedAt ?? "未知"}；首次收录：${e.discoveredAt}；原文：${e.sourceUrl}`).join("\n");
   const res = await chatJson({
     model, purpose: "report_lead", subject: `report:${kind}:${key}`, promptVersion: REPORT_VERSION,
     system: promptText("report-daily-lead"),
-    user: list, schema: LeadSchema, temperature: 0.3, maxTokens: 800,
+    user: `${list}${recent.length ? `\n\n近14天已刊导语（仅用于避免重复，不是本期新闻）：\n${JSON.stringify(recent)}\n先写本期新增事实，不重复此前相同的工程启示；没有新启示时省略建议。` : ""}`, schema: LeadSchema, temperature: 0.3, maxTokens: 800,
   });
-  const highlights = res.data.highlights
+  const highlights = [...new Set(res.data.highlights
     .map((h) => entries[Number(h) - 1])
     .filter((e): e is ReportEntry => !!e)
-    .map((e) => e.itemId);
-  return { lead: { title: res.data.title, leadParagraph: res.data.leadParagraph }, highlights, receiptId: res.receiptId };
+    .map((e) => e.itemId))];
+  // An exact repeated insight is detectable without a second model call. Fall back to the current
+  // facts' summaries; semantic differences still need editorial review and calibrated evaluation.
+  const repeated = recent.some((r) => r.summary.trim() === res.data.leadParagraph.trim());
+  const leadParagraph = repeated ? entries.map((e) => e.summary).join("\n\n").slice(0, 600) : res.data.leadParagraph;
+  return { lead: { title: res.data.title, leadParagraph }, highlights, receiptId: res.receiptId };
 }
 
 type ReportKind = "daily" | "weekly" | "monthly";
@@ -128,14 +134,14 @@ async function savedReport(kind: ReportKind, key: string) {
   return row;
 }
 
-async function saveReport(kind: ReportKind, key: string, start: Date, end: Date, content: Record<string, unknown>, reason: string, model: string, receiptId: number, expectedRevision: number) {
+async function saveReport(kind: ReportKind, key: string, start: Date, end: Date, content: Record<string, unknown>, reason: string, model: string | null, receiptId: number | null, expectedRevision: number) {
   await sql.begin(async (tx) => {
     // The row may not exist yet. Serialize only the commit; model calls hold no transaction open.
     await tx`SELECT pg_advisory_xact_lock(hashtext(${`report:${kind}:${key}`}))`;
     const [existing] = await tx<{ id: number; revision: number; content: unknown; generated_at: Date }[]>`
       SELECT id, revision, content, generated_at FROM reports WHERE kind = ${kind} AND key = ${key} FOR UPDATE`;
     if (existing && automatic(reason)) {
-      await completeReceipt(tx, receiptId);
+      if (receiptId !== null) await completeReceipt(tx, receiptId);
       return;
     }
     if ((existing?.revision ?? 0) !== expectedRevision) throw new Conflict("报告已有新的修订，请刷新后再纠错");
@@ -148,26 +154,23 @@ async function saveReport(kind: ReportKind, key: string, start: Date, end: Date,
       await tx`INSERT INTO reports (kind, key, window_start, window_end, content, generated_at, model, origin)
                VALUES (${kind}, ${key}, ${start}, ${end}, ${tx.json(content as never)}, now(), ${model}, 'model')`;
     }
-    await completeReceipt(tx, receiptId);
+    if (receiptId !== null) await completeReceipt(tx, receiptId);
   });
 }
 
-/** Daily report for Beijing date D covers [D-1 08:00, D 08:00) Beijing time. */
+/** Daily report covers the previous publication-local cutoff through this date's cutoff. */
 export async function composeDaily(date: string, reason = "scheduled"): Promise<{ key: string; entries: number }> {
   const previous = await savedReport("daily", date);
   if (previous && automatic(reason)) return { key: date, entries: previous.entries };
-  const end = new Date(beijingMidnight(date).getTime() + 8 * 3600 * 1000);
-  const start = new Date(end.getTime() - 86400000);
+  const { start, end } = dailyWindow(date);
   const covered = await recentlyCovered("daily", date);
   const all = await candidates(start, end);
-  const fresh = all.filter((c) => !covered.has(c.factKey) && !covered.has(`a:${c.itemId}`));
+  const fresh = all.filter((c) => !covered.ids.has(c.factKey) && !covered.ids.has(`a:${c.itemId}`));
   const perSection = new Map<string, Candidate[]>();
-  const flashes: Array<{ itemId: string; title: string; sourceName: string; sourceUrl: string; publishedAt: string }> = [];
-  for (const c of fresh) {
+  for (const c of fresh.slice(0, REPORT_SCHEDULE.maxItems)) {
     const label = SECTION_OF[c.category ?? ""] ?? DEFAULT_SECTION;
     const list = perSection.get(label) ?? [];
-    if (list.length < 8) list.push(c);
-    else if (flashes.length < 12) flashes.push({ itemId: c.itemId, title: c.title, sourceName: c.sourceName, sourceUrl: c.sourceUrl, publishedAt: c.publishedAt });
+    list.push(c);
     perSection.set(label, list);
   }
   const sections = SECTION_ORDER.filter((l) => perSection.get(l)?.length).map((label) => ({
@@ -175,16 +178,18 @@ export async function composeDaily(date: string, reason = "scheduled"): Promise<
     items: perSection.get(label)!.map(({ category: _c, factKey: _f, ...entry }) => entry),
   }));
   const ordered = sections.flatMap((s) => s.items).sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
-  // An issue with nothing in it is a failure upstream, not a report: the run fails and is caught up later.
-  if (ordered.length === 0) throw new Error(`daily ${date}: no selected items in its window`);
-  const model = await modelFor("report");
-  const lead = await writeLead("daily", date, ordered, model);
+  // No qualifying new fact is a valid issue. It needs neither a paid call nor recycled old items.
+  const model = ordered.length ? await modelFor("report") : null;
+  const lead = model ? await writeLead("daily", date, ordered, model, covered.editions) : {
+    lead: { title: "今日无新增精选", leadParagraph: "本刊期暂无达到精选标准的新增内容，或相关事实已在近14天刊载。完整动态流仍可浏览；不降低标准凑数。" },
+    highlights: [], receiptId: null,
+  };
   const content = {
     date,
     lead: lead.lead,
     highlights: lead.highlights,
     sections,
-    flashes,
+    flashes: [],
     metrics: {
       totalEvents: ordered.length,
       sourcesCount: new Set(ordered.map((e) => e.sourceId)).size,
@@ -193,7 +198,7 @@ export async function composeDaily(date: string, reason = "scheduled"): Promise<
     },
     windowStart: start.toISOString(),
     windowEnd: end.toISOString(),
-    generator: { version: REPORT_VERSION, model, repeatsSuppressed: all.length - fresh.length },
+    generator: { version: REPORT_VERSION, model, timeZone: REPORT_SCHEDULE.timeZone, dailyTime: REPORT_SCHEDULE.dailyTime, repeatsSuppressed: all.length - fresh.length, omittedByCapacity: Math.max(0, fresh.length - ordered.length) },
   };
   await saveReport("daily", date, start, end, content, reason, model, lead.receiptId, previous?.revision ?? 0);
   return { key: date, entries: ordered.length };
@@ -222,8 +227,8 @@ export function periodPrompt(kind: "weekly" | "monthly", startDate: string, endD
 async function composePeriod(kind: "weekly" | "monthly", key: string, startDate: string, endDateInclusive: string, reason: string) {
   const previous = await savedReport(kind, key);
   if (previous && automatic(reason)) return { key, entries: previous.entries };
-  const start = beijingMidnight(startDate);
-  const end = beijingMidnight(addDays(endDateInclusive, 1));
+  const start = calendarInstant(startDate);
+  const end = calendarInstant(addDays(endDateInclusive, 1));
   const all = await candidates(start, end);
   const top = all.slice(0, kind === "weekly" ? 40 : 60);
   const dailyCount = (await sql<{ n: number }[]>`SELECT count(*) AS n FROM reports WHERE kind = 'daily' AND key >= ${startDate} AND key <= ${endDateInclusive}`)[0]?.n ?? 0;
@@ -278,30 +283,25 @@ export async function composeMonthly(label: string, reason = "scheduled") {
   return composePeriod("monthly", label, start, addDays(next, -1), reason);
 }
 
-const bjParts = (now: Date) => {
-  const iso = new Date(now.getTime() + 8 * 3600000).toISOString();
-  return { hour: Number(iso.slice(11, 13)), minute: Number(iso.slice(14, 16)) };
-};
-
-/** The newest daily due by `now`: today's from 08:00 Beijing time, yesterday's before. */
+/** The newest daily whose configured publication-local cutoff has passed. */
 export function dueDaily(now = new Date()): string {
-  const today = beijingDate(now);
-  return bjParts(now).hour >= 8 ? today : addDays(today, -1);
+  const today = calendarParts(now).date;
+  return now >= calendarInstant(today, REPORT_SCHEDULE.dailyTime) ? today : addDays(today, -1);
 }
 
 /** The newest weekly due by `now`: the last complete ISO week from Monday 10:00, the one before until then. */
 export function dueWeekly(now = new Date()): string {
-  const today = beijingDate(now);
+  const today = calendarParts(now).date;
   const dow = (new Date(`${today}T00:00:00Z`).getUTCDay() + 6) % 7;
-  const due = dow > 0 || bjParts(now).hour >= 10;
+  const due = dow > 0 || now >= calendarInstant(today, "10:00");
   return isoWeekLabel(addDays(today, -dow - (due ? 7 : 14)));
 }
 
 /** The newest monthly due by `now`: the last complete month from the 1st 10:30, the one before until then. */
 export function dueMonthly(now = new Date()): string {
-  const [y, m, d] = beijingDate(now).split("-").map(Number) as [number, number, number];
-  const { hour, minute } = bjParts(now);
-  const due = d > 1 || hour > 10 || (hour === 10 && minute >= 30);
+  const today = calendarParts(now).date;
+  const [y, m, d] = today.split("-").map(Number) as [number, number, number];
+  const due = d > 1 || now >= calendarInstant(today, "10:30");
   const back = due ? 1 : 2;
   const month = (y * 12 + (m - 1) - back);
   return `${Math.floor(month / 12)}-${String((month % 12) + 1).padStart(2, "0")}`;
