@@ -66,6 +66,7 @@ function emit(key?: string) {
 }
 function onStorage(event: StorageEvent) {
   if (event.storageArea && event.storageArea !== storage("local")) return;
+  if (event.key === null || event.key === KEYS.theme) volatileTheme = null;
   if (event.key === null) cache.clear();
   else cache.delete(event.key);
   // Clear the snapshot once, before notifying all cards. Each key is parsed at most once.
@@ -223,17 +224,25 @@ export function markRead(id: string) {
 }
 // --- theme ---
 export type ThemePreference = "light" | "dark" | null;
+type SavedTheme = "light" | "dark" | "auto";
+// A denied write should still let the reader change appearance in this document.
+let volatileTheme: SavedTheme | null = null;
 
-export function getThemePreference(): ThemePreference {
-  const v = readRaw(KEYS.theme);
-  if (v === "light" || v === "dark") return v;
-  // Tolerate a JSON-quoted value written by other code paths.
-  if (v === '"light"' || v === '"dark"') return JSON.parse(v);
+function savedTheme(raw: string | null): SavedTheme | null {
+  if (raw === "light" || raw === "dark" || raw === "auto") return raw;
+  // Tolerate JSON-quoted preferences saved by older code paths.
+  if (raw === '"light"' || raw === '"dark"' || raw === '"auto"') return JSON.parse(raw) as SavedTheme;
   return null;
 }
 
+export function getThemePreference(): ThemePreference {
+  const pref = volatileTheme ?? savedTheme(readRaw(KEYS.theme)) ?? "dark";
+  return pref === "auto" ? null : pref;
+}
+
 export function setThemePreference(pref: ThemePreference) {
-  writeRaw(KEYS.theme, pref);
+  const next = pref ?? "auto";
+  volatileTheme = writeRaw(KEYS.theme, next) ? null : next;
   invalidate(KEYS.theme);
 }
 
@@ -242,12 +251,12 @@ export function resolvedTheme(pref: ThemePreference = getThemePreference()): "li
   try {
     return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   } catch {
-    return "light";
+    return "dark";
   }
 }
 
 /** Inline script run before paint so the first frame already has the reader's theme. */
-export const THEME_BOOT_SCRIPT = `(function(){try{var t=localStorage.getItem('${KEYS.theme}');if(t==='"light"'||t==='"dark"')t=JSON.parse(t);if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)}catch(e){document.documentElement.setAttribute('data-theme','light')}})();`;
+export const THEME_BOOT_SCRIPT = `(function(){var t='dark';try{var p=localStorage.getItem('${KEYS.theme}');if(p==='"light"'||p==='"dark"'||p==='"auto"')p=JSON.parse(p);if(p==='light'||p==='dark')t=p;else if(p==='auto')t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}catch(e){}document.documentElement.setAttribute('data-theme',t)})();`;
 
 // --- changelog red dot ---
 export function getChangelogSeen(): string | null {
@@ -297,7 +306,7 @@ export async function importBundle(text: string): Promise<ImportReport> {
   return mergeLocalData({
     starred: Array.isArray(d.starred) ? d.starred : [],
     read: Array.isArray(d.read) ? d.read : [],
-    theme: d.theme ?? null,
+    theme: d.theme,
   });
 }
 
@@ -347,8 +356,9 @@ export function mergeLocalData(incoming: { starred: unknown[]; read: unknown[]; 
     const readFailed = !writeRaw(KEYS.read, JSON.stringify([...readIds, ...readAdditions.slice(0, readRoom)]));
 
     let themeApplied = false;
-    if (!getThemePreference() && (incoming.theme === "light" || incoming.theme === "dark")) {
-      themeApplied = writeRaw(KEYS.theme, incoming.theme);
+    const themeUnset = volatileTheme === null && savedTheme(readRaw(KEYS.theme)) === null;
+    if (themeUnset && (incoming.theme === "light" || incoming.theme === "dark" || incoming.theme === "auto" || incoming.theme === null)) {
+      themeApplied = writeRaw(KEYS.theme, incoming.theme ?? "auto");
     }
     cache.clear();
     emit();
@@ -373,7 +383,7 @@ export function useReadSet(): Set<string> {
 }
 
 export function useThemePreference(): ThemePreference {
-  return useSyncExternalStore(subscribeTheme, getThemePreference, () => null);
+  return useSyncExternalStore(subscribeTheme, getThemePreference, () => "dark");
 }
 
 export function useChangelogSeen(): string | null {
