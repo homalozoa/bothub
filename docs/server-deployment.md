@@ -10,7 +10,7 @@
 - Docker Compose 项目 `bothot`，配置 `deploy/production.compose.yml`；数据库与文件卷分别 `bothot_db`、`bothot_data`。
 - 应用发布版本以 `/api/health` 的 `release` 为准，镜像标签采用普通 Git 提交版本；旧镜像可保留用于回滚。服务器使用代码归档，不含本机数据库、演示内容或密钥。
 
-Docker 已实启，38项迁移成功，导入18个来源及43个主题。生产文章库为空，采集、模型、飞书与IndexNow开关关闭，未调用付费服务。前端容器没有数据库/模型/管理员/会话密钥，不连接数据库网络；API/worker/setup在后端使用受限配置。
+首次部署时Docker已实启，38项迁移成功，导入18个来源及43个主题，当时文章库为空、采集和模型等开关关闭。运营者随后已配置模型并启用采集/处理，当前运行状态以诊断和后台记录为准。前端容器没有数据库/模型/管理员/会话密钥，不连接数据库网络；API/worker/setup在后端使用受限配置。
 
 ## 后台只通过 SSH 访问
 
@@ -29,7 +29,7 @@ ssh -N -o ExitOnForwardFailure=yes \
 
 ## 权限、代理与证书
 
-`.env` 为 `0600 root:root`，源码目录为0750。静态文件0644、目录0755，由root拥有；已确认Nginx用户不能写静态根目录，仅发布`public/`内容。静态站禁止目录索引/隐藏文件，未知路径404、POST403；无JS、外部资源或追踪，使用仅允许自身样式/图片的CSP。动态站保留SSR脚本，使用nosniff、同源框架限制、referrer与权限策略。
+`.env` 为 `0600 root:root`，源码目录为0750。静态文件0644、目录0755，由root拥有；已确认Nginx用户不能写静态根目录，仅发布`public/`内容。静态站禁止目录索引/隐藏文件，未知路径404、POST403。2026-10-03视觉改版加入自托管Three.js概念场景，CSP仅增加`script-src 'self'`，没有CDN、unsafe-inline或unsafe-eval；没有增加追踪。动态站保留SSR脚本，使用nosniff、同源框架限制、referrer与权限策略。
 
 DNS目前由Cloudflare代理，Nginx仅在[官方IP范围](https://www.cloudflare.com/ips/)内信任CF-Connecting-IP，再覆盖传给应用的Forwarded/IP头，防止直接访客伪造限速地址。配置 `deploy/nginx/cloudflare-realip.conf` 安装为 `/etc/nginx/snippets/openzoo-cloudflare-realip.conf`，仅这两个新vhost引用。更新时核对官方范围。
 
@@ -70,7 +70,20 @@ docker compose --env-file .env -f deploy/production.compose.yml run --rm --no-de
 
 本次已在服务器留下首次部署后的数据库与文件备份，目录仅root可访问；没有复制到仓库。恢复须停止写入进程，对空库使用对应版本pg_restore，再恢复文件卷及权限。完整备份/恢复说明见 `docs/deploy.md`；本次没有对生产库执行恢复或破坏性测试。
 
-启用内容运营仍需运营者选择 `LLM_BASE_URL`、`LLM_MODEL`、`LLM_API_KEY` 并授权预算，再小范围启用处理与采集；部署授权没有被当作模型消费授权。公众号、X、外部推送和导入接口继续禁用。隐私/条款仍是待运营者确认草稿，首页如实提示内容初始化。
+运营者已配置并启用了内容处理；后续更换 `LLM_BASE_URL`、`LLM_MODEL`、`LLM_API_KEY` 及预算仍使用原后台和环境配置。视觉改版不改变这些配置。公众号、X、外部推送和导入接口继续按现有配置处理。隐私/条款仍是待运营者确认草稿，编辑质量尚需人工复核和校准。
+
+## 只更新网页与三维主页
+
+`WEB_RELEASE` 是独立的前端镜像版本，未设置时继承 `BOTHOT_RELEASE`。视觉更新设置服务器`.env`中的`WEB_RELEASE`为新Git版本，保留`BOTHOT_RELEASE`及所有模型配置，然后执行：
+
+```bash
+docker compose --env-file .env -f deploy/production.compose.yml build web
+docker compose --env-file .env -f deploy/production.compose.yml up -d --no-deps web
+```
+
+这不会启动setup、seed或重启API/worker/database。前端版本由Web镜像标签确认，`/api/health.release`继续代表API版本。完整业务更新若也需要更新网页，应同步设置`WEB_RELEASE`或清除它以继承新的`BOTHOT_RELEASE`。
+
+构建会生成`/app/deploy/home/public/assets/scene.js`与Three.js MIT许可，并为主页CSS/JS附上Git版本参数，避免Cloudflare浏览器缓存沿用旧资源。仅从构建后的镜像导出`deploy/home/public/`到静态站目录；源码中的`public/assets/`是忽略的构建产物。更新过程中保留旧首页以供回滚。截图、性能及权限验证见[视觉改版记录](visual-redesign.md)。
 
 ## 本次实测
 
