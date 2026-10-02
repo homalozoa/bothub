@@ -5,6 +5,7 @@ import { IDENTITY_CONTEXT_ALIASES, IDENTITY_LEXICON, PUBLISHER_DOMAINS } from "@
 import { onlyXArticleLink } from "../sources/x.ts";
 import type { AnalyzeInputArticle } from "./input.ts";
 import { promptText } from "./prompts.ts";
+import { evidenceContradictions } from "./evidence.ts";
 
 export const PREFILTER_SYSTEM = promptText("prefilter");
 export const UNDERSTAND_SYSTEM = promptText("understand");
@@ -265,10 +266,13 @@ function answerFirstSummaryLengthOk(summary: string, input: TranslateInput): boo
 export const isShortTweetInput = (input: TranslateInput) => input.sourceKind === "x_search" && isShortTweet(input.mainText || input.title);
 
 /** The length rule (compacted without another call) and the identity guard, for any writing model. */
-export function finalizeCopy(input: TranslateInput, copy: { titleZh: string; summaryZh: string }) {
+export function finalizeCopy(input: TranslateInput, copy: { titleZh: string; summaryZh: string; reasonZh?: string }) {
+  // Inspect the whole draft before compaction, so a contradictory last sentence cannot disappear.
+  const evidenceGuard = evidenceContradictions(`${input.title}\n${input.text}\n${input.quotedText ?? ""}`, `${copy.titleZh}\n${copy.summaryZh}\n${copy.reasonZh ?? ""}`);
   let summaryZh = copy.summaryZh;
   if (!isShortTweetInput(input) && summaryZh && !answerFirstSummaryLengthOk(summaryZh, input)) summaryZh = compactAnswerFirstSummary(summaryZh);
-  return enforceIdentity(input, { titleZh: copy.titleZh, summaryZh });
+  const checked = enforceIdentity(input, { titleZh: copy.titleZh, summaryZh });
+  return evidenceGuard ? { ...checked, titleZh: input.title, summaryZh: "", evidenceGuard } : { ...checked, evidenceGuard: null };
 }
 
 // ── Title/summary prompts for items the content understanding does not write ─────────────────
