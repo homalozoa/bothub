@@ -1,0 +1,914 @@
+{
+  "checkedAt": "2026-10-02T11:33:58.809Z",
+  "method": "Production fetchRss/fetchJsonList, guardedFetch and readable; up to 3 candidates prioritizing original-text robotics cues, <=1 article fetch/source; no model or paid fallback",
+  "limits": {
+    "sources": 18,
+    "delayMs": 1000,
+    "feedTimeoutMs": 25000,
+    "bodyTimeoutMs": 20000,
+    "maxBodyBytes": 6291456
+  },
+  "requests": {
+    "collectorRuns": 18,
+    "bodyFetches": 7,
+    "note": "Counts of parser runs and detail requests; SSRF-checked redirects can add HTTP requests."
+  },
+  "records": [
+    {
+      "sourceId": "rss-robot-report",
+      "name": "The Robot Report",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://www.therobotreport.com/feed/",
+      "language": "en",
+      "coverage": [
+        "industry",
+        "hardware"
+      ],
+      "identity": "media",
+      "homepage": "https://www.therobotreport.com/",
+      "limitations": [
+        "包含赞助稿、活动和融资线索；报道中转述的厂商说法不是独立验证。"
+      ],
+      "checkedAt": "2026-10-02T11:32:55.078Z",
+      "status": "verified",
+      "itemCount": 15,
+      "datedItems": 15,
+      "samples": [
+        {
+          "title": "Top 10 robotics stories of September 2026",
+          "url": "https://www.therobotreport.com/top-10-robotics-stories-of-september-2026/",
+          "publishedAt": "2026-10-01T20:42:08.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4460,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Boston Dynamics drops pinkie on new humanoid hand",
+          "url": "https://www.therobotreport.com/boston-dynamics-drops-pinkie-on-new-humanoid-hand/",
+          "publishedAt": "2026-10-01T17:52:51.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 6478,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Precision In Motion. Vishay Precision Group, Inc. (VPG) to Showcase Custom Sensing Capabilities for Humanoid Robotics at RoboBusiness 2026",
+          "url": "https://www.therobotreport.com/precision-in-motion-vishay-precision-group-inc-vpg-to-showcase-custom-sensing-capabilities-for-humanoid-robotics-at-robobusiness-2026/",
+          "publishedAt": "2026-10-01T15:29:55.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 6120,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-robohub",
+      "name": "Robohub",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://robohub.org/feed/",
+      "language": "en",
+      "coverage": [
+        "research",
+        "industry"
+      ],
+      "identity": "media",
+      "homepage": "https://robohub.org/",
+      "limitations": [
+        "投稿、专栏和研究者访谈；检查原始论文与项目链接。"
+      ],
+      "checkedAt": "2026-10-02T11:32:57.536Z",
+      "status": "verified",
+      "itemCount": 75,
+      "datedItems": 75,
+      "samples": [
+        {
+          "title": "Robotics and automation? Informal reflections on familiar terms",
+          "url": "https://robohub.org/robotics-and-automation-informal-reflections-on-familiar-terms/",
+          "publishedAt": "2026-09-30T08:37:22.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 6876,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Small, medium or large, a robotic fish maintains its swimming ability",
+          "url": "https://robohub.org/small-medium-or-large-a-robotic-fish-maintains-its-swimming-ability/",
+          "publishedAt": "2026-09-28T11:24:15.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4502,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Robot Talk Episode 163 – Robots helping people, with Aaron Edsinger",
+          "url": "https://robohub.org/robot-talk-episode-163-robots-helping-people-with-aaron-edsinger/",
+          "publishedAt": "2026-09-25T11:54:14.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 683,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-robotstart",
+      "name": "ロボスタ",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://robotstart.info/rss20/index.rdf",
+      "language": "ja",
+      "coverage": [
+        "industry",
+        "hardware"
+      ],
+      "identity": "media",
+      "homepage": "https://robotstart.info/",
+      "limitations": [
+        "关注服务、伙伴和消费机器人；日文标题需保留归属，公关稿须降权。"
+      ],
+      "checkedAt": "2026-10-02T11:33:05.425Z",
+      "status": "verified",
+      "itemCount": 50,
+      "datedItems": 50,
+      "samples": [
+        {
+          "title": "ロボットメーカーとしての知見を生かした「製造業向けAXソリューション」をNew Innovationsが発表、「図面バンク」はエージェント機能を追加",
+          "url": "https://robotstart.info/article/2026/10/02/382479.html",
+          "publishedAt": "2026-10-02T09:20:02.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 2409,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "デモ映像の枠を超え日常へ ショールームの案内からホテルの受付まで行うヒューマノイドAGIBOT A3 Ultra",
+          "url": "https://robotstart.info/article/2026/10/02/382478.html",
+          "publishedAt": "2026-10-02T08:35:02.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "ヒューマノイドAtlasの新しいハンドは13自由度、小指を省いた理由をBoston Dynamicsの開発チームが語る【動画】",
+          "url": "https://robotstart.info/article/2026/10/02/382477.html",
+          "publishedAt": "2026-10-02T07:15:03.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-qbitai",
+      "name": "量子位",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://www.qbitai.com/feed",
+      "language": "zh",
+      "coverage": [
+        "research",
+        "industry"
+      ],
+      "identity": "media",
+      "homepage": "https://www.qbitai.com/",
+      "limitations": [
+        "综合 AI 媒体，只保留原材料明确涉及机器人的报道。"
+      ],
+      "checkedAt": "2026-10-02T11:33:13.630Z",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "刚刚，GPT-6 Astra接上宇树G1，把厨房收拾了！",
+          "url": "https://www.qbitai.com/2026/09/499493.html",
+          "publishedAt": "2026-09-30T07:54:54.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 3619,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "openJiuwen X-Router自演进模型路由技术首发，昇腾亲和，Agent越跑越省，实测减少50+%Token消耗",
+          "url": "https://www.qbitai.com/2026/10/500098.html",
+          "publishedAt": "2026-10-02T07:34:15.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "丘成桐新论文致谢了GPT和Claude",
+          "url": "https://www.qbitai.com/2026/10/499991.html",
+          "publishedAt": "2026-10-02T07:27:03.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-open-robotics",
+      "name": "Open Robotics Blog",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://www.openrobotics.org/blog?format=rss",
+      "language": "en",
+      "coverage": [
+        "hardware",
+        "research"
+      ],
+      "identity": "institution",
+      "homepage": "https://www.openrobotics.org/blog",
+      "limitations": [
+        "ROS/Gazebo 官方组织博客；刊期稀疏，活动通知不自动进入精选。"
+      ],
+      "checkedAt": "2026-10-02T11:33:18.242Z",
+      "status": "verified",
+      "itemCount": 20,
+      "datedItems": 20,
+      "samples": [
+        {
+          "title": "Complete the Open Robotics Annual Survey 2026 to enter the prize draw",
+          "url": "https://www.openrobotics.org/blog/2026/9/29/complete-the-open-robotics-annual-survey-2026-to-enter-the-prize-draw",
+          "publishedAt": "2026-09-29T07:11:25.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 2601,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Open Robotics announces Red Hat Enterprise Linux Tier 1 support for ROS",
+          "url": "https://www.openrobotics.org/blog/2026/9/22/open-robotics-announces-red-hat-enterprise-linux-tier-1-support-for-ros",
+          "publishedAt": "2026-09-22T21:00:01.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 1581,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Resources for users of ROS 1",
+          "url": "https://www.openrobotics.org/blog/2026/4/20/resources-for-users-of-ros-1",
+          "publishedAt": "2026-04-21T06:21:09.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 1326,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-moveit-blog",
+      "name": "MoveIt Blog",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://moveit.ai/feed.xml",
+      "language": "en",
+      "coverage": [
+        "hardware",
+        "research"
+      ],
+      "identity": "project",
+      "homepage": "https://moveit.ai/blog/",
+      "limitations": [
+        "官方项目文章；机器人演示条件、ROS 版本和软件许可仍需逐条核对。"
+      ],
+      "checkedAt": "2026-10-02T11:33:21.089Z",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "GSoC 2024 - MuJoCo support for ROS 2 MoveIt",
+          "url": "https://moveit.ai/moveit/gsoc/2024/08/22/GSoC-2024-mujoco-support-for-ros2-moveit.html",
+          "publishedAt": "2024-08-22T00:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 3043,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "New MoveIt LTS release for ROS 2 Jazzy!",
+          "url": "https://moveit.ai/release/jazzy/rolling/2024/06/30/New-MoveIt-LTS-release-for-ROS-2-Jazzy.html",
+          "publishedAt": "2024-06-30T00:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "MoveIt Pro Open Core - Building and Supporting Open Source Software for the Future",
+          "url": "https://moveit.ai/open%20source/open%20core%20software/2024/02/22/MoveIt-Pro-Open-Core.html",
+          "publishedAt": "2024-02-22T00:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-nvidia-robotics",
+      "name": "NVIDIA Blog · Robotics",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://blogs.nvidia.com/blog/category/robotics/feed/",
+      "language": "en",
+      "coverage": [
+        "hardware",
+        "research",
+        "industry"
+      ],
+      "identity": "company",
+      "homepage": "https://blogs.nvidia.com/blog/category/robotics/",
+      "limitations": [
+        "官方宣传和合作案例；保留硬件要求、仿真条件与性能归属。"
+      ],
+      "checkedAt": "2026-10-02T11:33:24.525Z",
+      "status": "verified",
+      "itemCount": 18,
+      "datedItems": 18,
+      "samples": [
+        {
+          "title": "NVIDIA Isaac ROS 5.0 Advances Agentic, Open Source Robotics Development",
+          "url": "https://blogs.nvidia.com/blog/isaac-ros-5-0-agentic-open-source-robotics/",
+          "publishedAt": "2026-09-22T12:00:41.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 9534,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Why Deploying Physical AI at Scale Demands Safety at Every Layer",
+          "url": "https://blogs.nvidia.com/blog/physical-ai-halos-safety/",
+          "publishedAt": "2026-09-21T16:00:46.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 8217,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Skild AI Taps NVIDIA Physical AI to Teach Robots New Tasks From a Single Video",
+          "url": "https://blogs.nvidia.com/blog/skild-ai-s1-physical-ai/",
+          "publishedAt": "2026-09-10T16:30:35.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 5699,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-bair",
+      "name": "Berkeley AI Research",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://bair.berkeley.edu/blog/feed.xml",
+      "language": "en",
+      "coverage": [
+        "research"
+      ],
+      "identity": "institution",
+      "homepage": "https://bair.berkeley.edu/blog/",
+      "limitations": [
+        "混合 AI 研究，机器人相关性逐条预筛；发表不自动意味着工程价值。"
+      ],
+      "checkedAt": "2026-10-02T11:33:26.847Z",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "2026 BAIR Graduate Showcase",
+          "url": "http://bair.berkeley.edu/blog/2026/07/01/grads-2026/",
+          "publishedAt": "2026-07-01T09:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 18155,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Gradient-based Planning for World Models at Longer Horizons",
+          "url": "http://bair.berkeley.edu/blog/2026/04/20/grasp/",
+          "publishedAt": "2026-04-20T09:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Information-Driven Design of Imaging Systems",
+          "url": "http://bair.berkeley.edu/blog/2026/01/10/information-driven-imaging/",
+          "publishedAt": "2026-01-10T09:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-arxiv-robotics",
+      "name": "arXiv · cs.RO",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://rss.arxiv.org/rss/cs.RO",
+      "language": "en",
+      "coverage": [
+        "research"
+      ],
+      "identity": "paper-platform",
+      "homepage": "https://arxiv.org/list/cs.RO/recent",
+      "limitations": [
+        "预印本摘要而非全文；不保证同行评审，RSS 可能含修订与跨类论文。"
+      ],
+      "checkedAt": "2026-10-02T11:33:31.372Z",
+      "status": "verified",
+      "itemCount": 158,
+      "datedItems": 158,
+      "samples": [
+        {
+          "title": "Bounded-Fidelity Sim-as-Demo-Stage: Mocap Handoff for Governance Benchmarks",
+          "url": "https://arxiv.org/abs/2610.00008",
+          "publishedAt": "2026-10-02T04:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 2272,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Probabilistic Plan Legibility with Off-the-shelf Planners",
+          "url": "https://arxiv.org/abs/2610.00065",
+          "publishedAt": "2026-10-02T04:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "HumanoidTTT: Test-Time Capability Reuse for Efficient Humanoid Control",
+          "url": "https://arxiv.org/abs/2610.00198",
+          "publishedAt": "2026-10-02T04:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-ros2-releases",
+      "name": "ROS 2 Releases",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://github.com/ros2/ros2/releases.atom",
+      "language": "en",
+      "coverage": [
+        "hardware"
+      ],
+      "identity": "project",
+      "homepage": "https://github.com/ros2/ros2/releases",
+      "limitations": [
+        "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
+      ],
+      "checkedAt": "2026-10-02T11:33:36.485Z",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "ROS 2 Humble Hawksbill - Patch Release 15",
+          "url": "https://github.com/ros2/ros2/releases/tag/release-humble-20260914",
+          "publishedAt": "2026-09-14T18:34:12.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 666,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "ROS Lyrical Luth - Patch Release 2 (2026/08/07)",
+          "url": "https://github.com/ros2/ros2/releases/tag/release-lyrical-20260807",
+          "publishedAt": "2026-08-08T00:05:41.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 504,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "ROS Lyrical Luth - Patch Release 1 (2026/06/23)",
+          "url": "https://github.com/ros2/ros2/releases/tag/release-lyrical-20260623",
+          "publishedAt": "2026-06-23T20:32:22.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 504,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-gazebo-releases",
+      "name": "Gazebo Sim Releases",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://github.com/gazebosim/gz-sim/releases.atom",
+      "language": "en",
+      "coverage": [
+        "hardware",
+        "research"
+      ],
+      "identity": "project",
+      "homepage": "https://github.com/gazebosim/gz-sim/releases",
+      "limitations": [
+        "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
+      ],
+      "checkedAt": "2026-10-02T11:33:38.746Z",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "ignition-gazebo6_6.18.0: Prepare for 6.18.0 (#3670)",
+          "url": "https://github.com/gazebosim/gz-sim/releases/tag/ignition-gazebo6_6.18.0",
+          "publishedAt": "2026-06-09T17:53:51.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 394,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "gz-sim11_11.0.0-pre1: Fix graded buoyancy for rotated collision shapes (#3880)",
+          "url": "https://github.com/gazebosim/gz-sim/releases/tag/gz-sim11_11.0.0-pre1",
+          "publishedAt": "2026-08-20T08:51:36.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "gz-sim9_9.6.0: Prepare 9.6.0 release (#3875)",
+          "url": "https://github.com/gazebosim/gz-sim/releases/tag/gz-sim9_9.6.0",
+          "publishedAt": "2026-08-13T02:28:21.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-mujoco-releases",
+      "name": "MuJoCo Releases",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://github.com/google-deepmind/mujoco/releases.atom",
+      "language": "en",
+      "coverage": [
+        "research",
+        "hardware"
+      ],
+      "identity": "project",
+      "homepage": "https://github.com/google-deepmind/mujoco/releases",
+      "limitations": [
+        "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
+      ],
+      "checkedAt": "2026-10-02T11:33:42.068Z",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "3.14.0",
+          "url": "https://github.com/google-deepmind/mujoco/releases/tag/3.14.0",
+          "publishedAt": "2026-09-22T16:52:58.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4883,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "3.13.0",
+          "url": "https://github.com/google-deepmind/mujoco/releases/tag/3.13.0",
+          "publishedAt": "2026-09-09T15:03:05.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4023,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "3.12.0",
+          "url": "https://github.com/google-deepmind/mujoco/releases/tag/3.12.0",
+          "publishedAt": "2026-08-20T12:53:06.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 10278,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-isaaclab-releases",
+      "name": "Isaac Lab Releases",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://github.com/isaac-sim/IsaacLab/releases.atom",
+      "language": "en",
+      "coverage": [
+        "research",
+        "hardware"
+      ],
+      "identity": "project",
+      "homepage": "https://github.com/isaac-sim/IsaacLab/releases",
+      "limitations": [
+        "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
+      ],
+      "checkedAt": "2026-10-02T11:33:43.841Z",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "v3.0.0-EA",
+          "url": "https://github.com/isaac-sim/IsaacLab/releases/tag/v3.0.0-EA",
+          "publishedAt": "2026-09-16T22:34:03.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 15163,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "v3.0.0-beta2.patch1",
+          "url": "https://github.com/isaac-sim/IsaacLab/releases/tag/v3.0.0-beta2.patch1",
+          "publishedAt": "2026-07-02T04:21:18.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 686,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "v3.0.0-beta2",
+          "url": "https://github.com/isaac-sim/IsaacLab/releases/tag/v3.0.0-beta2",
+          "publishedAt": "2026-06-17T02:16:55.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 12070,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-lerobot-releases",
+      "name": "LeRobot Releases",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://github.com/huggingface/lerobot/releases.atom",
+      "language": "en",
+      "coverage": [
+        "research",
+        "hardware"
+      ],
+      "identity": "project",
+      "homepage": "https://github.com/huggingface/lerobot/releases",
+      "limitations": [
+        "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
+      ],
+      "checkedAt": "2026-10-02T11:33:45.697Z",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "Release v0.6.1",
+          "url": "https://github.com/huggingface/lerobot/releases/tag/v0.6.1",
+          "publishedAt": "2026-08-03T14:24:49.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 14027,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Release v0.6.0",
+          "url": "https://github.com/huggingface/lerobot/releases/tag/v0.6.0",
+          "publishedAt": "2026-07-08T15:39:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 16255,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Release v0.5.1",
+          "url": "https://github.com/huggingface/lerobot/releases/tag/v0.5.1",
+          "publishedAt": "2026-04-07T14:57:52.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 3992,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-realsense-releases",
+      "name": "RealSense SDK Releases",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://github.com/realsenseai/librealsense/releases.atom",
+      "language": "en",
+      "coverage": [
+        "hardware"
+      ],
+      "identity": "project",
+      "homepage": "https://github.com/realsenseai/librealsense/releases",
+      "limitations": [
+        "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
+      ],
+      "checkedAt": "2026-10-02T11:33:49.318Z",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "RealSense SDK 2.0 beta (v2.58.4)",
+          "url": "https://github.com/realsenseai/librealsense/releases/tag/v2.58.4",
+          "publishedAt": "2026-08-30T09:06:43.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4468,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "RealSense SDK 2.0 beta (v2.58.3)",
+          "url": "https://github.com/realsenseai/librealsense/releases/tag/v2.58.3",
+          "publishedAt": "2026-07-20T12:27:07.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4493,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "RealSense SDK 2.0 beta (v2.58.2)",
+          "url": "https://github.com/realsenseai/librealsense/releases/tag/v2.58.2",
+          "publishedAt": "2026-06-16T11:24:07.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 3832,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-depthai-releases",
+      "name": "DepthAI Core Releases",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://github.com/luxonis/depthai-core/releases.atom",
+      "language": "en",
+      "coverage": [
+        "hardware"
+      ],
+      "identity": "project",
+      "homepage": "https://github.com/luxonis/depthai-core/releases",
+      "limitations": [
+        "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
+      ],
+      "checkedAt": "2026-10-02T11:33:50.963Z",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "ros-v3.10.0",
+          "url": "https://github.com/luxonis/depthai-core/releases/tag/ros-v3.10.0",
+          "publishedAt": "2026-09-07T10:40:58.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "ros-old-v3.10.0",
+          "url": "https://github.com/luxonis/depthai-core/releases/tag/ros-old-v3.10.0",
+          "publishedAt": "2026-09-07T10:42:45.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Release v3.10.0",
+          "url": "https://github.com/luxonis/depthai-core/releases/tag/v3.10.0",
+          "publishedAt": "2026-09-02T08:06:55.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 2948,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-weekly-robotics",
+      "name": "Weekly Robotics",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://www.weeklyrobotics.com/atom.xml",
+      "language": "en",
+      "coverage": [
+        "hardware",
+        "research"
+      ],
+      "identity": "editor",
+      "homepage": "https://www.weeklyrobotics.com/",
+      "limitations": [
+        "机器人技术周刊；转载线索需回到原材料，赞助与编辑推荐分开。"
+      ],
+      "checkedAt": "2026-10-02T11:33:54.011Z",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "Weekly Robotics #378",
+          "url": "https://weeklyrobotics.com/weekly-robotics-378",
+          "publishedAt": "2026-09-27T23:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4964,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Weekly Robotics #377",
+          "url": "https://weeklyrobotics.com/weekly-robotics-377",
+          "publishedAt": "2026-09-20T23:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 6368,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Weekly Robotics #376",
+          "url": "https://weeklyrobotics.com/weekly-robotics-376",
+          "publishedAt": "2026-09-13T23:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4885,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-robotiq",
+      "name": "Robotiq Blog",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://blog.robotiq.com/rss.xml",
+      "language": "en",
+      "coverage": [
+        "hardware",
+        "industry"
+      ],
+      "identity": "company",
+      "homepage": "https://blog.robotiq.com/",
+      "limitations": [
+        "夹爪、传感器与系统集成官方资料；案例效果为厂商陈述，保留硬件版本和实验条件。"
+      ],
+      "checkedAt": "2026-10-02T11:33:56.571Z",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "Robotiq Releases New 2F-85 Isaac Sim Asset on Newton",
+          "url": "https://blog.robotiq.com/robotiq-releases-new-2f-85-gripper-isaac-sim-assets-on-newton",
+          "publishedAt": "2026-09-22T01:31:56.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 5105,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Robotiq Releases ROS 2 Packages for Adaptive Grippers",
+          "url": "https://blog.robotiq.com/robotiq-releases-ros-2-packages-for-adaptive-grippers",
+          "publishedAt": "2026-08-26T12:00:02.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 6740,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Robotiq Releases an Open-Source C++ SDK for Adaptive Grippers",
+          "url": "https://blog.robotiq.com/robotiq-releases-open-source-c-sdk-for-adaptive-gripper",
+          "publishedAt": "2026-08-12T11:14:05.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 5782,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    }
+  ]
+}

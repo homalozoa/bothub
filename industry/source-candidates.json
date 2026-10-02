@@ -1,0 +1,365 @@
+{
+  "comment": "未接入候选和被排除入口；enabled=false，不由 seed 导入。状态说明来自实际检查，尚无完整正文或关联验证的不算已接入。",
+  "sources": [
+    {
+      "id": "rss-robotics-business-review",
+      "name": "Robotics Business Review",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.roboticsbusinessreview.com/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "first_party": false,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "en",
+        "media"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "robotics": {
+        "language": "en",
+        "coverage": [
+          "industry"
+        ],
+        "identity": "media",
+        "homepage": "https://www.roboticsbusinessreview.com/",
+        "limitations": [
+          "可能与 The Robot Report 同一出版网络；同一通稿不能计为独立证据。",
+          "实测入口返回与 The Robot Report 相同条目；不作为第二个独立已接入来源。"
+        ],
+        "lastValidation": {
+          "checkedAt": "2026-10-02T11:29:32.577Z",
+          "status": "verified",
+          "itemCount": 15
+        }
+      }
+    },
+    {
+      "id": "rss-jiqizhixin",
+      "name": "机器之心",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.jiqizhixin.com/rss",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "first_party": false,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "zh",
+        "media"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "robotics": {
+        "language": "zh",
+        "coverage": [
+          "research",
+          "hardware"
+        ],
+        "identity": "media",
+        "homepage": "https://www.jiqizhixin.com/",
+        "limitations": [
+          "综合 AI 媒体，只保留具体机器人关联，不能把模型宣传补写为机器人价值。"
+        ],
+        "lastValidation": {
+          "checkedAt": "2026-10-02T11:29:46.930Z",
+          "status": "parse_error",
+          "error": "not an RSS/Atom document"
+        }
+      }
+    },
+    {
+      "id": "rss-boston-dynamics",
+      "name": "Boston Dynamics Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://bostondynamics.com/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": "boston-dynamics",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "en",
+        "company"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "robotics": {
+        "language": "en",
+        "coverage": [
+          "industry",
+          "hardware"
+        ],
+        "identity": "company",
+        "homepage": "https://bostondynamics.com/blog/",
+        "limitations": [
+          "性能和部署信息是厂商自报；营销稿与真实交付记录分别处理。"
+        ],
+        "lastValidation": {
+          "checkedAt": "2026-10-02T11:29:50.068Z",
+          "status": "empty_feed",
+          "itemCount": 0
+        }
+      }
+    },
+    {
+      "id": "rss-clearpath",
+      "name": "Clearpath Robotics Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://clearpathrobotics.com/blog/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": "clearpath",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "en",
+        "company"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "robotics": {
+        "language": "en",
+        "coverage": [
+          "hardware",
+          "industry"
+        ],
+        "identity": "company",
+        "homepage": "https://clearpathrobotics.com/blog/",
+        "limitations": [
+          "教程、展会、案例混合；检查平台版本、销售区域与案例条件。"
+        ],
+        "lastValidation": {
+          "checkedAt": "2026-10-02T11:29:52.419Z",
+          "status": "empty_feed",
+          "itemCount": 0
+        }
+      }
+    },
+    {
+      "id": "rss-pal-robotics",
+      "name": "PAL Robotics Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://pal-robotics.com/blog/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": "pal-robotics",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "en",
+        "company"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "robotics": {
+        "language": "en",
+        "coverage": [
+          "hardware",
+          "industry"
+        ],
+        "identity": "company",
+        "homepage": "https://pal-robotics.com/blog/",
+        "limitations": [
+          "研究平台、服务机器人和展会混合；厂商证据不等于独立复现。"
+        ],
+        "lastValidation": {
+          "checkedAt": "2026-10-02T11:29:55.425Z",
+          "status": "http_error",
+          "error": "HTTP 500"
+        }
+      }
+    },
+    {
+      "id": "rss-ros-announcements",
+      "name": "Open Robotics Discourse · Announcements",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://discourse.openrobotics.org/c/ros-general/announcements/5.rss",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "first_party": false,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "en",
+        "community"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "robotics": {
+        "language": "en",
+        "coverage": [
+          "hardware",
+          "research"
+        ],
+        "identity": "community",
+        "homepage": "https://discourse.openrobotics.org/",
+        "limitations": [
+          "社区作者身份需逐条确认；回复、维护通知与正式发布分别处理。"
+        ],
+        "lastValidation": {
+          "checkedAt": "2026-10-02T11:30:01.525Z",
+          "status": "http_error",
+          "error": "HTTP 404"
+        }
+      }
+    },
+    {
+      "id": "rss-nav2-releases",
+      "name": "Nav2 Releases",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://github.com/ros-navigation/navigation2/releases.atom",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": "nav2",
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "en",
+        "project"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "robotics": {
+        "language": "en",
+        "coverage": [
+          "hardware",
+          "research"
+        ],
+        "identity": "project",
+        "homepage": "https://github.com/ros-navigation/navigation2/releases",
+        "limitations": [
+          "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
+        ],
+        "lastValidation": {
+          "checkedAt": "2026-10-02T11:31:27.709Z",
+          "status": "body_unconfirmed",
+          "itemCount": 10
+        }
+      }
+    },
+    {
+      "id": "rss-moveit2-releases",
+      "name": "MoveIt 2 Releases",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://github.com/moveit/moveit2/releases.atom",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": "moveit",
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "en",
+        "project"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "robotics": {
+        "language": "en",
+        "coverage": [
+          "hardware",
+          "research"
+        ],
+        "identity": "project",
+        "homepage": "https://github.com/moveit/moveit2/releases",
+        "limitations": [
+          "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。",
+          "Atom 实际列出 tag，官方 GitHub releases API 返回空数组；页面 Readability 得到的仓库说明不算该版本正文。"
+        ],
+        "lastValidation": {
+          "checkedAt": "2026-10-02T11:31:31.704Z",
+          "status": "verified",
+          "itemCount": 10
+        }
+      }
+    },
+    {
+      "id": "rss-ros2-control-releases",
+      "name": "ros2_control Releases",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://github.com/ros-controls/ros2_control/releases.atom",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": "ros-controls",
+      "participation_mode": "editorial",
+      "interval_minutes": 180,
+      "tags": [
+        "en",
+        "project"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "robotics": {
+        "language": "en",
+        "coverage": [
+          "hardware"
+        ],
+        "identity": "project",
+        "homepage": "https://github.com/ros-controls/ros2_control/releases",
+        "limitations": [
+          "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
+        ],
+        "lastValidation": {
+          "checkedAt": "2026-10-02T11:31:34.586Z",
+          "status": "body_unconfirmed",
+          "itemCount": 10
+        }
+      }
+    }
+  ]
+}
