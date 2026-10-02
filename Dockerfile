@@ -9,6 +9,7 @@ RUN apt-get update \
 
 FROM base AS build
 ARG NPM_REGISTRY=
+ARG WEB_RELEASE=
 COPY package.json package-lock.json ./
 COPY apps/api/package.json apps/api/
 COPY apps/web/package.json apps/web/

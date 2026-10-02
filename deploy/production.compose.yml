@@ -54,7 +54,10 @@ services:
     depends_on: { setup: { condition: service_completed_successfully } }
   web:
     image: bothot-app:${WEB_RELEASE:-${BOTHOT_RELEASE:-latest}}
-    build: { context: .. }
+    build:
+      context: ..
+      args:
+        WEB_RELEASE: ${WEB_RELEASE:-${BOTHOT_RELEASE:-latest}}
     restart: unless-stopped
     command: [node, apps/web/server.ts]
     # No backend credentials or database network in the frontend process.
