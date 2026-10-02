@@ -9,7 +9,6 @@ RUN apt-get update \
 
 FROM base AS build
 ARG NPM_REGISTRY=
-ARG WEB_RELEASE=
 COPY package.json package-lock.json ./
 COPY apps/api/package.json apps/api/
 COPY apps/web/package.json apps/web/
@@ -19,6 +18,7 @@ COPY packages/contracts/package.json packages/contracts/
 COPY industry/package.json industry/
 RUN npm ci --no-audit --no-fund ${NPM_REGISTRY:+--registry=$NPM_REGISTRY}
 COPY . .
+ARG WEB_RELEASE=
 RUN npm run build:home && npm run build -w @aihot/web && npm prune --omit=dev --no-audit --no-fund
 
 FROM base
