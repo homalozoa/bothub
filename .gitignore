@@ -10,6 +10,9 @@ dist/
 # Web production build
 apps/web/build/
 apps/web/.react-router/
+deploy/home/public/assets/
+.playwright-cli/
+output/playwright/
 
 # Font package unpacked to regenerate the report nameplates (docs/customize.md)
 package/

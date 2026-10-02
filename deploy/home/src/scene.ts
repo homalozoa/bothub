@@ -6,7 +6,7 @@ const toggle = document.querySelector<HTMLButtonElement>("[data-scene-pause]");
 if (host && toggle) {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let controller: ReturnType<typeof mountRobotScene> = null;
-  let paused = reducedMotion.matches;
+  let paused = false;
 
   function updateToggle() {
     toggle!.hidden = !controller || reducedMotion.matches;
@@ -17,7 +17,7 @@ if (host && toggle) {
   function mount() {
     if (controller) return;
     try {
-      controller = mountRobotScene(host!);
+      controller = mountRobotScene(host!, { motionPreference: reducedMotion });
       controller?.setPaused(paused);
     } catch {
       // A browser without WebGL keeps the static SVG instead of a blank panel.
@@ -33,7 +33,6 @@ if (host && toggle) {
     updateToggle();
   });
   reducedMotion.addEventListener("change", () => {
-    paused = reducedMotion.matches;
     controller?.setPaused(paused);
     updateToggle();
   });

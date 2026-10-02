@@ -14,6 +14,7 @@
     "fflate": "0.7.5"
   },
   "scripts": {
+    "build:home": "node scripts/build-home.ts",
     "doctor": "node --env-file-if-exists=.env scripts/doctor.ts",
     "demo:prepare": "node scripts/demo.ts",
     "sources:check": "node scripts/check-sources.ts",

@@ -53,7 +53,8 @@ services:
     stop_grace_period: 210s
     depends_on: { setup: { condition: service_completed_successfully } }
   web:
-    image: bothot-app:${BOTHOT_RELEASE:-latest}
+    image: bothot-app:${WEB_RELEASE:-${BOTHOT_RELEASE:-latest}}
+    build: { context: .. }
     restart: unless-stopped
     command: [node, apps/web/server.ts]
     # No backend credentials or database network in the frontend process.

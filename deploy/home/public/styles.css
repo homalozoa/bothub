@@ -65,7 +65,7 @@ h1 > span:first-of-type { color: var(--cyan); }
 .visual-frame i:nth-child(2) { top: 0; right: 0; border-width: 1px 1px 0 0; }
 .visual-frame i:nth-child(3) { bottom: 0; left: 0; border-width: 0 0 1px 1px; }
 .visual-frame i:nth-child(4) { bottom: 0; right: 0; border-width: 0 1px 1px 0; }
-.robot-stage { position: absolute; inset: 0; overflow: hidden; touch-action: pan-y; }
+.robot-stage { position: absolute; inset: 0; overflow: hidden; touch-action: pan-y pinch-zoom; }
 .robot-stage > canvas { display: block; width: 100%; height: 100%; position: absolute; inset: 0; z-index: 1; }
 .robot-fallback { position: absolute; inset: 15px 0; height: calc(100% - 30px); width: 100%; opacity: .85; }
 .robot-stage.scene-ready .robot-fallback { display: none; }
