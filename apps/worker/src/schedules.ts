@@ -12,6 +12,7 @@ import { computeHotRanking, snapshotHeat } from "@aihot/backend/events/hot";
 import { refreshStoryStatuses } from "@aihot/backend/events/digest";
 import { linkRelatedStories } from "@aihot/backend/events/consolidate";
 import { catchUpReports, composeDaily, composeMonthly, composeWeekly, dueDaily, dueWeekly, dueMonthly } from "@aihot/backend/reports/compose";
+import { REPORT_SCHEDULE, dailyCron } from "@aihot/backend/reports/calendar";
 import { runLeaderboardRound } from "@aihot/backend/leaderboard/method/run";
 import { refreshLeaderboard } from "@aihot/backend/leaderboard/fetch/refresh";
 import { monitorTick } from "@aihot/backend/monitor/scan";
@@ -28,6 +29,7 @@ interface Scheduled {
   cron: string;
   run: () => Promise<unknown>;
   missed?: "skip" | "once";
+  timeZone?: string;
 }
 
 const collecting = process.env.COLLECT_ENABLED !== "false";
@@ -40,11 +42,12 @@ export const SCHEDULES: Scheduled[] = [
   { name: "hot.snapshot", cron: "2 * * * *", run: () => snapshotHeat() },
   { name: "stories.status", cron: "7 * * * *", run: refreshStoryStatuses },
   { name: "stories.links", cron: "12 * * * *", run: linkRelatedStories },
-  { name: "reports.daily", cron: "0 8 * * *", missed: "once", run: () => composeDaily(dueDaily()) },
-  { name: "reports.weekly", cron: "0 10 * * 1", missed: "once", run: () => composeWeekly(dueWeekly()) },
+  { name: "reports.daily", cron: dailyCron(), timeZone: REPORT_SCHEDULE.timeZone, missed: "once", run: () => composeDaily(dueDaily()) },
+  { name: "reports.weekly", cron: "0 10 * * 1", timeZone: REPORT_SCHEDULE.timeZone, missed: "once", run: () => composeWeekly(dueWeekly()) },
   {
     name: "reports.monthly",
     cron: "30 10 1 * *",
+    timeZone: REPORT_SCHEDULE.timeZone,
     missed: "once",
     run: () => composeMonthly(dueMonthly()),
   },
@@ -94,7 +97,7 @@ export async function registerSchedules(boss: PgBoss) {
   for (const s of SCHEDULES) {
     const queue = `cron.${s.name}`;
     await ensureQueue(queue, { policy: "singleton", retryLimit: 1, expireInSeconds: 3600 });
-    await boss.schedule(queue, s.cron, {}, { tz: "Asia/Shanghai", missed: s.missed ?? "skip" });
+    await boss.schedule(queue, s.cron, {}, { tz: s.timeZone ?? "Asia/Shanghai", missed: s.missed ?? "skip" });
     // Schedules fire at minute boundaries; a 15 s pickup keeps them on time with a third of the polling.
     await boss.work(queue, { pollingIntervalSeconds: 15 }, async () => recordRun(s.name, s.run));
   }

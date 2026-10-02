@@ -41,6 +41,10 @@ export const config = {
   // Every generated absolute link uses this address, whatever Host a request arrives with.
   siteUrl: str("SITE_URL", SITE.defaultUrl).replace(/\/+$/, ""),
   selectedVisibleAfterSeconds: int("SELECTED_VISIBLE_AFTER_SECONDS", 180),
+  /** Publication calendar, independent of the reader's location; persisted instants remain UTC. */
+  reportTimeZone: str("REPORT_TIMEZONE", "Asia/Shanghai"),
+  reportDailyTime: str("REPORT_DAILY_TIME", "08:00"),
+  reportDailyMaxItems: Number(str("REPORT_DAILY_MAX_ITEMS", "3")),
   egressProxyUrl: env.EGRESS_PROXY_URL || null,
   allowPrivateNetworkFetch: bool("ALLOW_PRIVATE_NETWORK_FETCH", false),
   feishuContentPushEnabled: bool("FEISHU_CONTENT_PUSH_ENABLED", false),
