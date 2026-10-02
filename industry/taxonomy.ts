@@ -59,9 +59,9 @@ export const ENTITIES: Record<string, { name: string; displayTag: string | null;
 
 /** 原文没有对应身份时，保留上游防止模型补写公司的安全检查。 */
 export const IDENTITY_LEXICON: ReadonlyArray<{ id: string; name: string; patterns: RegExp[] }> = [
-  { id: "nvidia", name: "NVIDIA", patterns: [/nvidia|英伟达|\bjetson\b|\bisaac\b/i] },
-  { id: "google", name: "Google DeepMind", patterns: [/google|deepmind|谷歌|\bgemini\b/i] },
-  { id: "hugging-face", name: "Hugging Face", patterns: [/hugging\s?face|\blerobot\b/i] },
+  { id: "nvidia", name: "NVIDIA", patterns: [/nvidia|英伟达|\bjetson\b|\bisaac\b/i, /nvidia|英伟达|\bnemotron\b|\bnemo\b|\bblackwell\b|\brubin(?:\s+ultra)?\b|\bcuda\b/i] },
+  { id: "google", name: "Google DeepMind", patterns: [/google|deepmind|谷歌|\bgemini\b/i, /google|deepmind|\bgemini\b|notebooklm|\bveo\s?\d|\bAlphaFold\b|\bAMIE\b/i] },
+  { id: "hugging-face", name: "Hugging Face", patterns: [/hugging\s?face|\blerobot\b/i, /hugging\s?face/i] },
   { id: "open-robotics", name: "Open Robotics", patterns: [/open\srobotics|\bosrf\b|\bgazebo\b/i] },
   { id: "unitree", name: "宇树", patterns: [/unitree|宇树/i] },
   { id: "boston-dynamics", name: "Boston Dynamics", patterns: [/boston\sdynamics|波士顿动力/i] },
@@ -102,9 +102,9 @@ export const IDENTITY_LEXICON: ReadonlyArray<{ id: string; name: string; pattern
   { id: "apple", name: "Apple AI", patterns: [/\bapple\s?(intelligence|silicon|ai)\b|苹果(智能|\s?AI)/i] },
   { id: "amazon", name: "Amazon / AWS", patterns: [/amazon|\baws\b|亚马逊/i] },
   { id: "baidu", name: "百度文心", patterns: [/百度|baidu|文心|\bernie\s?bot\b/i] },
-  { id: "openai", name: "OpenAI", patterns: [/openai|chatgpt|\bgpt-?\d|\bcodex\b/i] },
-  { id: "anthropic", name: "Anthropic", patterns: [/anthropic|\bclaude\b/i] },
-  { id: "meta", name: "Meta", patterns: [/\bMeta\b|\bllama\b/] },
+  { id: "openai", name: "OpenAI", patterns: [/openai|chatgpt|\bgpt-?\d|\bcodex\b/i, /openai|chatgpt|\bgpt-?[o\d]|\bsora\b|\bcodex\b/i] },
+  { id: "anthropic", name: "Anthropic", patterns: [/anthropic|\bclaude\b/i, /anthropic|\bclaude\b/i, /\b(?:opus|sonnet|haiku)\s*\d+(?:[.\-]\d+)*\b/i, /\bfable\s*\d+(?:[.\-]\d+)*\b|\bmythos\b/i] },
+  { id: "meta", name: "Meta", patterns: [/\bMeta\b|\bllama\b/, /\bMeta\b/, /\bmeta\s?ai\b|\bllama\b/i] },
 ];
 
 /** 托管平台 GitHub / arXiv 不映射为作者或发布方。 */
@@ -125,9 +125,20 @@ export const PUBLISHER_DOMAINS: ReadonlyArray<{ entityId: string; domains: reado
   { entityId: "orbbec", domains: ["orbbec.com"] },
   { entityId: "robotis", domains: ["robotis.com"] },
   { entityId: "arduino", domains: ["arduino.cc"] },
+  { entityId: "openai", domains: ["openai.com"] },
+  { entityId: "anthropic", domains: ["anthropic.com", "claude.com"] },
+  { entityId: "deepseek", domains: ["deepseek.com"] },
+  { entityId: "xai", domains: ["x.ai"] },
+  { entityId: "meta", domains: ["ai.meta.com"] },
+  { entityId: "microsoft", domains: ["microsoft.com"] },
+  { entityId: "qwen", domains: ["qwen.ai"] },
+  { entityId: "cursor", domains: ["cursor.com"] },
+  { entityId: "openrouter", domains: ["openrouter.ai"] },
 ];
 
 export const IDENTITY_CONTEXT_ALIASES: ReadonlyArray<{ entityId: string; pattern: RegExp }> = [
   { entityId: "hugging-face", pattern: /@huggingface\b/i },
   { entityId: "unitree", pattern: /@UnitreeRobotics\b/i },
+  { entityId: "meta", pattern: /@AIatMeta\b/i },
+  { entityId: "zhipu", pattern: /\bZhipu(?:\s+AI\b|['’]s\b)/i },
 ];
