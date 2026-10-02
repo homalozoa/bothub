@@ -57,7 +57,7 @@ const pages: Record<string, (cdn: string) => string> = {
     '(self.webpackChunk=self.webpackChunk||[]).push([["8557"],{57573:function(e,i,t){function h(e){return(0,n.jsxs)(a.Me,{children:[' +
     '(0,n.jsx)(m.H,{models:[{name:"Xiaomi MiMo-V2.6-Series",desc:"Frontier intelligence, all the modalities, built in public.",imageKey:"mimo-v2-5-pro",link:"/mimo-v2-6"}]}),' +
     '(0,n.jsx)(d.z,{sectionTitle:"Build with MiMo",experiences:[{title:"MiMo Gallery",link:"/mimo-gallery/",desc:"Step into the world created by MiMo-V2.6"}]}),' +
-    '(0,n.jsx)(r.K,{sectionId:"paper",sectionTitle:"Paper",blogs:l.G.slice().reverse().map(e=>({title:e.title,link:`/paper/${e.slug}`,desc:(0,l.V)(e.date,!1)}))}),' +
+    '(0,n.jsx)(r.K,{sectionId:"research",sectionTitle:"Paper",blogs:l.G.slice().reverse().map(e=>({title:e.title,link:`/paper/${e.slug}`,desc:(0,l.V)(e.date,!1)}))}),' +
     '(0,n.jsx)(r.K,{sectionTitle:"Blog",initialVisibleCount:8,blogs:[' +
     '{title:"Diagnosing and Mitigating Tool-Call Repetition in MiMo-V2.6",link:"/blog/mimo-v2-6-tool-call-repetition",desc:"A lesson from scaling RL: the reward blind spot in optimizing for correctness."},' +
     '{title:"Introducing MiMo-V2.6 series",link:"/mimo-v2-6",desc:"Frontier intelligence, all the modalities, built in public."},' +
