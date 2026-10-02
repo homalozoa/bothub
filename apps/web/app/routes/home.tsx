@@ -10,6 +10,7 @@ import { Timeline } from "../features/feed/Timeline";
 import { HotTopics } from "../features/feed/HotTopics";
 import { CategoryTabs, SearchField, SearchIconLink } from "../features/feed/Filters";
 import { beijingDate, beijingWeekday } from "../lib/format";
+import { SignalHero } from "../components/SignalHero";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -56,8 +57,9 @@ export default function Home() {
         <Wordmark size={20} className="text-ink" />
         <TodayLabel />
       </div>
+      <SignalHero />
       <div className="hidden lg:block">
-        <h1 className="text-[24px] font-semibold leading-[1.3] text-ink">{title}</h1>
+        <h2 className="text-[24px] font-semibold leading-[1.3] text-ink">{title}</h2>
         <div className="mb-5 mt-4 flex items-center justify-between gap-4">
           <CategoryTabs base="/" category={filters.category} channel={filters.channel} layoutId="home-cat-desk" className="min-w-0" />
           <SearchField variant="track" keep={{ category: filters.category }} />
