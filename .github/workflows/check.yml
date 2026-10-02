@@ -62,6 +62,8 @@ jobs:
         run: npm run build -w @aihot/web
       - name: Web tests
         run: node --test apps/web/tests/*.test.ts
+      - name: Offline source and editorial sample checks
+        run: npm run test:sources
 
       - name: Migrate and seed topics
         run: |

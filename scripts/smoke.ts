@@ -52,6 +52,18 @@ async function check(path: string, expect: (res: Response, body: string) => stri
 const htmlName = SITE.name.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
 for (const path of PAGES) await check(path, (_res, body) => (body.includes(SITE.name) || body.includes(htmlName) ? null : `the page does not name ${SITE.name}`));
 for (const [path, type] of MACHINE) await check(path, (res) => (type.test(res.headers.get("content-type") ?? "") ? null : `content-type ${res.headers.get("content-type")}`));
+const disabled = [
+  ...(!FEATURES.leaderboard ? ["/leaderboard", "/api/site/leaderboard/boards/overall", "/og/leaderboard.png"] : []),
+  ...(!FEATURES.codexResetMonitor ? ["/codex-reset", "/api/v1/codex-resets", "/api/v1/agent/codex-resets"] : []),
+];
+for (const path of disabled) {
+  try {
+    const res = await fetch(base + path, { redirect: "manual", signal: AbortSignal.timeout(30_000) });
+    const ok = res.status === 404;
+    console.log(`${ok ? "✓" : "✗"} ${path} disabled: HTTP ${res.status}`);
+    if (!ok) failed++;
+  } catch (error) { failed++; console.log(`✗ ${path} ${String(error)}`); }
+}
 // MCP: the handshake answers with the site's server name.
 const mcp = await fetch(`${base}/api/mcp`, {
   method: "POST",
