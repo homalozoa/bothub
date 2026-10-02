@@ -1,0 +1,78 @@
+# Existing host Nginx terminates TLS. Only the web port is published, on loopback for SSH/admin.
+name: bothot
+x-backend: &backend
+  image: bothot-app:${BOTHOT_RELEASE:-latest}
+  build: { context: .. }
+  env_file: ../.env
+  restart: unless-stopped
+  environment: &backend-env
+    NODE_ENV: production
+    DATABASE_URL: postgres://aihot:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@db:5432/aihot
+    AIHOT_DATA_DIR: /data
+    API_BASE_URL: http://api:3001
+    LOCAL_ROUTER_URL: http://web:3000
+    AIHOT_RELEASE: ${BOTHOT_RELEASE:-latest}
+  volumes: [data:/data]
+  networks: [database, app]
+  logging: &logging
+    driver: json-file
+    options: { max-size: 10m, max-file: "3" }
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: aihot
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+      POSTGRES_DB: aihot
+    volumes: [db:/var/lib/postgresql/data]
+    networks: [database]
+    logging: *logging
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U aihot -d aihot"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+  setup:
+    <<: *backend
+    restart: "no"
+    command: [sh, -c, "node scripts/migrate.ts && node scripts/seed.ts"]
+    depends_on: { db: { condition: service_healthy } }
+  api:
+    <<: *backend
+    command: [node, apps/api/src/main.ts]
+    environment:
+      <<: *backend-env
+      API_HOST: 0.0.0.0
+      API_PORT: "3001"
+    depends_on: { setup: { condition: service_completed_successfully } }
+  worker:
+    <<: *backend
+    command: [node, apps/worker/src/main.ts]
+    stop_grace_period: 210s
+    depends_on: { setup: { condition: service_completed_successfully } }
+  web:
+    image: bothot-app:${BOTHOT_RELEASE:-latest}
+    restart: unless-stopped
+    command: [node, apps/web/server.ts]
+    # No backend credentials or database network in the frontend process.
+    environment:
+      NODE_ENV: production
+      WEB_HOST: 0.0.0.0
+      WEB_PORT: "3000"
+      SITE_URL: ${SITE_URL:-https://hub.openzoo.ai}
+      API_BASE_URL: http://api:3001
+      TRUST_PROXY: "true"
+      SITE_DEMO: "false"
+    ports: ["127.0.0.1:18090:3000"]
+    networks: [app]
+    logging: *logging
+    depends_on: { api: { condition: service_started } }
+
+networks:
+  database: { internal: true }
+  app: {}
+volumes:
+  db: {}
+  data: {}
