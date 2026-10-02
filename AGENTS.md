@@ -1,12 +1,12 @@
 # 给 Agent 的说明
 
-这是一个行业热点网站的框架：采集信源、用模型筛选和写作、归组事件、出日报，并通过网站、RSS、公开 API 和 MCP 对外提供。默认配置是一个 AI 行业的示例站。先读 README，再按任务读 `docs/` 里对应的文档。
+这是基于 AIHOT 的机器人热点站（bothot）：采集信源、用模型筛选和写作、归组事件、出日报，并通过网站、RSS、公开 API 和 MCP 对外提供。先读 README 和 `docs/robotics.md`，再按任务读对应文档。
 
 ## 最常见的任务：改成另一个行业
 
 按 `docs/customize.md` 的顺序做。行业相关的一切都在 `industry/`：站名文案（`site.ts`）、分类标签（`taxonomy.ts`）、主题（`topics.json`）、示范信源（`sources.json`）、提示词（`prompts/`）、门槛（`selection.ts`）、模块开关（`features.ts`）、品牌（`brand/`）、条款页（`pages/`）。通常不需要改 `apps/` 和 `packages/`。
 
-这些事要问使用者本人，不要替他决定：站名；要盯哪些信源；什么消息重要、什么是噪声；分类怎么分；条款和隐私说明的内容（`industry/pages/` 是模板，上线前需要他本人确认）。
+已授权的首版使用“机器人热点”占位名，三方向分类、机器人关联的 AI 范围与编辑标准见 `industry/`。正式站名、域名、运营主体、条款和隐私声明仍需运营者确认；已明确的开发配置不重复询问。
 
 改评分标准时保留原有结构（内容类型、五个维度加权、噪声压制、安全边界），替换的是“什么算重要”“什么算噪声”的例子。门槛要用使用者标注的样本重新校准（`docs/selection.md`），不要凭感觉改数字。
 
@@ -35,6 +35,10 @@
 - 数据库迁移只做向后兼容的增量，新迁移按编号加在 `database/migrations/` 末尾。
 - 不要提交 `.env`、密钥和 `.data/`。
 - 不要使用 AIHOT 的名字和 Logo。
+- 本机 `.env` 默认关闭采集、模型、推送。真实来源验证单独运行 `check-sources.ts --live`；有限入库试跑需要显式 `COLLECT_ENABLED=true` 和1–3个source ID。付费模型须获服务和预算授权。
+- 演示只写独立 `bothot_demo*_test` / `bothot_demo*_ci` 数据库，通过 `SITE_DEMO=true` 显示合成数据标记；不能作为真实编辑质量证据。
+- 小步可回溯迭代，提交使用 Conventional Commits。默认不新增 hash、冻结 contract、baseline 或 gate；保留既有认证、数据安全及发布措施。
+- 额外离线源/样本检查：`npm run test:sources`。候选样本由 Agent 暂标，未经人工确认不得报准确率。
 
 ## 写代码
 

@@ -1,5 +1,7 @@
 # 部署
 
+本仓库已定制为 bothot / 机器人热点。首版操作以 [机器人站运行说明](robotics.md) 为准。`.env.example` 默认 `COLLECT_ENABLED=false`、`MODEL_CALLS_ENABLED=false`，因此下述启动步骤只启动服务，不自动生成新资讯。确认服务与预算后显式启用；缺少密钥可先运行隔离的离线演示。下面保留上游 Docker、HTTPS 和完整备份恢复方法，内部数据库/包名仍沿用 aihot。
+
 ## 用 Docker（推荐）
 
 需要一台装了 Docker（带 Compose）的机器。云服务器建议至少 2 核、4 GB 内存，构建镜像时要用到。
