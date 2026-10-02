@@ -6,8 +6,10 @@ import { FEATURES } from "@aihot/industry/features";
 
 const at = process.argv.indexOf("--base");
 const base = (at > 0 ? process.argv[at + 1] : process.env.SITE_URL) ?? "http://localhost:3000";
+const publicOnly = process.argv.includes("--public");
 
 const PAGES = ["/", "/all", "/hot", "/daily", "/daily/archive", "/topics", "/starred", "/agent", "/about", "/changelog", "/feedback", "/terms", "/privacy", "/more", "/admin/login"];
+if (publicOnly) PAGES.splice(PAGES.indexOf("/admin/login"), 1);
 const MACHINE: Array<[path: string, type: RegExp]> = [
   ["/api/health", /json/],
   ["/api/v1/items", /json/],
@@ -53,6 +55,7 @@ const htmlName = SITE.name.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(
 for (const path of PAGES) await check(path, (_res, body) => (body.includes(SITE.name) || body.includes(htmlName) ? null : `the page does not name ${SITE.name}`));
 for (const [path, type] of MACHINE) await check(path, (res) => (type.test(res.headers.get("content-type") ?? "") ? null : `content-type ${res.headers.get("content-type")}`));
 const disabled = [
+  ...(publicOnly ? ["/admin", "/admin/login", "/admin.data", "/api/admin/me", "/api/auth/options", "/api/ingest/items", "/.env", "/.git/config"] : []),
   ...(!FEATURES.leaderboard ? ["/leaderboard", "/api/site/leaderboard/boards/overall", "/og/leaderboard.png"] : []),
   ...(!FEATURES.codexResetMonitor ? ["/codex-reset", "/api/v1/codex-resets", "/api/v1/agent/codex-resets"] : []),
 ];
