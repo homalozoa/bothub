@@ -169,7 +169,8 @@ export function buildMcpServer(): McpServer {
     },
     safe(T.daily, async (args: z.infer<typeof DAILY_INPUT>) => {
       if (args.date && !isValidDate(args.date)) return fail("invalid_request", `${args.date} 不是有效日期。`);
-      const res = await recent(`daily:${args.date ?? "latest"}`, () => v1Daily(args.date ?? "latest"));
+      // Read publication permissions now; a cached final answer can retain a withdrawn input's prose.
+      const res = await v1Daily(args.date ?? "latest");
       if (!res) return fail("not_found", args.date ? `没有 ${args.date} 的公开${withSubject("日报")}。` : `还没有公开的${withSubject("日报")}。`);
       const r = res.report;
       return ok(dailyAnswer(r, "mcp"), res);

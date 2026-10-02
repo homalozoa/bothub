@@ -149,6 +149,8 @@ export interface DailyReport {
   date: string;
   windowStart: string;
   windowEnd: string;
+  timeZone?: string;
+  dailyTime?: string;
   links: { aihot: string };
   lead: { title: string; leadParagraph: string } | null;
   sections: { label: string; items: { title: string; summary: string; source: { name: string }; links: Links }[] }[];
@@ -156,6 +158,9 @@ export interface DailyReport {
 }
 
 export function dailyAnswer(r: DailyReport, via: Via): string {
+  const timeZone = r.timeZone ?? "Asia/Shanghai";
+  const dailyTime = r.dailyTime ?? "08:00";
+  const publicationTime = new Intl.DateTimeFormat("zh-CN", { timeZone, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
   const data: string[] = [];
   if (r.lead) data.push(`导语：${r.lead.title}`, r.lead.leadParagraph, "");
   for (const s of r.sections) {
@@ -169,11 +174,11 @@ export function dailyAnswer(r: DailyReport, via: Via): string {
   return answer([
     `# ${SITE.name} 日报 · ${r.date}（${beijingWeekday(r.date)}）`,
     "",
-    `收录北京时间 ${stamp(r.windowStart)} 至 ${stamp(r.windowEnd)} 的动态，每天 08:00 发布。日报页：${r.links.aihot}`,
+    `收录 ${publicationTime.format(new Date(r.windowStart))} 至 ${publicationTime.format(new Date(r.windowEnd))} 的动态；刊期时区 ${timeZone}，每天 ${dailyTime} 发布。日报页：${r.links.aihot}`,
     ...(data.length ? [] : ["这一期暂时没有可以展示的条目。"]),
   ], data.length ? data : null, [
     "先讲导语，再按栏目挑重点；用户要全文再全部列出。",
-    "日报是每天 08:00 发布的固定成品，不等于“过去 24 小时”的滚动列表。",
+    `日报是刊期时区 ${timeZone} 每天 ${dailyTime} 发布的固定成品，不等于“过去 24 小时”的滚动列表。`,
     via === "http"
       ? `要其它日期的日报，请求 ${agentUrl("/daily/YYYY-MM-DD")}（真实日期）；没有就如实说，不要换一天冒充。`
       : "要其它日期的日报，传 date=YYYY-MM-DD（真实日期）；没有就如实说，不要换一天冒充。",

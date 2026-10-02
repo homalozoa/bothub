@@ -34,7 +34,7 @@ async function availability(ids: string[]): Promise<Map<string, Availability>> {
   if (ids.length === 0) return out;
   const rows = await sql<{ id: string; available: boolean; first_party: boolean; source_id: string; icon_url: string | null; story_public_id: string | null; at: Date | null }[]>`
     SELECT p.article_id AS id, (${listedCondition(new Date())}) AS available, p.first_party, p.source_id, s.icon_url, st.public_id::text AS story_public_id,
-      coalesce(p.published_at, p.discovered_at) AS at
+      p.published_at AS at
     FROM publications p LEFT JOIN sources s ON s.id = p.source_id LEFT JOIN stories st ON st.id = p.story_id
     WHERE p.article_id IN ${sql(ids)}`;
   for (const r of rows) {
@@ -66,6 +66,8 @@ export async function reportIndexRows(kind: ReportKind, limit: number) {
   return sql<{ key: string; issue_number: number; content: Record<string, any>; generated_at: Date }[]>`
     SELECT key, generated_at, (row_number() OVER (ORDER BY key ASC))::int AS issue_number, jsonb_build_object(
       'lead', content->'lead', 'headline', content->'headline', 'title', content->'title',
+      'inputItemIds', jsonb_path_query_array(content, '$.sections[*].items[*].itemId')
+        || jsonb_path_query_array(content, '$.themes[*].storyRefs[*].itemId') || jsonb_path_query_array(content, '$.flashes[*].itemId'),
       CASE WHEN kind = 'daily' THEN 'sections' ELSE 'themes' END,
       jsonb_build_array(jsonb_build_object(CASE WHEN kind = 'daily' THEN 'items' ELSE 'storyRefs' END,
         (SELECT coalesce(jsonb_agg(jsonb_build_object('itemId', item->'itemId', 'title', item->'title') ORDER BY ord), '[]'::jsonb)
@@ -93,22 +95,29 @@ function periodicHeadline(content: Record<string, any>): string | null {
   return text && !/^.+ [周月]报 · \d{4}-/.test(text) ? text : null;
 }
 
-/** Check only the first possible headline of each report; advance reports whose candidate was withdrawn. */
-export async function unavailableHeadlineIds(rows: Array<{ content: Record<string, any> }>, kind: "daily" | "periodic"): Promise<Set<string>> {
-  const reports = rows
-    .filter((r) => (kind === "daily" ? !r.content.lead?.title : !periodicHeadline(r.content)))
-    .map((r): Array<{ itemId?: string | null }> => kind === "daily"
-      ? (r.content.sections ?? []).flatMap((s: any) => s.items ?? [])
-      : (r.content.themes ?? []).flatMap((t: any) => t.storyRefs ?? []));
-  const gone = new Set<string>();
-  const checked = new Set<string>();
-  while (true) {
-    const candidates = reports.map((items) => items.find((i) => !i.itemId || !gone.has(i.itemId))?.itemId)
-      .filter((id): id is string => !!id && !checked.has(id));
-    if (!candidates.length) return gone;
-    for (const id of await unavailableIds(candidates)) gone.add(id);
-    for (const id of candidates) checked.add(id);
-  }
+function reportInputIds(content: Record<string, any>): string[] {
+  return content.inputItemIds ?? [
+    ...(content.sections ?? []).flatMap((s: any) => s.items ?? []),
+    ...(content.themes ?? []).flatMap((t: any) => t.storyRefs ?? []),
+    ...(content.flashes ?? []),
+  ].map((item: any) => item.itemId).filter(Boolean);
+}
+
+/** Derived prose cannot identify which sentence used a withdrawn input, so suppress it conservatively. */
+function withoutUnavailableProse(content: Record<string, any>, gone: Set<string>): Record<string, any> {
+  if (!reportInputIds(content).some((id) => gone.has(id))) return content;
+  return {
+    ...content, lead: null, headline: null, overview: null,
+    // The standard issue name is safe; an older custom news headline may quote the removed claim.
+    title: periodicHeadline(content) ? null : content.title,
+    themes: (content.themes ?? []).map((theme: any) => (theme.storyRefs ?? []).some((item: any) => gone.has(item.itemId))
+      ? { ...theme, heading: "相关主题已更正", summary: null } : theme),
+  };
+}
+
+/** All cited inputs matter to generated report prose, including those beyond the first headline. */
+export async function unavailableHeadlineIds(rows: Array<{ content: Record<string, any> }>, _kind: "daily" | "periodic"): Promise<Set<string>> {
+  return unavailableIds(rows.flatMap((row) => reportInputIds(row.content)));
 }
 
 function citationFrom(raw: Record<string, any>, avail: Map<string, Availability>): ReportCitation {
@@ -119,7 +128,7 @@ function citationFrom(raw: Record<string, any>, avail: Map<string, Availability>
   if (!available) {
     // Withdrawn since: the reader sees a marked title; the summary and links are not sent at all.
     return {
-      itemId: id, title: String(raw.title ?? ""), summary: null, sourceName: "", sourceUrl: "", sourceId: null, sourceIconUrl: null,
+      itemId: id, title: "内容已撤回", summary: null, sourceName: "", sourceUrl: "", sourceId: null, sourceIconUrl: null,
       firstParty: false, role: raw.role ?? null, storyPublicId: null, publishedAt: null, available: false,
     };
   }
@@ -203,13 +212,14 @@ export async function loadReport(kind: ReportKind, key: string): Promise<ReportD
       (SELECT count(*)::int FROM reports earlier WHERE earlier.kind = r.kind AND earlier.key <= r.key) AS issue_number
     FROM reports r WHERE r.kind = ${kind} AND r.key = ${key}`;
   if (!r) return null;
-  const c = r.content;
+  let c = r.content;
   const rawItems: Array<Record<string, any>> = [
     ...(c.sections ?? []).flatMap((s: any) => s.items ?? []),
     ...(c.flashes ?? []),
     ...(c.themes ?? []).flatMap((t: any) => t.storyRefs ?? []),
   ];
   const avail = await availability([...new Set(rawItems.map((i) => i.itemId).filter(Boolean))]);
+  c = withoutUnavailableProse(c, new Set([...avail].filter(([, item]) => !item.available).map(([id]) => id)));
   const cite = (raw: Record<string, any>) => citationFrom(raw, avail);
 
   const sections = kind === "daily"
@@ -263,17 +273,17 @@ export async function loadReport(kind: ReportKind, key: string): Promise<ReportD
  * withdrawal shows within a minute, like the pages' own caches).
  */
 const INDEX_LIMIT = 400;
-const indexes = new Map<ReportKind, Cached<{ rows: Awaited<ReturnType<typeof reportIndexRows>>; gone: Set<string> }>>();
-export function reportIndex(kind: ReportKind) {
+const indexes = new Map<ReportKind, Cached<Awaited<ReturnType<typeof reportIndexRows>>>>();
+export async function reportIndex(kind: ReportKind) {
   let entry = indexes.get(kind);
   if (!entry) {
-    entry = cached(async () => {
-      const rows = await reportIndexRows(kind, INDEX_LIMIT);
-      return { rows, gone: await unavailableHeadlineIds(rows, kind === "daily" ? "daily" : "periodic") };
-    }, { freshMs: 60_000, maxStaleMs: 10 * 60_000 });
+    entry = cached(() => reportIndexRows(kind, INDEX_LIMIT), { freshMs: 60_000, maxStaleMs: 10 * 60_000 });
     indexes.set(kind, entry);
   }
-  return entry.get();
+  const rows = await entry.get();
+  // Metadata stays cached; input permissions are checked now so a warm feed cannot leak withdrawn prose.
+  const gone = await unavailableHeadlineIds(rows, kind === "daily" ? "daily" : "periodic");
+  return { rows: rows.map((row) => ({ ...row, content: withoutUnavailableProse(row.content, gone) })), gone };
 }
 
 export async function listReports(kind: ReportKind, limit = INDEX_LIMIT): Promise<ReportIndexEntry[]> {
@@ -340,9 +350,10 @@ export async function v1Period(kind: "weekly" | "monthly", key: string | "latest
     ? await sql<ReportRow[]>`SELECT kind, key, window_start, window_end, content, generated_at, revision FROM reports WHERE kind = ${kind} ORDER BY key DESC LIMIT 1`
     : await sql<ReportRow[]>`SELECT kind, key, window_start, window_end, content, generated_at, revision FROM reports WHERE kind = ${kind} AND key = ${key}`;
   if (!r) return null;
-  const c = r.content;
+  let c = r.content;
   const raw = (c.themes ?? []).flatMap((theme: any) => theme.storyRefs ?? []);
   const avail = await availability([...new Set(raw.map((item: any) => item.itemId).filter(Boolean))] as string[]);
+  c = withoutUnavailableProse(c, new Set([...avail].filter(([, item]) => !item.available).map(([id]) => id)));
   const ok = (item: any) => !item.itemId || (avail.get(item.itemId)?.available ?? true);
   const links = (item: any) => ({ aihot: item.itemId ? itemUrl(item.itemId) : null, original: String(item.sourceUrl ?? "") });
   const url = siteUrl(`/${kind}/${r.key}`);
@@ -379,9 +390,10 @@ export async function v1Daily(date: string | "latest") {
     ? await sql<ReportRow[]>`SELECT kind, key, window_start, window_end, content, generated_at, revision FROM reports WHERE kind = 'daily' ORDER BY key DESC LIMIT 1`
     : await sql<ReportRow[]>`SELECT kind, key, window_start, window_end, content, generated_at, revision FROM reports WHERE kind = 'daily' AND key = ${date}`;
   if (!r) return null;
-  const c = r.content;
+  let c = r.content;
   const raw = [...(c.sections ?? []).flatMap((s: any) => s.items ?? []), ...(c.flashes ?? [])];
   const avail = await availability([...new Set(raw.map((i: any) => i.itemId).filter(Boolean))] as string[]);
+  c = withoutUnavailableProse(c, new Set([...avail].filter(([, item]) => !item.available).map(([id]) => id)));
   const ok = (i: any) => !i.itemId || (avail.get(i.itemId)?.available ?? true);
   const links = (i: any) => ({ aihot: i.itemId ? itemUrl(i.itemId) : null, original: String(i.sourceUrl ?? "") });
   const url = dailyUrl(r.key);
@@ -392,6 +404,8 @@ export async function v1Daily(date: string | "latest") {
       generatedAt: r.generated_at.toISOString(),
       windowStart: r.window_start.toISOString(),
       windowEnd: r.window_end.toISOString(),
+      timeZone: String(c.generator?.timeZone ?? "Asia/Shanghai"),
+      dailyTime: String(c.generator?.dailyTime ?? "08:00"),
       links: { aihot: url },
       attribution: attribution(url),
       lead: c.lead ? { title: String(c.lead.title), leadParagraph: String(c.lead.leadParagraph) } : null,
