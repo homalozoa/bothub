@@ -18,9 +18,13 @@ export function ThemeSync() {
     const apply = () => document.documentElement.setAttribute("data-theme", resolvedTheme());
     apply();
     if (getThemePreference() !== null || typeof window.matchMedia !== "function") return;
-    const system = window.matchMedia("(prefers-color-scheme: dark)");
-    system.addEventListener("change", apply);
-    return () => system.removeEventListener("change", apply);
+    try {
+      const system = window.matchMedia("(prefers-color-scheme: dark)");
+      system.addEventListener("change", apply);
+      return () => system.removeEventListener("change", apply);
+    } catch {
+      // An unavailable media API must not prevent the page from opening.
+    }
   }, [pref]);
   return null;
 }
