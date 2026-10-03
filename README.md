@@ -54,10 +54,10 @@ node scripts/smoke.ts --base http://localhost:3000
 node scripts/check-sources.ts --live --out .data/source-validation.json
 ```
 
-本次实际结果和未验证项见 [验收记录](docs/verification.md)。真实来源到入库已实测，隔离模型桩链路已实测；没有进行付费模型调用或公开部署，没有机器人领域准确率、召回率或成本结论。
+首版开发验证见 [验收记录](docs/verification.md)。后续已完成 [生产部署](docs/server-deployment.md)，真实采集、模型处理和公开发布已运行；机器人领域准确率、召回率与门槛仍待人工校准，运营费用还需与服务商账单对账。
 
 ## 文档
 
 [运行与纠错](docs/robotics.md) · [信源验证](docs/sources-robotics.md) · [精选校准](docs/selection.md) · [事件归组](docs/grouping.md) · [部署与备份](docs/deploy.md) · [架构](docs/architecture.md)
 
-正式站名、域名、运营者、联系渠道、隐私与条款待运营者确认；`industry/pages/` 为未生效草稿。模型排行榜及 Codex 重置监控已关闭。内部包名与既有安全、回执、预算、授权和迁移体系沿用上游。
+正式站名与图标、运营者、联系渠道、隐私与条款待确认；资讯域名 `news.openzoo.ai` 已部署。当前待办见 [清单](docs/launch-todos.md)，名称/icon候选见 [方案](docs/brand-exploration/README.md)。`industry/pages/` 为未生效草稿。模型排行榜及 Codex 重置监控已关闭。内部包名与既有安全、回执、预算、授权和迁移体系沿用上游。

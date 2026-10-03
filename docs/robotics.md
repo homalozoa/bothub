@@ -2,7 +2,7 @@
 
 ## 首版边界
 
-站名暂为“机器人热点”，位置 `industry/site.ts`；域名使用 `SITE_URL`，MCP 前缀 `bothot`、分类 key `hardware/research/industry` 和主题 slug 保持稳定。正式名称、Logo、域名、运营主体和联系渠道尚未确定，条款与隐私为待确认草稿。普通 AI 内容只有原材料明确涉及机器人时才入选。
+站名暂为“机器人热点”，位置 `industry/site.ts`；域名使用 `SITE_URL`，MCP 前缀 `bothot`、分类 key `hardware/research/industry` 和主题 slug 保持稳定。正式名称、Logo、运营主体和联系渠道尚未确定，条款与隐私为待确认草稿。资讯域名已为 `news.openzoo.ai`，当前运营待办见 [清单](launch-todos.md)。普通 AI 内容只有原材料明确涉及机器人时才入选。
 
 上游采用 `3343fe2b20db4be7269113752d82d3992fc52b6b`，本仓库初始提交 `d367cf5` 文件树与它一致。复用采集器、双次评分、事件关系、publication、后台、RSS/API/MCP、预算回执和 SelectBench。必要代码修改仅涉及可配置刊期、日报容量/空刊/14天去重、原始日期、撤回报告派生文字、旧分类假设与明确证据矛盾回退。没有新模型服务、数据库结构或额外模型调用。
 
