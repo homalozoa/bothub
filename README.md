@@ -36,7 +36,7 @@ node --env-file=.env apps/web/server.ts
 
 - 三个主方向：硬件与系统工程、机器人研究与开源、产品与商业化。伙伴/娱乐机器人独立重点标签；普通 AI、汽车或消费电子必须在原材料中有具体机器人关联。
 - 精选看信息增量与决策价值，热点看事件传播讨论。模型分数是编辑排序依据，双次评分不等于两个独立来源核验。
-- [20 个验证来源与 9 个禁用候选](docs/sources-robotics.md)，配置在 `industry/sources.json`；公开短摘要和原文链接，默认不展示全文或抓取图片。
+- [19 个启用来源、9 个未接入候选与1个按偏好停用来源](docs/sources-robotics.md)，配置在 `industry/sources.json`；公开短摘要和原文链接，默认不展示全文或抓取图片。
 - 日报默认 Asia/Shanghai 08:00，通常最多 3 条、配置上限 5 条；允许空刊，核对近 14 天已刊事实。数据库时间使用 UTC，刊期时区可配置。
 - [42 条真实候选与人工复核方法](industry/evaluation/README.md)。当前标签由 Agent 暂拟，全为待人工确认；原门槛保持 60/65/76，机器人领域尚未校准。
 
@@ -60,4 +60,4 @@ node scripts/check-sources.ts --live --out .data/source-validation.json
 
 [运行与纠错](docs/robotics.md) · [信源验证](docs/sources-robotics.md) · [精选校准](docs/selection.md) · [事件归组](docs/grouping.md) · [部署与备份](docs/deploy.md) · [架构](docs/architecture.md)
 
-正式站名为“机闻”，标记为折页 Z；运营者、联系渠道、隐私与条款仍待补充。资讯域名 `news.openzoo.ai` 已部署。当前待办见 [清单](docs/launch-todos.md)，名称/icon候选见 [方案](docs/brand-exploration/README.md)。`industry/pages/` 为未生效草稿。模型排行榜及 Codex 重置监控已关闭。内部包名与既有安全、回执、预算、授权和迁移体系沿用上游。
+正式站名为“机闻”，标记为折页 Z；由 [Homalozoa](https://github.com/homalozoa) 个人维护，邮箱 [homalozoax@gmail.com](mailto:homalozoax@gmail.com)；隐私与使用规则的保存期限等内容仍待完善。资讯域名 `news.openzoo.ai` 已部署。当前待办见 [清单](docs/launch-todos.md)，名称/icon候选见 [方案](docs/brand-exploration/README.md)。`industry/pages/` 为未生效草稿。模型排行榜及 Codex 重置监控已关闭。内部包名与既有安全、回执、预算、授权和迁移体系沿用上游。

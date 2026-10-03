@@ -111,3 +111,7 @@ docker compose --env-file .env -f deploy/production.compose.yml up -d --no-deps 
 ## 当前站名与发布版本
 
 2026-10-03，站名正式使用“机闻”，英文OpenZoo News，折页Z为统一标记。API/worker版本为 `fda0e29`，web版本为 `e8d750b`，域名保持news.openzoo.ai；具体资产、备份和验证见 [品牌落地](jiwen-brand-rollout.md)。原始运营资料和人工校准事项仍在 [待办](launch-todos.md)。
+
+## 个人运营信息与当前来源
+
+个人运营者为 [Homalozoa](https://github.com/homalozoa)，邮箱 homalozoax@gmail.com。默认来源优先非简体中文，量子位停采后当前19源启用，历史文章保留。当前API/worker版本为 `2f03f0c`、web为 `d749c97`；部署与验证见 [更新记录](personal-operator-rollout.md)。
