@@ -22,6 +22,13 @@ function Thumb({ id }: { id: string }) {
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const scroller = el.closest<HTMLElement>("[data-pill-track]")?.parentElement;
+    if (scroller && scroller.scrollWidth > scroller.clientWidth) {
+      const selected = el.parentElement!.getBoundingClientRect();
+      const bounds = scroller.getBoundingClientRect();
+      if (selected.left < bounds.left) scroller.scrollLeft -= bounds.left - selected.left;
+      else if (selected.right > bounds.right) scroller.scrollLeft += selected.right - bounds.right;
+    }
     const now = placeOf(el);
     const prev = thumbs.get(id);
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;

@@ -66,7 +66,7 @@ export function SearchField({ action = "/all", defaultValue = "", keep = {}, var
     return (
       <Form method="get" action={action} role="search" className="flex gap-2">
         {hidden}
-        <label className="relative flex-1">
+        <label className="relative min-w-0 flex-1">
           <span className="sr-only">搜索标题、摘要与正文</span>
           <IconSearch size={17} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-4" />
           <input

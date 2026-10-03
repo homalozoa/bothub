@@ -41,38 +41,38 @@ function fromResponse(r: TimelineResponse): ListState {
 
 const WEEKDAY_SHORT = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
 
-/** Sticky day header: a quiet row on desktop, a grey full-width bar on phones. */
+/** Sticky day header: a quiet row on desktop, an inset date strip aligned with mobile cards. */
 export function DayHeader({ day, today, count, collapsed, onToggle }: { day: string; today: string; count: number | null; collapsed?: boolean; onToggle?: () => void }) {
   const [, m, d] = day.split("-").map(Number) as [number, number, number];
   const date = `${m}月${d}日`;
   const weekday = beijingWeekday(day);
   const short = WEEKDAY_SHORT[new Date(`${day}T12:00:00+08:00`).getUTCDay()] ?? "";
   return (
-    <div className="sticky top-0 z-20 -mx-4 bg-daybar px-4 lg:mx-0 lg:bg-bg lg:px-0">
-      {/* Phones: a full-width day bar. */}
+    <div className="sticky top-0 z-20 rounded-control bg-daybar px-3 lg:rounded-none lg:bg-bg lg:px-0">
+      {/* Phones: the date strip shares the cards' left and right edges. */}
       <div className="flex h-9 items-center gap-2 lg:hidden">
         <span className="text-[14px] font-bold text-ink">{day === today ? "今天" : date}</span>
         {day === today && <span className="text-[12.5px] text-ink-4">{date}</span>}
         <span className="text-[12.5px] text-ink-4">{short}</span>
       </div>
-      {/* Desktop: the date ends where the times end, the fold toggle sits on the rail. */}
+      {/* Desktop: the date and toggle fit the rail without hanging into the page gutter. */}
       <div className="hidden h-11 grid-cols-[64px_22px_minmax(0,1fr)] items-center lg:grid">
-        <button type="button" onClick={onToggle} disabled={!onToggle} className="justify-self-end whitespace-nowrap text-right text-[18px] font-semibold leading-6 text-ink">
-          {date}
-        </button>
-        {onToggle ? (
-          <button
-            type="button"
-            onClick={onToggle}
-            aria-expanded={!collapsed}
-            aria-label={collapsed ? `展开${date}` : `收起${date}`}
-            className="grid size-6 place-items-center justify-self-center rounded-full text-ink-4 transition-colors hover:bg-bg-sunk hover:text-ink"
-          >
-            <IconChevronDown size={14} className={`transition-transform duration-200 ${collapsed ? "-rotate-90" : ""}`} />
+        <div className="col-span-2 flex items-center gap-1">
+          <button type="button" onClick={onToggle} disabled={!onToggle} className="whitespace-nowrap text-[15px] font-semibold leading-6 text-ink">
+            {date}
           </button>
-        ) : (
-          <span />
-        )}
+          {onToggle && (
+            <button
+              type="button"
+              onClick={onToggle}
+              aria-expanded={!collapsed}
+              aria-label={collapsed ? `展开${date}` : `收起${date}`}
+              className="grid size-5 shrink-0 place-items-center rounded-full text-ink-4 transition-colors hover:bg-bg-sunk hover:text-ink"
+            >
+              <IconChevronDown size={14} className={`transition-transform duration-200 ${collapsed ? "-rotate-90" : ""}`} />
+            </button>
+          )}
+        </div>
         <span className="text-[13px] text-ink-4">
           {weekday}
           {count !== null && (
@@ -95,10 +95,10 @@ export function TimelineSlot({ at, children, fresh = false, delay = 0, dataKey }
   return (
     <li
       data-card-key={dataKey}
-      className={`group/slot grid grid-cols-[48px_minmax(0,1fr)] border-b border-line-soft py-3.5 last:border-b-0 lg:grid-cols-[64px_22px_minmax(0,1fr)] lg:border-b-0 lg:py-0 lg:pb-3 lg:last:pb-0 ${fresh ? "animate-fade-up" : ""}`}
+      className={`group/slot grid grid-cols-[minmax(0,1fr)] py-3 last:pb-0 lg:grid-cols-[64px_22px_minmax(0,1fr)] lg:py-0 lg:pb-3 lg:last:pb-0 ${fresh ? "animate-fade-up" : ""}`}
       style={fresh ? { animationDelay: `${delay}ms` } : undefined}
     >
-      <time dateTime={at} className="mono pt-[2px] text-[13px] leading-[18px] text-ink-4 lg:pt-[17px] lg:text-[12.5px] lg:font-semibold lg:leading-6 lg:text-ink-3">
+      <time dateTime={at} className="mono hidden pt-[17px] text-[12.5px] font-semibold leading-6 text-ink-3 lg:block">
         {beijingTime(at)}
       </time>
       <span aria-hidden="true" className="relative hidden lg:block">
@@ -275,7 +275,7 @@ export function Timeline({ initial, filters }: { initial: TimelineResponse; filt
   return (
     <div className="relative">
       {days.length === 0 && (
-        <div className="lg:card">
+        <div className="card">
           <EmptyState title="这个筛选下还没有精选内容">换个类别看看，或者去全部动态里找找。</EmptyState>
         </div>
       )}
@@ -293,7 +293,7 @@ export function Timeline({ initial, filters }: { initial: TimelineResponse; filt
                     const delay = fresh ? Math.min(order++, 10) * 40 : 0;
                     return (
                       <TimelineSlot key={c.key} dataKey={c.key} at={c.anchorAt} fresh={fresh} delay={delay}>
-                        <FeedItem item={c.item} group={c.group} filters={filters} read={readSet.has(c.item.id)} onOpen={markRead} />
+                        <FeedItem item={c.item} mobileTime={c.anchorAt} group={c.group} filters={filters} read={readSet.has(c.item.id)} onOpen={markRead} />
                       </TimelineSlot>
                     );
                   })}

@@ -93,8 +93,8 @@ export default function AllPage() {
 
       {/* Phones: title with today's count, the search bar, then the same filter row as 精选. */}
       <div className="lg:hidden">
-        <div className="flex items-baseline justify-between pb-3 pt-5">
-          <h1 className="text-[22px] font-bold text-ink">{title ?? "全部动态"}</h1>
+        <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 pb-3 pt-3">
+          <h1 className="min-w-0 text-[22px] font-bold text-ink [overflow-wrap:anywhere]">{title ?? "全部动态"}</h1>
           {!f.q && (
             <span className="text-[12.5px] text-ink-4">
               今日 <span className="num">{data.todayCount}</span> 条
@@ -102,7 +102,7 @@ export default function AllPage() {
           )}
         </div>
         <SearchField variant="bar" defaultValue={f.q ?? ""} keep={keep} autoFocus={params.get("search") === "1"} />
-        <div className="-mx-4 mt-3 border-b border-line-soft px-4 pb-3">
+        <div className="mt-3 border-b border-line-soft pb-3">
           <ContentTabs base="/all" tag={f.tag} category={f.category} channel={f.channel} layoutId="all-cat-mobile" size="sm" className="min-w-0" />
         </div>
       </div>
@@ -124,7 +124,7 @@ export default function AllPage() {
 
       <div className={`transition-opacity duration-200 ${busy ? "opacity-50" : ""}`}>
         {data.items.length === 0 ? (
-          <div className="mt-2 lg:card">
+          <div className="card mt-2">
             <EmptyState
               title="没有找到相关内容"
               action={

@@ -31,7 +31,7 @@ export function DayList({ items, todayCount = null, showTags = true, animate = f
           <ol className="lg:pt-1">
             {list.map((it) => (
               <TimelineSlot key={it.id} at={it.publishedAt ?? it.timelineAt} fresh={animate} delay={animate ? Math.min(order++, 12) * 25 : 0}>
-                <FeedItem item={it} read={readSet.has(it.id)} onOpen={markRead} showTags={showTags} />
+                <FeedItem item={it} mobileTime={it.publishedAt ?? it.timelineAt} read={readSet.has(it.id)} onOpen={markRead} showTags={showTags} />
               </TimelineSlot>
             ))}
           </ol>
@@ -73,4 +73,3 @@ export function Pagination({ page, pageCount, href }: { page: number; pageCount:
     </nav>
   );
 }
-

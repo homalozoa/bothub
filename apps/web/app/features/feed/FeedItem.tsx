@@ -11,9 +11,11 @@ import { ScoreLabel } from "../../components/ui/Score";
 import { MediaThumbs, SourceLine, StarButton } from "./parts";
 import { GroupDevelopments, GroupSources, LatestDevelopment } from "./ReadingGroup";
 import { QuotedLine } from "../item/QuotedPost";
+import { beijingTime } from "../../lib/format";
 
 export interface FeedItemProps {
   item: FeedItemSummary;
+  mobileTime?: string;
   group?: GroupInfo | null;
   filters?: TimelineFilters;
   read?: boolean;
@@ -22,7 +24,7 @@ export interface FeedItemProps {
   showTags?: boolean;
 }
 
-export const FeedItem = memo(function FeedItem({ item, group, filters, read = false, onOpen, showTags = false }: FeedItemProps) {
+export const FeedItem = memo(function FeedItem({ item, mobileTime, group, filters, read = false, onOpen, showTags = false }: FeedItemProps) {
   const isX = item.channel === "x" && !!item.x;
   const open = () => onOpen?.(item.id);
   const showSources = !!group && (group.additionalSourceCount > 0 || (group.developmentCount <= 1 && group.reportCount > 1));
@@ -33,7 +35,7 @@ export const FeedItem = memo(function FeedItem({ item, group, filters, read = fa
     <article className="relative min-w-0 lg:card lg:card-hover lg:px-[18px] lg:pb-[14px] lg:pt-[15px]" data-item-id={item.id}>
       <header className="flex min-h-[18px] items-center gap-2 text-[12.5px] leading-[18px] text-ink-4">
         {item.primaryChannel && (!filters?.domain || filters.domain === "all") && <span className="relative z-10 hidden sm:inline"><Link to={domainPath(item.primaryChannel)} className="text-accent">{DOMAIN_LABELS[item.primaryChannel]}</Link><span className="ml-2">·</span></span>}
-        <SourceLine item={item} className="text-ink-4" />
+        <SourceLine item={item} className="flex-1 text-ink-4" />
         {item.historical && <Badge title="历史资料，保留原始日期；不属于当前资讯">历史资料</Badge>}
         {item.selected && (
           <span className="hidden lg:inline-flex">
@@ -41,6 +43,7 @@ export const FeedItem = memo(function FeedItem({ item, group, filters, read = fa
           </span>
         )}
         <span className="ml-auto flex shrink-0 items-center gap-1.5 pl-2">
+          {mobileTime && <time dateTime={mobileTime} className="mono text-[11px] text-ink-4 lg:hidden">{beijingTime(mobileTime)}</time>}
           <span className="hidden lg:inline-flex">
             <ScoreLabel score={item.score} />
           </span>
@@ -61,7 +64,7 @@ export const FeedItem = memo(function FeedItem({ item, group, filters, read = fa
         </p>
       ) : (
         <>
-          <h3 className={`mt-2 line-clamp-2 text-[17px] font-bold leading-[1.55] lg:line-clamp-none lg:font-[650] ${read ? "text-ink-4" : "text-ink"}`}>
+          <h3 className={`mt-2 line-clamp-3 text-[17px] font-bold leading-[1.55] [overflow-wrap:anywhere] lg:line-clamp-none lg:font-[650] ${read ? "text-ink-4" : "text-ink"}`}>
             <IntentLink to={`/items/${item.id}`} onClick={open} className="after:absolute after:inset-0 after:content-['']">
               {item.title}
             </IntentLink>
