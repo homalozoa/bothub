@@ -1,10 +1,10 @@
-# 机闻 · OpenZoo News
+# ZooRadar · OpenZoo
 
-为机器人创业者、研发负责人和工程师聚合机器人与相关 AI 动态：真实来源采集、中文摘要、事件归组、精选、热点、主题检索与每日简报。默认中文，沿用 AIHOT 的阅读布局与后台，不要求读者注册。
+ZooRadar 是 OpenZoo 的七频道资讯阅读站：机器人、Agent 与工程、人机交互、游戏与角色、生物学、自然史、社会学。真实来源共用采集、中文摘要、事件归组与发布链路，读者无需注册。
 
-线上入口：[OpenZoo主页](https://openzoo.ai/) · [机器人热点](https://news.openzoo.ai/)。生产内容尚在初始化，后台仅通过SSH隧道访问；见[服务器运维说明](docs/server-deployment.md)。
+线上入口：[OpenZoo](https://openzoo.ai/) · [资讯站](https://news.openzoo.ai/)。本轮重构已在本机验证，尚未发布到线上。迁移、兼容、信源、截图和实测范围见 [多频道说明](docs/multichannel.md)。后台继续仅通过 SSH 隧道访问。
 
-基于 [KKKKhazix/AIHOT](https://github.com/KKKKhazix/AIHOT) 模板实现。采用的上游提交是 `3343fe2b20db4be7269113752d82d3992fc52b6b`，bothot 初始提交 `d367cf5` 与该提交文件树一致。保留 MIT [LICENSE](LICENSE)、[NOTICE](NOTICE) 与必要署名；本站不代表上游官方。
+基于 [KKKKhazix/AIHOT](https://github.com/KKKKhazix/AIHOT)，保留 MIT [LICENSE](LICENSE)、[NOTICE](NOTICE) 及必要署名。内部包名与公开 MCP 前缀 bothot 保持兼容。
 
 ## 运行
 
@@ -34,7 +34,7 @@ node --env-file=.env apps/web/server.ts
 
 ## 编辑与来源
 
-- 三个主方向：硬件与系统工程、机器人研究与开源、产品与商业化。伙伴/娱乐机器人独立重点标签；普通 AI、汽车或消费电子必须在原材料中有具体机器人关联。
+- 七个一级频道与类别、内容形态、主题和来源方式独立。科学与社会材料不要求机器人或 AI 关联。类别 key、既有链接和机器人原订阅保留。
 - 精选看信息增量与决策价值，热点看事件传播讨论。模型分数是编辑排序依据，双次评分不等于两个独立来源核验。
 - [20 个启用来源、9 个未接入候选与1个按偏好停用来源](docs/sources-robotics.md)，配置在 `industry/sources.json`；公开短摘要和原文链接，默认不展示全文或抓取图片。
 - 日报默认 Asia/Shanghai 08:00，通常最多 3 条、配置上限 5 条；允许空刊，核对近 14 天已刊事实。数据库时间使用 UTC，刊期时区可配置。
@@ -60,4 +60,4 @@ node scripts/check-sources.ts --live --out .data/source-validation.json
 
 [运行与纠错](docs/robotics.md) · [信源验证](docs/sources-robotics.md) · [精选校准](docs/selection.md) · [事件归组](docs/grouping.md) · [部署与备份](docs/deploy.md) · [架构](docs/architecture.md)
 
-正式站名为“机闻”，标记为折页 Z；由 [Homalozoa](https://github.com/homalozoa) 个人维护，邮箱 [homalozoax@gmail.com](mailto:homalozoax@gmail.com)；隐私与使用规则的保存期限等内容仍待完善。资讯域名 `news.openzoo.ai` 已部署。当前待办见 [清单](docs/launch-todos.md)，名称/icon候选见 [方案](docs/brand-exploration/README.md)。`industry/pages/` 为未生效草稿。模型排行榜及 Codex 重置监控已关闭。内部包名与既有安全、回执、预算、授权和迁移体系沿用上游。
+资讯站名为 ZooRadar，标记为折页 Z；由 [Homalozoa](https://github.com/homalozoa) 个人维护，邮箱 [homalozoax@gmail.com](mailto:homalozoax@gmail.com)；隐私与使用规则的保存期限等内容仍待完善。资讯域名 `news.openzoo.ai` 已部署。当前待办见 [清单](docs/launch-todos.md)，名称/icon候选见 [方案](docs/brand-exploration/README.md)。`industry/pages/` 为未生效草稿。模型排行榜及 Codex 重置监控已关闭。内部包名与既有安全、回执、预算、授权和迁移体系沿用上游。

@@ -1,12 +1,12 @@
 # 给 Agent 的说明
 
-这是基于 AIHOT 的机器人热点站（bothot）：采集信源、用模型筛选和写作、归组事件、出日报，并通过网站、RSS、公开 API 和 MCP 对外提供。先读 README 和 `docs/robotics.md`，再按任务读对应文档。
+这是基于 AIHOT 的 ZooRadar 七频道阅读站（内部 bothot）：采集信源、用模型筛选和写作、归组事件、出日报，并通过网站、RSS、公开 API 和 MCP 对外提供。先读 README 和 `docs/multichannel.md`，旧机器人运行说明保留在 `docs/robotics.md`，再按任务读对应文档。
 
 ## 最常见的任务：改成另一个行业
 
 按 `docs/customize.md` 的顺序做。行业相关的一切都在 `industry/`：站名文案（`site.ts`）、分类标签（`taxonomy.ts`）、主题（`topics.json`）、示范信源（`sources.json`）、提示词（`prompts/`）、门槛（`selection.ts`）、模块开关（`features.ts`）、品牌（`brand/`）、条款页（`pages/`）。通常不需要改 `apps/` 和 `packages/`。
 
-已授权的首版使用“机器人热点”占位名，三方向分类、机器人关联的 AI 范围与编辑标准见 `industry/`。正式站名、域名、运营主体、条款和隐私声明仍需运营者确认；已明确的开发配置不重复询问。
+当前授权的品牌为 ZooRadar，OpenZoo 保留品牌主页；七领域与窗口见 industry/channels.ts。channel=news/x/firstParty 仍表示来源方式，不改成领域。科学与社会频道不要求机器人/AI 关联。既有机器人 RSS、API/MCP 默认查询和日报不能静默扩大范围；当前域名 news.openzoo.ai 沿用。
 
 改评分标准时保留原有结构（内容类型、五个维度加权、噪声压制、安全边界），替换的是“什么算重要”“什么算噪声”的例子。门槛要用使用者标注的样本重新校准（`docs/selection.md`），不要凭感觉改数字。
 

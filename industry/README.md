@@ -1,6 +1,14 @@
+# ZooRadar 配置
+
+七频道定义与发现窗口在 channels.ts，站名和公开文案在 site.ts。频道与原 category、tags、来源方式独立，机器人原类别与公开 ID 保持。六个新增领域不受机器人相关性要求限制。全部来源共用采集和发布层；信源提示不是独占分类。
+
+本轮来源核验、部署迁移和验证范围以 [多频道说明](../docs/multichannel.md) 为准。source-validation.json 保留旧机器人验证，channel-source-validation.json 记录新增核验。启用列表有 34 个唯一来源，14 个新增来源已经过原采集器检查；没有生产同步或付费编辑质量声明。seed 保留管理员修改。
+
+下面保留旧机器人配置的历史说明；机器人专属限制仅在 robotics 频道适用。
+
 # 机器人行业配置
 
-“机闻”是当前站名，面向机器人创业者、研发负责人和工程师。复用 AIHOT 的采集、worker、数据库、发布层与前端，不改变内部包名或必要署名。名称与Z标记已确认，运营者为 [Homalozoa](https://github.com/homalozoa)（个人），邮箱 homalozoax@gmail.com，网站地址由 `SITE_URL` 配置，目前生产资讯域名为 `news.openzoo.ai`。当前待办与品牌候选见 [清单](../docs/launch-todos.md)。
+“机闻”是此前站名，面向机器人创业者、研发负责人和工程师。复用 AIHOT 的采集、worker、数据库、发布层与前端，不改变内部包名或必要署名。名称与Z标记已确认，运营者为 [Homalozoa](https://github.com/homalozoa)（个人），邮箱 homalozoax@gmail.com，网站地址由 `SITE_URL` 配置，目前生产资讯域名为 `news.openzoo.ai`。当前待办与品牌候选见 [清单](../docs/launch-todos.md)。
 
 | 文件 | 用途 |
 |---|---|
@@ -25,6 +33,6 @@
 
 校准使用 [精选与校准](../docs/selection.md) 的 SelectBench 和 `scripts/eval-selection.ts`。真实候选样本应有原始出处、标注者与待确认状态，用户复核后再作为人工标签；相同事件与近重复不能跨开发集和留出集。`gold.example.jsonl` 只说明输入格式，不能用于宣称准确率、召回率或成本。模型调用与预算授权齐备后，先按有效标注运行评测，再决定是否调整数值门槛。
 
-正式站名为“机闻”，英文为 OpenZoo News，折页 Z 标记由 `branding.ts` 的共享矢量路径定义。运行 `node industry/brand/generate.ts` 可重建彩色/单色/反白 SVG、PNG 和 ICO；`node scripts/nameplates.ts` 使用仓库内 Noto Sans SC Bold 生成机闻日报/周报/月报报头，仍可传入字体包目录使用 Black。字体许可保存在 `brand/FONT-LICENSE.txt`。必要上游署名与内部包名保留。
+此前站名为“机闻”，英文为 OpenZoo News，折页 Z 标记由 `branding.ts` 的共享矢量路径定义。运行 `node industry/brand/generate.ts` 可重建彩色/单色/反白 SVG、PNG 和 ICO；`node scripts/nameplates.ts` 使用仓库内 Noto Sans SC Bold 生成机闻日报/周报/月报报头，仍可传入字体包目录使用 Black。字体许可保存在 `brand/FONT-LICENSE.txt`。必要上游署名与内部包名保留。
 
 来源默认优先非简体中文的一手材料；中文摘要不变。当前启用19源，量子位按运营者偏好停用，历史记录保留。详见 [来源语言偏好](../docs/source-preference.md)。
