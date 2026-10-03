@@ -19,6 +19,7 @@ import { collapseWhitespace } from "../lib/text.ts";
 import { modelFor } from "./models.ts";
 import { buildMaterial, firstImagePart, loadAnalyzeInput, type AnalyzeInputArticle } from "./input.ts";
 import { pageFetchable } from "../content/extract.ts";
+import { newsTimeStatus } from "../content/news-time.ts";
 import { shutdownSignal } from "../jobs/queue.ts";
 import {
   buildArticlePrompt, buildLongTweetPrompt, buildShortTweetPrompt, finalizeCopy, isShortTweetInput, looksZh, MAX_BODY_CHARS, missingEvidence,
@@ -98,7 +99,8 @@ export function buildScoreInput(a: AnalyzeInputArticle): string {
   const at = a.publishedAt ?? a.discoveredAt ?? null;
   return [
     "请按系统规则评估以下单篇材料所代表的事件。只输出 attentionScore。",
-    `【发布时间（北京时间）】\n${at ? scoreInputTime(at) : ""}`,
+    `【发布时间（北京时间）】\n${a.publishedAt ? scoreInputTime(a.publishedAt) : "未知；首次收录不等于发布时间"}`,
+    `【评估时点（北京时间，首次收录时点）】\n${at ? scoreInputTime(a.discoveredAt ?? at) : "未知"}`,
     `【标题】\n${a.title.trim()}`,
     `【完整正文】\n${body.length > MAX_BODY_CHARS ? body.slice(0, MAX_BODY_CHARS) : body}`,
   ].join("\n\n");
@@ -279,7 +281,10 @@ export async function runSelectionScores(
   onReceipt?: ReceiptObserver,
 ): Promise<AnalysisRun["scores"]> {
   const threshold = tierThreshold(a.source.tier);
-  return threshold === null ? null : runScores(a, threshold, opts, onReceipt);
+  // Offline benchmark samples have no discovery time: evaluate their historical editorial value.
+  // Live inputs always have one. Neither a high model score nor a retry makes old news current.
+  const time = a.discoveredAt ? newsTimeStatus({ published_at: a.publishedAt, discovered_at: a.discoveredAt, backfill: a.backfill }) : "current";
+  return threshold === null || time !== "current" ? null : runScores(a, threshold, opts, onReceipt);
 }
 
 async function runStructure(a: AnalyzeInputArticle, opts: StepOpts): Promise<NonNullable<AnalysisRun["structure"]>> {
@@ -470,6 +475,7 @@ export async function analyzeArticle(articleId: string, opts: StepOpts = {}): Pr
   const w = run.writing;
   const detail = {
     prefilter: { label: run.prefilter.label, reason: run.prefilter.reason },
+    newsTime: input.discoveredAt ? newsTimeStatus({ published_at: input.publishedAt, discovered_at: input.discoveredAt, backfill: input.backfill }) : null,
     scores: out.scores, scoreModel: out.scoreModel, threshold: out.threshold, ...(out.scoreRefused ? { scoreRefused: true } : {}),
     ...(w ? { writer: w.kind, writerModel: w.model, itemType: w.itemType ?? null, authorRole: w.authorRole ?? null } : {}),
     ...(w?.identityGuard?.outcome === "fallback" ? { identityGuard: w.identityGuard } : {}),

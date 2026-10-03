@@ -71,7 +71,7 @@ const LONG = "a lab released a model with a benchmark table and pricing details.
 const article = async (marker: string, extra: Record<string, unknown> = {}) =>
   (await upsertMaterial({
     sourceId: SOURCE, url: `https://example.com/${marker}-${T}`, title: `${marker} model release ${T}`, bodyText: `${marker}: ${LONG} (${T})`,
-    bodyStatus: "ok", via: "fetch", publishedAt: new Date("2026-09-28T01:02:03Z"), ...extra,
+    bodyStatus: "ok", via: "fetch", publishedAt: new Date(), ...extra,
   } as never)).articleId;
 const calls = (marker: string) => requests.filter((r) => r.marker === marker).map((r) => r.step);
 const row = async (id: string) =>

@@ -26,8 +26,9 @@ const provider = await stub((_hit, req) => {
   else if (system.includes("事件注意力评分器")) answer = { attentionScore: 80 };
   else if (system.includes("内容理解编辑")) answer = { itemType: "model_release", authorRole: "principal", tags: ["模型发布"], editorialJudgment: "测试判断", titleZh: "某实验室发布新模型", summaryZh: "某实验室发布新模型，并公布评测结果和价格。" };
   else if (system.includes("资料结构化助手")) answer = { category: "research", tags: ["模型发布"], subjects: [], fact: { title: "某实验室发布新模型" } };
+  else if (input.includes("title_zh")) answer = "title_zh: 某实验室发布模型\nsummary_zh: 某实验室公布模型的评测结果和价格。";
   else throw new Error("unexpected model request");
-  return { id: "stub", choices: [{ message: { content: JSON.stringify(answer) } }], usage: { prompt_tokens: 10, completion_tokens: 10, total_tokens: 20 } };
+  return { id: "stub", choices: [{ message: { content: typeof answer === "string" ? answer : JSON.stringify(answer) } }], usage: { prompt_tokens: 10, completion_tokens: 10, total_tokens: 20 } };
 });
 for (const name of ["DASHSCOPE", "ZHIPU", "DEEPSEEK", "LLM"]) {
   process.env[`${name}_BASE_URL`] = `${provider.url}/v1`;
