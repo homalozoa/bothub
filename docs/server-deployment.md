@@ -97,3 +97,9 @@ docker compose --env-file .env -f deploy/production.compose.yml up -d --no-deps 
 - 既有模拟器容器仍连续运行，未重启其他项目服务。
 
 之前本机627项程序测试仍见 `docs/verification.md`；本次改动集中在部署、静态首页与运维smoke，补跑类型检查与实际线上验证。没有新增模型调用、生产新闻或编辑质量结论。
+
+## 2026-10-03 亮色主题与 Microduck 补源
+
+当前 `WEB_RELEASE=d574c24`，仅更新网页容器和静态主页，API/worker 的 `BOTHOT_RELEASE=8f8a410` 保留。生产43项公开/私有入口检查通过，后端容器未重启；权限复查与截图见 [亮色改版](dopamine-redesign.md)。
+
+另通过既有 `seedSources` 幂等导入两个已验证的 Microduck 官方来源，启用来源从18增至20，保持原管理员配置与摘要权限。自动处理已收录一篇历史公告与两个稳定版本更新，历史公告评分71进入精选；保留日期与首次回灌标记，详见 [覆盖调查](microduck-coverage-audit.md)。
