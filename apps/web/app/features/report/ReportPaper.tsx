@@ -14,7 +14,6 @@ import { Badge } from "../../components/ui/Badge";
 import { IconArrowLeft, IconArrowRight, IconArrowUpRight } from "../../components/icons";
 import { Kicker } from "../../components/ui/Kicker";
 import { SourceAvatar } from "../../components/ui/SourceAvatar";
-import { Halftone } from "./Halftone";
 import { Nameplate } from "./Nameplate";
 import { IssueDots } from "./IssueDots";
 import { EDITION, KIND_LABEL, MOTTO, dateLine, dateMark, headline, metricItems, neighbourLabel, reportPath, shortDay } from "./format";
@@ -36,12 +35,12 @@ function Masthead({ report, index }: { report: ReportDetail; index: ReportNaviga
       </div>
 
       <div className="flex items-stretch justify-between gap-5 py-6 @[880px]:gap-10 @[880px]:py-8">
-        <div className="flex min-w-0 flex-col justify-center">
+        <div className="flex min-w-0 flex-1 flex-col justify-center">
           <h1 id="report-start">
             <span className="sr-only">
               {withBrand(KIND_LABEL[report.kind])} · {dateLine(report.kind, report.key)}
             </span>
-            <Nameplate which={report.kind} className="block h-[54px] w-auto @[520px]:h-[74px] @[880px]:h-[98px] @[1040px]:h-[112px]" />
+            <Nameplate which={report.kind} className="block h-auto w-full max-w-[640px]" />
           </h1>
           <p className="mt-3 text-[11.5px] tracking-[0.36em] text-ink-4 @[880px]:mt-4 @[880px]:text-[12.5px]">{SITE.name.toUpperCase()}</p>
         </div>
@@ -50,9 +49,9 @@ function Masthead({ report, index }: { report: ReportDetail; index: ReportNaviga
         <div className="flex shrink-0 items-stretch well rounded-panel">
           <div className="flex w-[112px] flex-col items-center justify-center px-2 py-3 text-center @[880px]:w-[150px] @[880px]:py-4">
             {issue && <span className="text-[11px] tracking-[0.2em] text-ink-4">第 {issue} 期</span>}
-            <Halftone seed={`${report.kind}-${report.key}-date`} className="num mt-2 whitespace-nowrap text-[44px] font-black leading-[0.95] tracking-[-0.04em] text-ink @[880px]:text-[64px]">
+            <span className="num mt-2 whitespace-nowrap text-[44px] font-black leading-[0.95] tracking-[-0.04em] text-ink @[880px]:text-[64px]">
               {mark.figure}
-            </Halftone>
+            </span>
             <span className="mt-2 text-[11.5px] text-ink-2">{mark.top}</span>
             <span className="text-[11.5px] text-ink-4">{mark.bottom}</span>
           </div>

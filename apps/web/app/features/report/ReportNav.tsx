@@ -16,8 +16,8 @@ export function ReportArchive({ kind, index, current }: { kind: ReportKind; inde
   const groups = archiveGroups(kind, index);
   const openId = groups.find((g) => g.entries.some((e) => e.key === current))?.id ?? groups[0]?.id;
   return (
-    <aside className="sticky top-0 hidden h-dvh w-[280px] shrink-0 flex-col border-r border-line bg-[color-mix(in_srgb,var(--sidebar)_50%,var(--surface))] pl-5 pr-3 lg:flex dark:bg-[color-mix(in_srgb,var(--sidebar)_50%,var(--bg))]">
-      <div className="pb-4 pt-8">
+    <aside className="sticky top-6 hidden max-h-[calc(100dvh-48px)] w-[220px] self-start flex-col rounded-card border border-line bg-[color-mix(in_srgb,var(--sidebar)_50%,var(--surface))] px-4 xl:flex dark:bg-[color-mix(in_srgb,var(--sidebar)_50%,var(--bg))]">
+      <div className="pb-4 pt-4">
         <KindSwitch kind={kind} />
       </div>
       <div className="border-b border-line-strong pb-2 pl-1 text-[11.5px] font-semibold tracking-[0.3em] text-ink">往期</div>
@@ -93,7 +93,7 @@ export function ReportPhoneNav({ kind, index, current, today }: { kind: ReportKi
   const earlier = kind === "daily" ? "/daily/archive" : "#report-history";
   const chip = "inline-flex h-9 shrink-0 items-center rounded-full border px-4 text-[13px] transition-colors";
   return (
-    <div className="pt-3 lg:hidden">
+    <div className="pt-3 xl:hidden">
       <PillTabs fill layoutId="report-kind-phone" label="切换日报、周报、月报" active={kind} items={KINDS.map((k) => ({ key: k, label: KIND_LABEL[k], to: KIND_PATH[k] }))} />
       {recent.length > 0 && (
         <div className="scrollbar-none -mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-1">

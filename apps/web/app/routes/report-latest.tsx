@@ -34,7 +34,7 @@ export default function ReportLatestPage() {
   const { kind, report, index, today } = useLoaderData<typeof loader>();
   return (
     <ReportLayout kind={kind} index={index} current={report?.key ?? null} today={today}>
-      {report ? <ReportPaper report={report} index={index} /> : <EmptyState title={subjectAfter("还没有发布", KIND_LABEL[kind])}>第一期发布后会出现在这里。</EmptyState>}
+      {report ? <ReportPaper report={report} index={index} /> : <div className="card"><EmptyState title={subjectAfter("还没有发布", KIND_LABEL[kind])}>第一期发布后会出现在这里。</EmptyState></div>}
     </ReportLayout>
   );
 }
