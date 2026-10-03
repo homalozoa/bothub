@@ -572,6 +572,156 @@
         "validation_status": "parse_error",
         "validation_scope": "feed-structure-only"
       }
+    },
+    {
+      "id": "rss-play-godot",
+      "name": "Godot · Development",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://godotengine.org/rss.xml",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "play"
+      ],
+      "tags": [
+        "en",
+        "developer"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "play"
+        ],
+        "identity": "developer",
+        "homepage": "https://godotengine.org/blog/news/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:59:09.876Z",
+        "sample": {
+          "title": "Dev snapshot: Godot 4.8 dev 5",
+          "url": "https://godotengine.org/article/dev-snapshot-godot-4-8-dev-5/",
+          "publishedAt": "2026-09-10T12:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 7267,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "pause_reason": "四主频道调整：暂停泛游戏开发更新或项目运营博客，保留历史内容。"
+      }
+    },
+    {
+      "id": "rss-sociology-socopen",
+      "name": "SocOpen · SocArXiv",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://socopen.org/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "sociology"
+      ],
+      "tags": [
+        "en",
+        "research-community"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "sociology"
+        ],
+        "identity": "research-community",
+        "homepage": "https://socopen.org/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:59:35.500Z",
+        "sample": {
+          "title": "SocArXiv wins Kohli Foundation for Sociology 2025 Infrastructure Prize",
+          "url": "https://socopen.org/2025/05/08/socarxiv-wins-kohli-foundation-for-sociology-2025-infrastructure-prize/",
+          "publishedAt": "2025-05-08T18:22:24.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4624,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "pause_reason": "四主频道调整：暂停泛游戏开发更新或项目运营博客，保留历史内容。"
+      }
+    },
+    {
+      "id": "rss-play-factorio",
+      "name": "Factorio · Developer Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://factorio.com/blog/rss",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "play"
+      ],
+      "tags": [
+        "en",
+        "developer"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "play"
+        ],
+        "identity": "developer",
+        "homepage": "https://factorio.com/blog/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T11:06:46.379Z",
+        "sample": {
+          "title": "Friday Facts #447 - Factorio that you can touch",
+          "url": "https://factorio.com/blog/post/fff-447",
+          "publishedAt": "2026-09-25T00:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 12802,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "pause_reason": "四主频道调整：暂停泛游戏开发更新或项目运营博客，保留历史内容。"
+      }
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "comment": "ZooRadar 七频道共用信源配置。新增来源经原采集器验证 URL、日期与合法可读材料；验证不代表编辑质量。seed 只添加新 ID，保留管理员修改。未验证源在 source-candidates.json。",
+  "comment": "ZooRadar四主频道来源配置；泛游戏开发与SocOpen运营博客停采，历史资料保留在主题中。seed只新增ID，不覆盖管理员修改；收拢提示与停采通过apply-four-channel-sources显式审计。",
   "sources": [
     {
       "id": "rss-robot-report",
@@ -865,55 +865,6 @@
       }
     },
     {
-      "id": "rss-play-godot",
-      "name": "Godot · Development",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://godotengine.org/rss.xml",
-        "_aihot": {
-          "initialBackfillLimit": 3
-        }
-      },
-      "tier": "T2",
-      "first_party": true,
-      "participation_mode": "editorial",
-      "interval_minutes": 360,
-      "channel_hints": [
-        "play"
-      ],
-      "tags": [
-        "en",
-        "developer"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false,
-      "enabled": true,
-      "editorial": {
-        "language": "en",
-        "coverage": [
-          "play"
-        ],
-        "identity": "developer",
-        "homepage": "https://godotengine.org/blog/news/",
-        "limitations": [
-          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
-          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
-        ],
-        "verified_at": "2026-10-03T10:59:09.876Z",
-        "sample": {
-          "title": "Dev snapshot: Godot 4.8 dev 5",
-          "url": "https://godotengine.org/article/dev-snapshot-godot-4-8-dev-5/",
-          "publishedAt": "2026-09-10T12:00:00.000Z",
-          "bodyStatus": "readability",
-          "bodyChars": 7267,
-          "roboticsCue": true,
-          "relevanceBasis": "material-text"
-        },
-        "validation_status": "verified",
-        "validation_scope": "feed-url-date-readable-material; not editorial classification"
-      }
-    },
-    {
       "id": "rss-biology-plos",
       "name": "PLOS Biology",
       "kind": "rss",
@@ -928,8 +879,7 @@
       "participation_mode": "editorial",
       "interval_minutes": 360,
       "channel_hints": [
-        "biology",
-        "natural-history"
+        "biology"
       ],
       "tags": [
         "en",
@@ -979,8 +929,7 @@
       "participation_mode": "editorial",
       "interval_minutes": 360,
       "channel_hints": [
-        "biology",
-        "natural-history"
+        "biology"
       ],
       "tags": [
         "en",
@@ -1030,7 +979,6 @@
       "participation_mode": "editorial",
       "interval_minutes": 360,
       "channel_hints": [
-        "natural-history",
         "biology"
       ],
       "tags": [
@@ -1081,7 +1029,6 @@
       "participation_mode": "editorial",
       "interval_minutes": 360,
       "channel_hints": [
-        "natural-history",
         "biology"
       ],
       "tags": [
@@ -1132,7 +1079,7 @@
       "participation_mode": "editorial",
       "interval_minutes": 360,
       "channel_hints": [
-        "natural-history"
+        "biology"
       ],
       "tags": [
         "en",
@@ -1167,55 +1114,6 @@
       }
     },
     {
-      "id": "rss-sociology-socopen",
-      "name": "SocOpen · SocArXiv",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://socopen.org/feed/",
-        "_aihot": {
-          "initialBackfillLimit": 3
-        }
-      },
-      "tier": "T2",
-      "first_party": true,
-      "participation_mode": "editorial",
-      "interval_minutes": 360,
-      "channel_hints": [
-        "sociology"
-      ],
-      "tags": [
-        "en",
-        "research-community"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false,
-      "enabled": true,
-      "editorial": {
-        "language": "en",
-        "coverage": [
-          "sociology"
-        ],
-        "identity": "research-community",
-        "homepage": "https://socopen.org/",
-        "limitations": [
-          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
-          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
-        ],
-        "verified_at": "2026-10-03T10:59:35.500Z",
-        "sample": {
-          "title": "SocArXiv wins Kohli Foundation for Sociology 2025 Infrastructure Prize",
-          "url": "https://socopen.org/2025/05/08/socarxiv-wins-kohli-foundation-for-sociology-2025-infrastructure-prize/",
-          "publishedAt": "2025-05-08T18:22:24.000Z",
-          "bodyStatus": "feed",
-          "bodyChars": 4624,
-          "roboticsCue": true,
-          "relevanceBasis": "material-text"
-        },
-        "validation_status": "verified",
-        "validation_scope": "feed-url-date-readable-material; not editorial classification"
-      }
-    },
-    {
       "id": "rss-interaction-msr",
       "name": "Microsoft Research",
       "kind": "rss",
@@ -1230,7 +1128,6 @@
       "participation_mode": "editorial",
       "interval_minutes": 360,
       "channel_hints": [
-        "interaction",
         "agents"
       ],
       "tags": [
@@ -1281,7 +1178,7 @@
       "participation_mode": "editorial",
       "interval_minutes": 360,
       "channel_hints": [
-        "interaction"
+        "agents"
       ],
       "tags": [
         "en",
@@ -1308,55 +1205,6 @@
           "publishedAt": "2026-09-04T17:00:00.000Z",
           "bodyStatus": "feed",
           "bodyChars": 1285,
-          "roboticsCue": true,
-          "relevanceBasis": "material-text"
-        },
-        "validation_status": "verified",
-        "validation_scope": "feed-url-date-readable-material; not editorial classification"
-      }
-    },
-    {
-      "id": "rss-play-factorio",
-      "name": "Factorio · Developer Blog",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://factorio.com/blog/rss",
-        "_aihot": {
-          "initialBackfillLimit": 3
-        }
-      },
-      "tier": "T2",
-      "first_party": true,
-      "participation_mode": "editorial",
-      "interval_minutes": 360,
-      "channel_hints": [
-        "play"
-      ],
-      "tags": [
-        "en",
-        "developer"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false,
-      "enabled": true,
-      "editorial": {
-        "language": "en",
-        "coverage": [
-          "play"
-        ],
-        "identity": "developer",
-        "homepage": "https://factorio.com/blog/",
-        "limitations": [
-          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
-          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
-        ],
-        "verified_at": "2026-10-03T11:06:46.379Z",
-        "sample": {
-          "title": "Friday Facts #447 - Factorio that you can touch",
-          "url": "https://factorio.com/blog/post/fff-447",
-          "publishedAt": "2026-09-25T00:00:00.000Z",
-          "bodyStatus": "feed",
-          "bodyChars": 12802,
           "roboticsCue": true,
           "relevanceBasis": "material-text"
         },
@@ -1431,7 +1279,7 @@
       "interval_minutes": 360,
       "channel_hints": [
         "sociology",
-        "interaction"
+        "agents"
       ],
       "tags": [
         "en",
@@ -1461,6 +1309,55 @@
           "publishedAt": "2026-10-01T13:54:27.000Z",
           "bodyStatus": "readability",
           "bodyChars": 23792,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      }
+    },
+    {
+      "id": "rss-sociological-science",
+      "name": "Sociological Science",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://sociologicalscience.com/category/articles/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T1_5",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "sociology"
+      ],
+      "tags": [
+        "en",
+        "journal"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "sociology"
+        ],
+        "identity": "journal",
+        "homepage": "https://sociologicalscience.com/",
+        "limitations": [
+          "仅使用公开论文摘要，不访问受限制的研究微数据。",
+          "开放获取论文仍需核对地区、样本、方法与解释边界。"
+        ],
+        "verified_at": "2026-10-03T13:08:48.725Z",
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": {
+          "title": "Decoupling Inequality and Stratification in the American Wealth Distribution, 1989–2022",
+          "url": "https://sociologicalscience.com/articles-v13-37-971/",
+          "publishedAt": "2026-08-11T16:00:51.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 3781,
           "roboticsCue": true,
           "relevanceBasis": "material-text"
         }
