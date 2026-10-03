@@ -286,3 +286,15 @@ test("latest-domain navigation keeps the latest view and keyword search instead 
   assert.match(html,/\/all\?domain=sociology(?:&amp;|&)q=learning/);
   assert.match(html,/name="domain" value="biology"/);assert.doesNotMatch(html,/产品与商业化/);
 });
+
+test("the rendered mobile navigation highlights one destination for channels and auxiliary pages", async () => {
+  for (const [path, expected] of [["/", "/"], ["/all", "/all"], ["/channels", "/channels"], ["/channels/biology", "/channels"], ["/topics/test-topic", "/more"], ["/more", "/more"]]) {
+    const res = await fetch(origin + path);
+    assert.equal(res.status, 200);
+    const html = await res.text();
+    const navigation = html.match(/<nav aria-label="底部导航"[\s\S]*?<\/nav>/)?.[0];
+    assert.ok(navigation, path);
+    const active = [...navigation.matchAll(/<a\b[^>]*aria-current="page"[^>]*>/g)].map(match => match[0].match(/href="([^"]+)"/)?.[1]);
+    assert.deepEqual(active, [expected], path);
+  }
+});
