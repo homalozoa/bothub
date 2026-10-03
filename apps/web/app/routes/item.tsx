@@ -285,7 +285,7 @@ export default function ItemPage() {
           <div className={`flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[13px] text-ink-3 2xl:hidden ${isX ? "" : "mb-3"}`}>
             <span className="font-semibold text-ink-2">{isX ? item.x!.authorName : item.source.name}</span>
             {isX && <span>· @{item.x!.handle} · X</span>}
-            {item.author && !isX && <span>· {item.author}</span>}
+            {item.author && !isX && <span className="hidden lg:inline">· {item.author}</span>}
             <span>·</span>
             {publishedIso ? <time dateTime={publishedIso} className="mono">{fullDateTime(publishedIso)}（UTC+08:00）</time> : <span>原文发布时间未知</span>}
             {publishedIso && <span suppressHydrationWarning>· {relativeTime(publishedIso)}</span>}
@@ -305,6 +305,7 @@ export default function ItemPage() {
           <p className="mt-3 text-[12px] leading-relaxed text-ink-4">模型自动生成摘要与编辑评分，请结合原文中的实验条件和限制阅读。双次评分属于筛选流程。</p>
           <details className="mt-3 text-[12px] leading-relaxed text-ink-4 2xl:hidden">
             <summary className="cursor-pointer">来源与时间</summary>
+            {item.author && !isX && <p className="mt-2">作者：{item.author}</p>}
             <p className="mt-2">来源身份：{item.source.firstParty ? "当事方一手陈述" : "媒体或其他公开来源"}；此身份不代表独立事实核验。</p>
             <p>原文发布时间：{publishedIso ? fullDateTime(publishedIso) : "未知"}；首次收录：{fullDateTime(item.discoveredAt)}（UTC+08:00）。收录时间不代表事件发生时间。</p>
           </details>

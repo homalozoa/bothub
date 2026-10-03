@@ -11,7 +11,7 @@ import { IconChevronRight } from "../icons";
  */
 export function ReadingLayout({ children, aside, footer, className = "", asideClassName = "" }: { children: ReactNode; aside?: ReactNode; footer?: ReactNode; className?: string; asideClassName?: string }) {
   return (
-    <div className={`mx-auto grid max-w-[var(--page-max-reading)] gap-8 pb-14 pt-5 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-10 lg:pt-0 2xl:grid-cols-[minmax(0,1fr)_340px] ${className}`}>
+    <div className={`mx-auto grid max-w-[var(--page-max-reading)] gap-8 pb-8 pt-5 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-8 lg:pt-0 2xl:grid-cols-[minmax(0,1fr)_300px] ${className}`}>
       <div className="min-w-0">{children}</div>
       {aside && <aside className={`min-w-0 space-y-4 lg:sticky lg:top-6 lg:self-start ${asideClassName}`}>{aside}</aside>}
       {footer && <div className="min-w-0 lg:col-span-2">{footer}</div>}
@@ -28,7 +28,7 @@ export function ReadingLayout({ children, aside, footer, className = "", asideCl
  */
 export function ArticleLayout({ children, left, right, railTop = "top-6" }: { children: ReactNode; left?: ReactNode; right?: ReactNode; railTop?: string }) {
   return (
-    <div className="mx-auto grid max-w-[var(--page-max-reading)] grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-x-12 2xl:grid-cols-[minmax(200px,1fr)_minmax(0,760px)_minmax(200px,1fr)] 2xl:gap-x-12">
+    <div className="mx-auto grid max-w-[var(--page-max-reading)] grid-cols-[minmax(0,1fr)] lg:max-w-[1012px] lg:grid-cols-[minmax(0,1fr)_220px] lg:gap-x-8 2xl:max-w-[var(--page-max-reading)] 2xl:grid-cols-[minmax(180px,1fr)_minmax(0,760px)_minmax(180px,1fr)] 2xl:gap-x-8">
       <aside className="hidden 2xl:block">
         <div className={`sticky ${railTop} max-w-[260px] space-y-8`}>{left}</div>
       </aside>

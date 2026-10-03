@@ -45,6 +45,7 @@ export default function Channel() {
   const [params] = useSearchParams();
   const base = `/channels/${domain.key}`;
   const f = result.filters;
+  const empty = "cards" in result ? result.cards.length === 0 && !result.nextCursor : result.items.length === 0;
   const keep = { view: "latest", topic: f.topic ?? null, tag: f.tag, category: f.category, channel: f.channel === "all" ? null : f.channel, since };
   return <div className="radar-page">
     <DomainNav active={domain.key} />
@@ -72,6 +73,6 @@ export default function Channel() {
       </Form>
     </div>
     <p className="reader-note">{q ? `在${domain.label}中搜索“${q}”` : mode === "selected" ? "本频道的近期精选 · 保留原始发表日期" : "按原始日期阅读，包括明确标记的历史资料"} · <Link to={`/all${q ? `?q=${encodeURIComponent(q)}` : ""}`}>浏览全站 ↗</Link></p>
-    {"cards" in result ? <Timeline initial={result} filters={result.filters} /> : result.items.length ? <><DayList items={result.items} todayCount={null} showTags /><Pagination page={result.page} pageCount={result.pageCount} href={page => { const sp = new URLSearchParams(params); sp.set("page", String(page)); return `${base}?${sp}`; }} /></> : <div className="channel-empty-panel"><ChannelIcon domain={domain.key} /><EmptyState title={q ? "没有找到相关内容" : "等待下一条值得读的发现"}>{q ? "换个说法，或调整频道内的筛选条件。" : "这个频道暂时没有符合条件的内容。你可以订阅 RSS，或浏览其他频道。"}</EmptyState></div>}
+    {empty ? <div className="channel-empty-panel"><ChannelIcon domain={domain.key} /><EmptyState title={q ? "没有找到相关内容" : mode === "selected" ? "本频道暂无当前精选" : "暂无符合条件的内容"} action={<Link className="text-[13px] font-medium text-accent" to={hrefWith(base, params, { view: "latest", q: null, tag: null, topic: null, channel: null, since: null, category: null })}>{mode === "selected" && !q ? "查看最新内容" : "清除筛选"} →</Link>}>{q ? "换个说法，或调整频道内的筛选条件。" : "你可以查看本频道已收录的资料，或订阅 RSS 等待下一条精选。"}</EmptyState></div> : "cards" in result ? <Timeline initial={result} filters={result.filters} /> : <><DayList items={result.items} todayCount={null} showTags /><Pagination page={result.page} pageCount={result.pageCount} href={page => { const sp = new URLSearchParams(params); sp.set("page", String(page)); return `${base}?${sp}`; }} /></>}
   </div>;
 }

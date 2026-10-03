@@ -2,6 +2,7 @@ import { monthDayTime } from "../../lib/format";
 import { Link, useLocation, useSearchParams } from "react-router";
 import { DOMAINS, RETAINED_TOPICS, type DomainKey } from "@aihot/industry/channels";
 import type { TimelineCard } from "@aihot/contracts/site";
+import { useEffect, useRef } from "react";
 
 export interface ChannelOverview { channels: Array<(typeof DOMAINS)[number] & { featured: TimelineCard | null; total?: number; hasSelected?: boolean }>; refreshAt: string | null }
 
@@ -18,6 +19,16 @@ export function ChannelIcon({ domain, className = "" }: { domain: DomainKey; cla
   return <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}><path d={paths[domain]} /></svg>;
 }
 export function DomainNav({ active = "all", base }: { active?: DomainKey | "all"; base?: "/" | "/all" }) {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const scroller = ref.current;
+    const selected = scroller?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!scroller || !selected || scroller.scrollWidth <= scroller.clientWidth) return;
+    const bounds = scroller.getBoundingClientRect();
+    const item = selected.getBoundingClientRect();
+    if (item.left < bounds.left) scroller.scrollLeft -= bounds.left - item.left;
+    else if (item.right > bounds.right) scroller.scrollLeft += item.right - bounds.right;
+  }, [active]);
   const { search } = useLocation();
   const keep = new URLSearchParams(search);
   keep.delete("page"); keep.delete("domain"); keep.delete("q"); keep.delete("since"); keep.delete("tag");
@@ -28,7 +39,7 @@ export function DomainNav({ active = "all", base }: { active?: DomainKey | "all"
     if (key === "all") sp.delete("domain"); else sp.set("domain", key);
     return base + (sp.toString() ? `?${sp}` : "");
   };
-  return <nav className="domain-nav" aria-label="领域频道">
+  return <nav ref={ref} className="domain-nav" aria-label="领域频道">
     <Link to={target("all")} aria-current={active === "all" ? "page" : undefined} className={active === "all" ? "active" : ""}>综合</Link>
     {DOMAINS.map(d => <Link key={d.key} to={target(d.key)} aria-current={active === d.key ? "page" : undefined} className={active === d.key ? "active" : ""}>{d.label}</Link>)}
   </nav>;

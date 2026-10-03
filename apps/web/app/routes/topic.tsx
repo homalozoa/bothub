@@ -96,8 +96,8 @@ export default function TopicPage() {
         )}
       </div>
       {items.length === 0 ? (
-        <div className="lg:card">
-          <EmptyState title={archive ? "这个主题暂时没有相关资料" : "这个主题暂时还没有精选内容"} />
+        <div className="card">
+          <EmptyState title={archive ? "这个主题暂时没有相关资料" : "这个主题暂时还没有精选内容"} action={<Link to="/topics" className="text-[13px] font-medium text-accent">浏览其他主题 →</Link>} />
         </div>
       ) : (
         <DayList items={items} />
