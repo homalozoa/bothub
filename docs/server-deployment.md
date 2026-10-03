@@ -115,3 +115,7 @@ docker compose --env-file .env -f deploy/production.compose.yml up -d --no-deps 
 ## 个人运营信息与当前来源
 
 个人运营者为 [Homalozoa](https://github.com/homalozoa)，邮箱 homalozoax@gmail.com。默认来源优先非简体中文，量子位停采后当前19源启用，历史文章保留。当前API/worker版本为 `2f03f0c`、web为 `d749c97`；部署与验证见 [更新记录](personal-operator-rollout.md)。
+
+## 当前资讯时效修正
+
+2026-10-03，API/worker/web同步发布到 `1edefea`。评分前检查原日期48小时收录延迟与7天窗口，发布和当前资讯读取独立复查。31条历史回灌退出当前精选，保留评分和归档；新增ROS论坛公告源后默认20个非简体中文来源。完整Lyrical公告已经作为2026-05-22历史资料收录，未伪装成今天的新闻。640项程序测试和43项生产smoke通过，DB未重启、原模型预算与SSH后台权限保留。详见 [时效与覆盖核验](news-time-audit.md)。
