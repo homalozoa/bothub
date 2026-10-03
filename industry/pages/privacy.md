@@ -7,8 +7,10 @@
 | 版本 | 0.2（运营草稿） |
 | 生效日期 | 待运营者确认 |
 | 联系信息更新 | 2026-10-03 |
-| 运营主体 | [Homalozoa](https://github.com/homalozoa)（个人） |
-| 隐私事务联系 | [homalozoax@gmail.com](mailto:homalozoax@gmail.com) 或站内反馈页 |
+| 运营主体 | Homalozoa（个人） |
+| 隐私事务联系 | homalozoax@gmail.com 或站内反馈页 |
+
+个人运营者：[Homalozoa](https://github.com/homalozoa)。联系邮箱：[homalozoax@gmail.com](mailto:homalozoax@gmail.com)，也可通过[反馈页](/feedback)联系。
 
 > 公开阅读无需账号。收藏、已读和主题外观保存在当前浏览器；主动提交的反馈会发送到服务器。管理员登录另有会话 Cookie。
 

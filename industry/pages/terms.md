@@ -7,8 +7,10 @@
 | 版本 | 0.2（运营草稿） |
 | 生效日期 | 待运营者确认 |
 | 联系信息更新 | 2026-10-03 |
-| 运营主体 | [Homalozoa](https://github.com/homalozoa)（个人） |
-| 联系方式 | [homalozoax@gmail.com](mailto:homalozoax@gmail.com) 或站内反馈页 |
+| 运营主体 | Homalozoa（个人） |
+| 联系方式 | homalozoax@gmail.com 或站内反馈页 |
+
+个人运营者：[Homalozoa](https://github.com/homalozoa)。联系邮箱：[homalozoax@gmail.com](mailto:homalozoax@gmail.com)，也可通过[反馈页](/feedback)联系。
 
 > 机闻聚合公开来源，使用模型自动筛选并生成中文摘要。公开网站、RSS、API 与 MCP 无需注册。摘要是阅读索引，重要判断请查看原文及其条件。
 
