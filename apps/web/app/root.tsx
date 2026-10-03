@@ -20,7 +20,7 @@ export const links: Route.LinksFunction = () => [
   { rel: "icon", href: "/favicon.ico?v=jiwen-z", sizes: "any" },
   { rel: "icon", type: "image/png", href: "/icon.png?v=jiwen-z" },
   { rel: "apple-touch-icon", href: "/apple-icon.png?v=jiwen-z" },
-  { rel: "manifest", href: "/manifest.webmanifest" },
+  { rel: "manifest", href: "/manifest.webmanifest?v=jiwen-z" },
   { rel: "alternate", type: "application/rss+xml", title: `${SITE.name} — 精选`, href: "/feed.xml" },
 ];
 
