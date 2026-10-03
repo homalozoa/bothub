@@ -20,7 +20,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 
 export const meta: Route.MetaFunction = ({ loaderData }) => [{ title: `${loaderData?.source.name ?? "信源"} · ${SITE.name} 后台` }];
 
-type Draft = Pick<AdminSource, "name" | "interval_minutes" | "tier" | "participation_mode" | "signal_group_id" | "first_party" | "owner_entity_id" | "site_fulltext" | "syndicate_fulltext"> & { tags: string; config: string };
+type Draft = Pick<AdminSource, "name" | "interval_minutes" | "tier" | "participation_mode" | "signal_group_id" | "first_party" | "owner_entity_id" | "site_fulltext" | "syndicate_fulltext"> & { tags: string; channel_hints: string; config: string };
 
 function draftOf(s: AdminSource): Draft {
   return {
@@ -33,6 +33,7 @@ function draftOf(s: AdminSource): Draft {
     owner_entity_id: s.owner_entity_id,
     site_fulltext: s.site_fulltext,
     syndicate_fulltext: s.syndicate_fulltext,
+    channel_hints: (s.channel_hints ?? []).join(", "),
     tags: s.tags.join(", "),
     config: JSON.stringify(s.config, null, 2),
   };
@@ -64,6 +65,7 @@ export default function SourceDetail({ loaderData }: Route.ComponentProps) {
     }
     const next: Record<string, unknown> = {
       ...draft,
+      channel_hints: draft.channel_hints.split(/[,，]/).map(t => t.trim()).filter(Boolean),
       tags: draft.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean),
       config,
       interval_minutes: Number(draft.interval_minutes),
@@ -73,7 +75,7 @@ export default function SourceDetail({ loaderData }: Route.ComponentProps) {
     const before = draftOf(s) as Record<string, unknown>;
     const changed: Record<string, unknown> = {};
     for (const [k, v] of Object.entries(next)) {
-      const was = k === "tags" ? s.tags : k === "config" ? s.config : before[k];
+      const was = k === "channel_hints" ? s.channel_hints ?? [] : k === "tags" ? s.tags : k === "config" ? s.config : before[k];
       if (JSON.stringify(v) !== JSON.stringify(was)) changed[k] = v;
     }
     return changed;
@@ -177,6 +179,7 @@ export default function SourceDetail({ loaderData }: Route.ComponentProps) {
               <Field label="运营主体 ID">
                 <Input value={draft.owner_entity_id ?? ""} onChange={(e) => setDraft({ ...draft, owner_entity_id: e.target.value })} />
               </Field>
+              <Field label="候选频道 slug（逗号分隔）"><Input value={draft.channel_hints} onChange={e => setDraft({ ...draft, channel_hints: e.target.value })} /></Field>
               <Field label="标签（逗号分隔）">
                 <Input value={draft.tags} onChange={(e) => setDraft({ ...draft, tags: e.target.value })} />
               </Field>

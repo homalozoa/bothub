@@ -1,3 +1,4 @@
+import { DOMAINS } from "@aihot/industry/channels";
 import { SITE } from "@aihot/industry/site";
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
@@ -41,7 +42,7 @@ export default function ContentItem({ loaderData }: Route.ComponentProps) {
   const { run, pending } = useAdminAction();
   const [dialog, setDialog] = useState<Dialog>(null);
   const [visibility, setVisibility] = useState<string>(p?.visibility ?? "public");
-  const [fields, setFields] = useState({ title: "", summary: "", reason: "", category: "", tags: "", selected: "", silent: "" });
+  const [fields, setFields] = useState({ title: "", summary: "", reason: "", category: "", primaryChannel: "", relatedChannels: "", tags: "", selected: "", silent: "" });
   const [mergeInto, setMergeInto] = useState("");
   const version = c.override?.version ?? 0;
   const base = `/api/admin/content/${encodeURIComponent(a.id)}`;
@@ -55,6 +56,8 @@ export default function ContentItem({ loaderData }: Route.ComponentProps) {
       summary: String(f.summary ?? ""),
       reason: String(f.reason ?? ""),
       category: String(f.category ?? ""),
+      primaryChannel: String(f.primaryChannel ?? ""),
+      relatedChannels: Array.isArray(f.relatedChannels) ? (f.relatedChannels as string[]).join(", ") : "",
       tags: Array.isArray(f.tags) ? (f.tags as string[]).join(", ") : "",
       selected: f.selected === undefined ? "" : String(f.selected),
       silent: f.silent === undefined ? "" : String(f.silent),
@@ -341,6 +344,10 @@ export default function ContentItem({ loaderData }: Route.ComponentProps) {
             if (fields[k].trim()) next[k] = fields[k].trim();
             else if (c.override?.fields[k] !== undefined) clear.push(k);
           }
+          if (fields.primaryChannel) next.primaryChannel = fields.primaryChannel;
+          else if (c.override?.fields.primaryChannel !== undefined) clear.push("primaryChannel");
+          if (fields.relatedChannels.trim()) next.relatedChannels = fields.relatedChannels.split(/[,，]/).map(t => t.trim()).filter(Boolean);
+          else if (c.override?.fields.relatedChannels !== undefined) clear.push("relatedChannels");
           if (fields.category) next.category = fields.category;
           else if (c.override?.fields.category !== undefined) clear.push("category");
           if (fields.tags.trim()) next.tags = fields.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean);
@@ -352,6 +359,8 @@ export default function ContentItem({ loaderData }: Route.ComponentProps) {
           return (await run("POST", `${base}/override`, { fields: next, clear, reason, version }, { label: "override", success: "修正已保存并重新发布" })) !== null;
         }}
       >
+        <Field label="主频道"><Select value={fields.primaryChannel} onChange={e => setFields({ ...fields, primaryChannel: e.target.value })}><option value="">跟随自动分析</option>{DOMAINS.map(d => <option key={d.key} value={d.key}>{d.label}</option>)}</Select></Field>
+        <Field label="关联频道 slug（最多两个，逗号分隔）"><Input value={fields.relatedChannels} onChange={e => setFields({ ...fields, relatedChannels: e.target.value })} /></Field>
         <Field label="标题"><Input value={fields.title} placeholder={p?.title ?? ""} onChange={(e) => setFields({ ...fields, title: e.target.value })} /></Field>
         <Field label="摘要"><Textarea rows={3} value={fields.summary} placeholder={p?.summary ?? ""} onChange={(e) => setFields({ ...fields, summary: e.target.value })} /></Field>
         <Field label="推荐理由"><Textarea rows={2} value={fields.reason} placeholder={p?.reason ?? ""} onChange={(e) => setFields({ ...fields, reason: e.target.value })} /></Field>

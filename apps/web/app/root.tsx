@@ -10,18 +10,18 @@ import "./app.css";
 import { Sidebar } from "./components/shell/Sidebar";
 import { MobileTabBar } from "./components/shell/MobileTabBar";
 import { BackToTop, NavigationProgress } from "./components/shell/Chrome";
-import { RingMark } from "./components/Logo";
+import { RingMark, Wordmark } from "./components/Logo";
 import { buttonClass } from "./components/ui/Controls";
 import { THEME_BOOT_SCRIPT } from "./lib/local-state";
 import { apiGet } from "./lib/api.server";
 import { useHydratedFlag } from "./lib/hydration";
 
 export const links: Route.LinksFunction = () => [
-  { rel: "icon", href: "/favicon.ico?v=jiwen-z", sizes: "any" },
-  { rel: "icon", type: "image/png", href: "/icon.png?v=jiwen-z" },
-  { rel: "apple-touch-icon", href: "/apple-icon.png?v=jiwen-z" },
-  { rel: "manifest", href: "/manifest.webmanifest?v=jiwen-z" },
-  { rel: "alternate", type: "application/rss+xml", title: `${SITE.name} — 精选`, href: "/feed.xml" },
+  { rel: "icon", href: "/favicon.ico?v=zooradar-z", sizes: "any" },
+  { rel: "icon", type: "image/png", href: "/icon.png?v=zooradar-z" },
+  { rel: "apple-touch-icon", href: "/apple-icon.png?v=zooradar-z" },
+  { rel: "manifest", href: "/manifest.webmanifest?v=zooradar-z" },
+  { rel: "alternate", type: "application/rss+xml", title: `${SITE.name} — 综合精选`, href: "/feed/channels/all.xml" },
 ];
 
 interface SiteMeta {
@@ -81,6 +81,7 @@ function SiteShell({ changelogVersion, demo = false, children }: { changelogVers
       <main id="main" className="min-w-0 flex-1 pb-[calc(72px+env(safe-area-inset-bottom))] lg:px-7 lg:pb-[72px] lg:pt-6">
         <div className="mx-auto w-full max-w-[640px] px-4 lg:max-w-[var(--page-max-wide)] lg:px-0">
           {demo && <p role="status" className="mb-4 rounded-control border border-line bg-bg-sunk px-3 py-2 text-[13px] leading-relaxed text-ink-2">离线演示 · 合成资料与本地固定模型响应，仅验证程序和页面。这里不是实时新闻，不能据此判断筛选质量。</p>}
+          <header className="radar-masthead"><Link to="/" className="masthead-brand" aria-label="ZooRadar 首页"><Wordmark size={21} /></Link><span className="masthead-caption">ZOORADAR · A JOURNAL OF CURIOSITY</span><a href="https://openzoo.ai/">OpenZoo ↗</a></header>
           {children}
         </div>
       </main>

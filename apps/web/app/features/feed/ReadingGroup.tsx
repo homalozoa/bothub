@@ -11,6 +11,8 @@ import { sessionCache } from "./session-cache";
 
 function filterParams(filters: TimelineFilters | undefined, cursor: string | null) {
   const sp = new URLSearchParams();
+  if (filters?.domain && filters.domain !== "all") sp.set("domain", filters.domain);
+  if (filters?.since) sp.set("since", filters.since);
   if (filters?.channel && filters.channel !== "all") sp.set("channel", filters.channel);
   if (filters?.category) sp.set("category", filters.category);
   if (filters?.tag) sp.set("tag", filters.tag);

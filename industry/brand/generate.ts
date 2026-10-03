@@ -36,4 +36,4 @@ writeFileSync("deploy/home/public/favicon.svg", brandSvg("OpenZoo"));
 const homePath = "deploy/home/public/index.html";
 const homeMark = brandSvg("OpenZoo").replace("<svg ", '<svg class="brand-mark" aria-hidden="true" ');
 writeFileSync(homePath, readFileSync(homePath, "utf8").replace(/<svg class="brand-mark"[\s\S]*?<\/svg>/, homeMark.trim()));
-console.log("Generated Jiwen folded-Z vector mark and PNG/ICO icons");
+console.log("Generated ZooRadar folded-Z vector mark and PNG/ICO icons");

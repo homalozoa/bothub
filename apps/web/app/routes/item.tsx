@@ -1,3 +1,4 @@
+import { DOMAIN_LABELS } from "@aihot/industry/channels";
 import { SITE, withSubject } from "@aihot/industry/site";
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router";
@@ -193,6 +194,7 @@ export default function ItemPage() {
   // under the facts (or under the notes when only the right rail shows).
   const facts = (
     <RailSection title="来源">
+      {item.primaryChannel && <Link className="mb-2 inline-block text-[12px] text-accent" to={`/channels/${item.primaryChannel}`}>{DOMAIN_LABELS[item.primaryChannel]}</Link>}
       <div className="text-[14px] font-semibold leading-snug text-ink">{isX ? item.x!.authorName : item.source.name}</div>
       <div className="mt-1 text-[12.5px] leading-relaxed text-ink-3">
         {isX ? `@${item.x!.handle} · X` : item.author ?? hostOf(item.links.original)}

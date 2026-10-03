@@ -1,3 +1,6 @@
+import { DOMAIN_LABELS } from "@aihot/industry/channels";
+import { DomainNav } from "../features/channels/Channels";
+import { isDomainKey } from "@aihot/industry/channels";
 import { SITE, withSubject } from "@aihot/industry/site";
 import { Link, useLoaderData, useNavigation, useSearchParams } from "react-router";
 import type { Route } from "./+types/all";
@@ -13,6 +16,9 @@ import { RingMark } from "../components/Logo";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
+  const domainParam = url.searchParams.get("domain");
+  const domain = isDomainKey(domainParam) ? domainParam : "all";
+  const since = url.searchParams.get("since");
   const channelParam = url.searchParams.get("channel") ?? "all";
   const categoryParam = url.searchParams.get("category");
   const channel = isChannelKey(channelParam) ? channelParam : "all";
@@ -23,7 +29,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   // Legacy deep-paging parameters (deep, anchorAt) still open a normal page.
   const page = Math.min(Math.max(Number.parseInt(url.searchParams.get("page") ?? "1", 10) || 1, 1), 50);
   const data = await loadOr404<PoolResponse>(
-    `/api/site/pool${queryString({ channel: channel === "all" ? null : channel, category, tag, q, tab, page: page > 1 ? page : null })}`,
+    `/api/site/pool${queryString({ domain, since, channel: channel === "all" ? null : channel, category, tag, q, tab, page: page > 1 ? page : null })}`,
     { signal: request.signal, busyRedirect: "/all/search-busy" },
   );
   return { data };
@@ -34,9 +40,9 @@ export function meta({ loaderData }: Route.MetaArgs) {
   const q = f?.q;
   const page = loaderData?.data.page ?? 1;
   return pageMeta({
-    title: q ? `搜索：${q}` : `全部${withSubject("动态")}`,
+    title: q ? `搜索：${q}` : `${f?.domain && f.domain !== "all" ? DOMAIN_LABELS[f.domain] : "全站"}动态`,
     description: `${SITE.name} 收录的全部${withSubject("动态")}，可按类别与标签筛选，支持中英文搜索。`,
-    path: listPath("/all", { channel: f && f.channel !== "all" ? f.channel : null, category: f?.category, tag: f?.tag, q, tab: f?.tab === "relevance" ? "relevance" : null, page: page > 1 ? page : null }),
+    path: listPath("/all", { domain: f?.domain && f.domain !== "all" ? f.domain : null, since: f?.since, channel: f && f.channel !== "all" ? f.channel : null, category: f?.category, tag: f?.tag, q, tab: f?.tab === "relevance" ? "relevance" : null, page: page > 1 ? page : null }),
     noindex: !!q,
   });
 }
@@ -62,7 +68,7 @@ export default function AllPage() {
   const navigation = useNavigation();
   const f = data.filters;
   const busy = navigation.state === "loading" && navigation.location?.pathname === "/all";
-  const keep = { channel: f.channel === "all" ? null : f.channel, category: f.category };
+  const keep = { domain: f.domain === "all" ? null : f.domain ?? null, since: f.since ?? null, channel: f.channel === "all" ? null : f.channel, category: f.category };
   const searchTabHref = (tab: "time" | "relevance") => {
     const sp = new URLSearchParams(params);
     sp.delete("page");
@@ -74,7 +80,8 @@ export default function AllPage() {
   const updated = new Date(data.freshness).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Shanghai" });
 
   return (
-    <div className="pb-6">
+    <div className="pb-6 radar-page">
+      <DomainNav active={f.domain ?? "all"} />
       {/* Desktop, as on 精选: the title, then one filter row with the search field aligned on the right. */}
       <div className="hidden lg:block">
         <h1 className="text-[24px] font-semibold leading-[1.3] text-ink">{title ?? `全部${withSubject("动态")}`}</h1>

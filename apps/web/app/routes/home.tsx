@@ -1,15 +1,13 @@
-import { SITE, withSubject } from "@aihot/industry/site";
+import { ChannelGrid, DomainNav, type ChannelOverview } from "../features/channels/Channels";
+import { Link } from "react-router";
 import { data as withHeaders, redirect, useLoaderData } from "react-router";
 import type { Route } from "./+types/home";
 import type { TimelineResponse } from "@aihot/contracts/site";
 import { isCategoryKey, isChannelKey } from "@aihot/contracts/taxonomy";
 import { loadOr404, queryString, releaseBoundCache } from "../lib/api.server";
 import { listPath, websiteLd, pageMeta } from "../lib/seo";
-import { Wordmark } from "../components/Logo";
 import { Timeline } from "../features/feed/Timeline";
-import { HotTopics } from "../features/feed/HotTopics";
-import { CategoryTabs, SearchField, SearchIconLink } from "../features/feed/Filters";
-import { beijingDate, beijingWeekday } from "../lib/format";
+import { CategoryTabs, SearchField } from "../features/feed/Filters";
 import { SignalHero } from "../components/SignalHero";
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -23,8 +21,12 @@ export async function loader({ request }: Route.LoaderArgs) {
   const category = categoryParam && isCategoryKey(categoryParam) ? categoryParam : null;
   const tag = url.searchParams.get("tag")?.trim() || null;
   const upstream = new Headers();
-  const data = await loadOr404<TimelineResponse>(`/api/site/timeline${queryString({ channel: channel === "all" ? null : channel, category, tag })}`, { responseHeaders: upstream, signal: request.signal });
-  return withHeaders({ data, filters: { channel, category, tag, topic: null } }, { headers: releaseBoundCache(data.refreshAt, 60, Date.now(), upstream) });
+  const [overview, data] = await Promise.all([
+    loadOr404<ChannelOverview>("/api/site/channels", { signal: request.signal }),
+    loadOr404<TimelineResponse>(`/api/site/timeline${queryString({ channel: channel === "all" ? null : channel, category, tag })}`, { responseHeaders: upstream, signal: request.signal }),
+  ]);
+  const refreshAt = [data.refreshAt, overview.refreshAt].filter((d): d is string => !!d).sort()[0] ?? null;
+  return withHeaders({ data, overview, filters: { channel, category, tag, topic: null } }, { headers: releaseBoundCache(refreshAt, 60, Date.now(), upstream) });
 }
 
 export function meta({ loaderData }: Route.MetaArgs) {
@@ -37,45 +39,18 @@ export function headers({ loaderHeaders }: Route.HeadersArgs) {
   return loaderHeaders;
 }
 
-function TodayLabel() {
-  const today = beijingDate(Date.now());
-  const [, m, d] = today.split("-").map(Number) as [number, number, number];
-  return (
-    <span className="text-[12.5px] text-ink-4" suppressHydrationWarning>
-      {m}月{d}日 · {beijingWeekday(today).replace("星期", "周")}
-    </span>
-  );
-}
-
 export default function Home() {
-  const { data, filters } = useLoaderData<typeof loader>();
+  const { data, overview, filters } = useLoaderData<typeof loader>();
   const title = filters.tag ? `#${filters.tag}` : "精选";
   return (
     <div className="pb-6">
-      {/* Phones: brand bar, today's hot topics, then the feed under "最新精选". */}
-      <div className="flex h-14 items-center justify-between lg:hidden">
-        <Wordmark size={20} className="text-ink" />
-        <TodayLabel />
-      </div>
+      <DomainNav />
       <SignalHero />
-      <div className="hidden lg:block">
-        <h2 className="text-[24px] font-semibold leading-[1.3] text-ink">{title}</h2>
-        <div className="mb-5 mt-4 flex items-center justify-between gap-4">
-          <CategoryTabs base="/" category={filters.category} channel={filters.channel} layoutId="home-cat-desk" className="min-w-0" />
-          <SearchField variant="track" keep={{ category: filters.category }} />
-        </div>
-      </div>
-
-      <p className="mb-3 text-[12px] leading-relaxed text-ink-4">精选展示近 7 天资讯，按原文日期检查时效。历史资料可在全部动态中搜索。内容由模型自动筛选与摘要，附原文供核对。</p>
-
-      {data.hot && <HotTopics entries={data.hot} />}
-
-      <h2 className="mt-6 text-[20px] font-bold text-ink lg:hidden">{filters.tag ? title : "最新精选"}</h2>
-      <div className="-mx-4 mt-3 flex items-center gap-2 pl-4 pr-2 lg:hidden">
-        <CategoryTabs base="/" category={filters.category} channel={filters.channel} layoutId="home-cat-mobile" size="sm" className="min-w-0 flex-1" />
-        <SearchIconLink />
-      </div>
-
+      <div className="radar-section-heading"><div><p className="radar-eyebrow">FOLLOW A THREAD</p><h2>七个频道，一整个世界</h2></div><Link to="/channels">频道精选 ↗</Link></div>
+      <ChannelGrid channels={overview.channels} compact />
+      <div className="radar-section-heading feed-heading"><div><p className="radar-eyebrow">THE LATEST SELECTION</p><h2>{title === "精选" ? "最新精选" : title}</h2></div><a href="/feed/channels/all.xml" className="rss-link">综合 RSS ↗</a></div>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><CategoryTabs base="/" category={filters.category} channel={filters.channel} layoutId="home-cat" className="min-w-0" /><SearchField variant="track" keep={{ category: filters.category }} /></div>
+      <p className="reader-note">先在各频道内筛选，再沿原始来源阅读。模型评分用于编辑选择，来源数量不代表真实性。</p>
       <Timeline initial={data} filters={data.filters} />
     </div>
   );
