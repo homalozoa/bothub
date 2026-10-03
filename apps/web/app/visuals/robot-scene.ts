@@ -31,12 +31,12 @@ export function mountRobotScene(host: HTMLElement, { compact = false, motionPref
   camera.position.set(3.6, 1.8, 6.7);
   camera.lookAt(0, -0.05, 0);
 
-  const cyan = 0x4cf7e3;
-  const violet = 0x9b7dff;
-  const pink = 0xe879f9;
-  const shell = new THREE.MeshStandardMaterial({ color: 0x263348, roughness: 0.36, metalness: 0.62 });
-  const armor = new THREE.MeshStandardMaterial({ color: 0x9bb1c5, roughness: 0.29, metalness: 0.65 });
-  const charcoal = new THREE.MeshStandardMaterial({ color: 0x080d1a, roughness: 0.46, metalness: 0.25 });
+  const cyan = 0x48c9ad;
+  const violet = 0x8863d7;
+  const pink = 0xff9c81;
+  const shell = new THREE.MeshStandardMaterial({ color: 0x9781d4, roughness: 0.65, metalness: 0.12 });
+  const armor = new THREE.MeshStandardMaterial({ color: 0xffcb87, roughness: 0.65, metalness: 0.1 });
+  const charcoal = new THREE.MeshStandardMaterial({ color: 0x392b4a, roughness: 0.46, metalness: 0.25 });
   const cyanMaterial = new THREE.MeshBasicMaterial({ color: cyan, toneMapped: false });
   const violetMaterial = new THREE.MeshBasicMaterial({ color: violet, toneMapped: false });
   const edgeMaterial = new THREE.LineBasicMaterial({ color: cyan, transparent: true, opacity: 0.44, toneMapped: false });
@@ -123,11 +123,11 @@ export function mountRobotScene(host: HTMLElement, { compact = false, motionPref
     }
     arms.push(arm);
   }
-  const grid = new THREE.GridHelper(5.4, 24, 0x315968, 0x173440);
+  const grid = new THREE.GridHelper(5.4, 24, 0x9f9baf, 0xcac4d8);
   grid.position.y = -1.28;
   const gridMat = grid.material as THREE.Material;
   gridMat.transparent = true;
-  gridMat.opacity = 0.35;
+  gridMat.opacity = 0.28;
   scene.add(grid);
   const platform = new THREE.Mesh(new THREE.RingGeometry(0.97, 1.01, 80), new THREE.MeshBasicMaterial({ color: cyan, transparent: true, opacity: 0.7, side: THREE.DoubleSide }));
   platform.rotation.x = -Math.PI / 2;
@@ -151,14 +151,14 @@ export function mountRobotScene(host: HTMLElement, { compact = false, motionPref
   pointGeometry.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
   const particles = new THREE.Points(pointGeometry, new THREE.PointsMaterial({ color: cyan, size: 0.026, transparent: true, opacity: 0.65, sizeAttenuation: true }));
   orbits.add(particles);
-  scene.add(new THREE.AmbientLight(0xbad1ff, 2));
-  const keyLight = new THREE.DirectionalLight(0xe6f8ff, 4.5);
+  scene.add(new THREE.AmbientLight(0xfff6ed, 1.8));
+  const keyLight = new THREE.DirectionalLight(0xfff9f2, 3.2);
   keyLight.position.set(4, 5, 5);
   scene.add(keyLight);
-  const rim = new THREE.PointLight(pink, 14, 10, 2);
+  const rim = new THREE.PointLight(pink, 4, 10, 2);
   rim.position.set(-2.7, 2, -1.3);
   scene.add(rim);
-  const fill = new THREE.PointLight(cyan, 8, 10, 2);
+  const fill = new THREE.PointLight(cyan, 3, 10, 2);
   fill.position.set(3, 0.5, 3.5);
   scene.add(fill);
 

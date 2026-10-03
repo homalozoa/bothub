@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Neural Workshop: technical surfaces, optic cyan and a quiet indigo signal.
+   OpenZoo Playground: warm paper, candy colors and comfortable reading.
    The reading hierarchy uses semantic names, with a complete light counterpart.
    --------------------------------------------------------------------------- */
 
@@ -63,13 +63,13 @@
   --color-signal-secondary: var(--signal-secondary);
   --color-signal-tertiary: var(--signal-tertiary);
 
-  /* Precise corners for tools and panels; status dots and avatars remain circular. */
+  /* Soft corners for cards and controls; status dots remain circular. */
   --radius-mark: 3px;
-  --radius-control: 5px;
-  --radius-tile: 6px;
-  --radius-card: 8px;
-  --radius-panel: 8px;
-  --radius-sheet: 10px;
+  --radius-control: 12px;
+  --radius-tile: 14px;
+  --radius-card: 20px;
+  --radius-panel: 24px;
+  --radius-sheet: 28px;
 
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 
@@ -89,40 +89,40 @@
   --page-max-wide: max(1200px, calc(270dvh - 236px));
   --page-max-reading: max(1100px, calc(200dvh - 236px));
   color-scheme: light;
-  --bg: #edf2f9;
-  --bg-sunk: #e4ecf6;
-  --bg-muted: #d7e2f0;
-  --surface: #fafdff;
-  --surface-2: #f4f8ff;
-  --raised: #ffffff;
-  --sidebar: #eaf1fa;
-  --daybar: #e7eef9;
-  --field: #e2eaf5;
-  --ink: #14203a;
-  --ink-2: #293a54;
-  --ink-3: #465c77;
-  --ink-4: #536986;
-  --line: #c0cfe1;
-  --line-strong: #9eb4ce;
-  --line-soft: rgba(69, 96, 133, 0.13);
-  --accent: #09666c;
-  --accent-ink: #035c67;
-  --accent-soft: rgba(9, 102, 108, 0.09);
-  --accent-softer: rgba(9, 102, 108, 0.045);
-  --accent-contrast: #ffffff;
-  --signal-secondary: #5551ad;
-  --signal-tertiary: #913fa2;
-  --signal-grid: rgba(45, 83, 130, 0.04);
-  --signal-glow: rgba(9, 133, 140, 0.07);
-  --note: #496780;
-  --hot: #984579;
-  --hot-soft: rgba(152, 69, 121, 0.085);
-  --amber: #926919;
-  --amber-ink: #795513;
-  --amber-soft: rgba(146, 105, 25, 0.09);
-  --ok: #2f7d5c;
-  --ok-soft: rgba(47, 125, 92, 0.1);
-  --ok-ink: #2a6e51;
+  --bg: #fff9f1;
+  --bg-sunk: #f5eeff;
+  --bg-muted: #f1e9f8;
+  --surface: #fff;
+  --surface-2: #fffcf7;
+  --raised: #fff;
+  --sidebar: #fff6eb;
+  --daybar: #e5d8ff;
+  --field: #f4edff;
+  --ink: #292435;
+  --ink-2: #41384b;
+  --ink-3: #665b71;
+  --ink-4: #71667c;
+  --line: #e5dcec;
+  --line-strong: #cebbdf;
+  --line-soft: #ede5f2;
+  --accent: #7040b7;
+  --accent-ink: #6537ab;
+  --accent-soft: #eee1ff;
+  --accent-softer: #f7efff;
+  --accent-contrast: #fff;
+  --signal-secondary: #996027;
+  --signal-tertiary: #b74061;
+  --signal-grid: transparent;
+  --signal-glow: #ffc8bb22;
+  --note: #775d92;
+  --hot: #b93d61;
+  --hot-soft: #ffe4ec;
+  --amber: #866016;
+  --amber-ink: #795413;
+  --amber-soft: #fff1bf;
+  --ok: #28745d;
+  --ok-soft: #ddf8eb;
+  --ok-ink: #246650;
   /* Reset monitor: days mixed from the landed (green) and announced (amber) tones over the surface. */
   --cal-plain: rgba(28, 39, 51, 0.024);
   --cal-confirmed: color-mix(in srgb, var(--ok-ink) 12%, var(--surface));
@@ -130,69 +130,69 @@
   --cal-key-confirmed: color-mix(in srgb, var(--ok-ink) 30%, var(--surface));
   --cal-key-announced: color-mix(in srgb, var(--amber-ink) 30%, var(--surface));
   --panel-quiet: color-mix(in srgb, var(--bg) 48%, var(--surface));
-  --rank-1: #984579;
-  --rank-2: #5551ad;
-  --rank-3: #09666c;
+  --rank-1: #b93d61;
+  --rank-2: #7040b7;
+  --rank-3: #28745d;
   --rank-rest: #627595;
-  --shadow-card: inset 0 1px 0 #ffffff, 0 5px 18px rgba(31, 57, 91, 0.035);
-  --shadow-card-hover: inset 0 1px 0 #ffffff, 0 8px 28px rgba(31, 57, 91, 0.085);
+  --shadow-card: 0 3px 12px #6e51820a;
+  --shadow-card-hover: 0 10px 24px #6e518214;
   --shadow-soft: 0 8px 24px rgba(25, 51, 90, 0.08);
   --shadow-thumb: inset 0 1px 0 #ffffff, 0 1px 4px rgba(25, 51, 90, 0.09);
   --shadow-pop: 0 16px 40px rgba(25, 51, 90, 0.15);
-  --prose-ink: #2c3e57;
-  --code-bg: #e7eef8;
-  --selection: rgba(9, 102, 108, 0.17);
+  --prose-ink: #41384b;
+  --code-bg: #f3eafb;
+  --selection: #bca0ff44;
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --bg: #070a12;
-  --bg-sunk: #0b1120;
-  --bg-muted: #172338;
-  --surface: #0e1525;
-  --surface-2: #111b2e;
-  --raised: #19263b;
-  --sidebar: #090f1c;
-  --daybar: #101a2c;
-  --field: #152137;
-  --ink: #edf5ff;
-  --ink-2: #c9d8ed;
-  --ink-3: #9badc6;
-  --ink-4: #8296b1;
-  --line: rgba(123, 168, 214, 0.19);
-  --line-strong: rgba(113, 199, 210, 0.34);
-  --line-soft: rgba(123, 168, 214, 0.105);
-  --accent: #4cf7e3;
-  --accent-ink: #78fff0;
-  --accent-soft: rgba(76, 247, 227, 0.095);
-  --accent-softer: rgba(76, 247, 227, 0.045);
-  --accent-contrast: #061411;
-  --signal-secondary: #9694ff;
-  --signal-tertiary: #e493ff;
-  --signal-grid: rgba(107, 143, 197, 0.04);
-  --signal-glow: rgba(76, 247, 227, 0.045);
-  --note: #98bebc;
-  --hot: #f58abf;
-  --hot-soft: rgba(245, 138, 191, 0.095);
-  --amber: #edc079;
-  --amber-ink: #edc079;
-  --amber-soft: rgba(237, 192, 121, 0.095);
-  --ok: #79dec0;
-  --ok-soft: rgba(121, 222, 192, 0.1);
-  --ok-ink: #94e9cd;
+  --bg: #1b1826;
+  --bg-sunk: #242031;
+  --bg-muted: #2c253b;
+  --surface: #282236;
+  --surface-2: #2d263c;
+  --raised: #32283f;
+  --sidebar: #211c2d;
+  --daybar: #3a2e50;
+  --field: #352941;
+  --ink: #fff5eb;
+  --ink-2: #ebddef;
+  --ink-3: #ccbbd2;
+  --ink-4: #b8a9c2;
+  --line: #493859;
+  --line-strong: #644978;
+  --line-soft: #3d304b;
+  --accent: #c4a1ff;
+  --accent-ink: #d9baff;
+  --accent-soft: #523676;
+  --accent-softer: #382749;
+  --accent-contrast: #21192d;
+  --signal-secondary: #ffca81;
+  --signal-tertiary: #ffa3bc;
+  --signal-grid: transparent;
+  --signal-glow: #ffb8820b;
+  --note: #cab3db;
+  --hot: #ffa3bc;
+  --hot-soft: #573040;
+  --amber: #ffda83;
+  --amber-ink: #ffe3a6;
+  --amber-soft: #493b24;
+  --ok: #93e5be;
+  --ok-soft: #2d493e;
+  --ok-ink: #b3f3d4;
   --cal-plain: rgba(255, 255, 255, 0.03);
-  --rank-1: #f58abf;
-  --rank-2: #a5a2ff;
-  --rank-3: #4cf7e3;
+  --rank-1: #ffa3bc;
+  --rank-2: #c4a1ff;
+  --rank-3: #93e5be;
   --rank-rest: #8296b1;
   --shadow-card: inset 0 1px 0 rgba(161, 204, 255, 0.025), 0 5px 24px rgba(0, 0, 0, 0.12);
   --shadow-card-hover: inset 0 1px 0 rgba(76, 247, 227, 0.09), 0 8px 28px rgba(0, 0, 0, 0.2), 0 0 20px rgba(76, 247, 227, 0.025);
   --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.35);
   --shadow-thumb: inset 0 1px 0 rgba(161, 204, 255, 0.06), 0 1px 5px rgba(0, 0, 0, 0.3);
   --shadow-pop: 0 20px 60px rgba(0, 0, 0, 0.55);
-  --prose-ink: #c9d8e8;
-  --code-bg: #0a1120;
-  --selection: rgba(76, 247, 227, 0.2);
+  --prose-ink: #e6d8ea;
+  --code-bg: #211b2c;
+  --selection: #bca0ff44;
 }
 
 @layer base {
@@ -205,10 +205,7 @@
   }
   body {
     background-color: var(--bg);
-    background-image: radial-gradient(ellipse 900px 520px at 80% 0, var(--signal-glow), transparent 75%),
-      linear-gradient(var(--signal-grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--signal-grid) 1px, transparent 1px);
-    background-size: auto, 48px 48px, 48px 48px;
+    background-image: radial-gradient(ellipse 800px 500px at 85% 0, var(--signal-glow), transparent 80%);
     color: var(--ink);
     font-family: var(--font-sans);
     font-size: 14px;
@@ -648,3 +645,23 @@ nav[aria-label="底部导航"] a[aria-current="page"]::after {
 @keyframes cr-pulse {
   50% { box-shadow: 0 0 0 7px color-mix(in srgb, currentColor 6%, transparent); }
 }
+
+/* Playful surfaces keep article text on quiet, readable paper. */
+@layer components {
+  .workshop-panel {
+    border-radius: 24px;
+    background: linear-gradient(115deg, var(--surface), var(--accent-softer));
+    box-shadow: 0 5px 18px #7652900b;
+  }
+  .workshop-kicker { font-family: var(--font-sans); font-size: 12px; letter-spacing: .02em; font-weight: 700; text-transform: none; }
+  .workshop-rule { background: linear-gradient(90deg, #ffd67c, #eab8fd, #aae7cf); height: 3px; border-radius: 99px; }
+  .workshop-stat { border-radius: 16px; }
+  .chip { border-radius: 99px; }
+  .card-hover:hover { transform: translateY(-2px); box-shadow: var(--shadow-card-hover); }
+}
+
+:root:not([data-theme="dark"]) .signal-hero-copy { background: #ffe18c; }
+:root:not([data-theme="dark"]) .signal-hero-stage { background: #ddcbff; }
+:root:not([data-theme="dark"]) .signal-hero { border-color: #c9b0e9; }
+[data-theme="dark"] .signal-hero-copy { background: #3b2d42; }
+[data-theme="dark"] .signal-hero-stage { background: #3b2c54; }

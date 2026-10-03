@@ -34,13 +34,13 @@ async function reader(raw?: string, darkSystem = false) {
   return { state, values, browser, boot };
 }
 
-test("fresh and invalid preferences default to dark even on a light system, matching first paint", async () => {
+test("fresh and invalid preferences default to light even on a dark system, matching first paint", async () => {
   for (const raw of [undefined, "", "broken", "null", '"system"']) {
-    const { state, boot } = await reader(raw, false);
-    assert.equal(state.getThemePreference(), "dark");
-    assert.equal(state.resolvedTheme(), "dark");
-    assert.equal(boot(), "dark");
-    assert.equal(state.exportBundle().theme, "dark");
+    const { state, boot } = await reader(raw, true);
+    assert.equal(state.getThemePreference(), "light");
+    assert.equal(state.resolvedTheme(), "light");
+    assert.equal(boot(), "light");
+    assert.equal(state.exportBundle().theme, "light");
   }
 });
 
@@ -82,13 +82,13 @@ test("the setter saves auto for system and ordinary strings for explicit appeara
   assert.equal(state.getThemePreference(), "dark");
 });
 
-test("denied storage defaults dark but an in-document choice still works", async () => {
+test("denied storage defaults light but an in-document choice still works", async () => {
   const { state, browser, boot } = await reader();
   const deniedStorage = { getItem: () => { throw new Error("denied"); }, setItem: () => { throw new Error("denied"); }, removeItem: () => { throw new Error("denied"); } };
   Object.defineProperty(browser, "localStorage", { configurable: true, get: () => { throw new Error("denied"); } });
-  assert.equal(state.getThemePreference(), "dark");
-  assert.equal(state.resolvedTheme(), "dark");
-  assert.equal(boot(deniedStorage), "dark");
+  assert.equal(state.getThemePreference(), "light");
+  assert.equal(state.resolvedTheme(), "light");
+  assert.equal(boot(deniedStorage), "light");
   state.setThemePreference("light");
   assert.equal(state.getThemePreference(), "light");
   assert.equal(state.resolvedTheme(), "light");
@@ -98,11 +98,11 @@ test("denied storage defaults dark but an in-document choice still works", async
   assert.equal(state.exportBundle().theme, "auto");
 });
 
-test("a missing system theme API falls back to dark in the getter resolution and boot", async () => {
+test("a missing system theme API falls back to light in the getter resolution and boot", async () => {
   const { state, browser, boot } = await reader("auto");
   browser.matchMedia = () => { throw new Error("unavailable"); };
-  assert.equal(state.resolvedTheme(null), "dark");
-  assert.equal(boot(), "dark");
+  assert.equal(state.resolvedTheme(null), "light");
+  assert.equal(boot(), "light");
 });
 
 test("version 1 imports apply a preference to fresh or invalid storage, including auto and legacy null", async () => {
@@ -131,6 +131,6 @@ test("imports preserve every explicit saved preference and missing or unsupporte
     const report = await state.importBundle(JSON.stringify({ version: 1, starred: [], read: [], theme }));
     assert.equal(report.themeApplied, false);
     assert.equal(values.has(state.KEYS.theme), false);
-    assert.equal(state.getThemePreference(), "dark");
+    assert.equal(state.getThemePreference(), "light");
   }
 });
