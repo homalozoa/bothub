@@ -1,5 +1,5 @@
 {
-  "comment": "机闻默认启用的19个非简体中文信源。新增来源优先一手原始材料，逐项验证语言、日期、正文和机器人关联；已停用量子位移到source-candidates.json，保留原检查记录和历史文章。seed不覆盖管理员设置。",
+  "comment": "ZooRadar 七频道共用信源配置。新增来源经原采集器验证 URL、日期与合法可读材料；验证不代表编辑质量。seed 只添加新 ID，保留管理员修改。未验证源在 source-candidates.json。",
   "sources": [
     {
       "id": "rss-robot-report",
@@ -34,7 +34,10 @@
         "limitations": [
           "包含赞助稿、活动和融资线索；报道中转述的厂商说法不是独立验证。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-robohub",
@@ -69,7 +72,10 @@
         "limitations": [
           "投稿、专栏和研究者访谈；检查原始论文与项目链接。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-robotstart",
@@ -104,7 +110,10 @@
         "limitations": [
           "关注服务、伙伴和消费机器人；日文标题需保留归属，公关稿须降权。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-open-robotics",
@@ -139,7 +148,10 @@
         "limitations": [
           "ROS/Gazebo 官方组织博客；刊期稀疏，活动通知不自动进入精选。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-ros-announcements",
@@ -177,7 +189,10 @@
           "ROS 官方项目公告类别；RSS 的原始发帖日期不等于最后回复时间。类别也含工作组、包同步和活动，不自动入选；首次最多回灌25条，历史资料不作为当前资讯。",
           "论坛域名由Open Robotics运营，但发帖者不一定代表该组织；一手身份需按具体作者和原文核对，不对全类别自动标为一手。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-moveit-blog",
@@ -212,7 +227,10 @@
         "limitations": [
           "官方项目文章；机器人演示条件、ROS 版本和软件许可仍需逐条核对。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-nvidia-robotics",
@@ -248,7 +266,10 @@
         "limitations": [
           "官方宣传和合作案例；保留硬件要求、仿真条件与性能归属。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-bair",
@@ -282,7 +303,10 @@
         "limitations": [
           "混合 AI 研究，机器人相关性逐条预筛；发表不自动意味着工程价值。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-arxiv-robotics",
@@ -316,7 +340,10 @@
         "limitations": [
           "预印本摘要而非全文；不保证同行评审，RSS 可能含修订与跨类论文。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-ros2-releases",
@@ -350,7 +377,10 @@
         "limitations": [
           "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-gazebo-releases",
@@ -385,7 +415,10 @@
         "limitations": [
           "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-mujoco-releases",
@@ -420,7 +453,10 @@
         "limitations": [
           "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-isaaclab-releases",
@@ -455,7 +491,10 @@
         "limitations": [
           "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-lerobot-releases",
@@ -490,7 +529,10 @@
         "limitations": [
           "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-realsense-releases",
@@ -524,7 +566,10 @@
         "limitations": [
           "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-depthai-releases",
@@ -558,7 +603,10 @@
         "limitations": [
           "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-weekly-robotics",
@@ -593,7 +641,10 @@
         "limitations": [
           "机器人技术周刊；转载线索需回到原材料，赞助与编辑推荐分开。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-robotiq",
@@ -628,7 +679,10 @@
         "limitations": [
           "夹爪、传感器与系统集成官方资料；案例效果为厂商陈述，保留硬件版本和实验条件。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-microduck-blog",
@@ -664,7 +718,10 @@
         "limitations": [
           "Pollen Robotics 的 Microduck 官方发布；当前 feed 仅一篇 2026-08-27 公告。产品、价格及预售说法按厂商自报处理，保留原始日期。"
         ]
-      }
+      },
+      "channel_hints": [
+        "robotics"
+      ]
     },
     {
       "id": "rss-microduck-releases",
@@ -704,6 +761,709 @@
         "limitations": [
           "官方 daemon/SDK 发布，不能据此宣称全部硬件开源或已经完成真实机器人验证。过滤标题中的 -dev. 开发构建，保留稳定版本。"
         ]
+      },
+      "channel_hints": [
+        "robotics"
+      ]
+    },
+    {
+      "id": "rss-agent-github",
+      "name": "GitHub Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://github.blog/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "agents"
+      ],
+      "tags": [
+        "en",
+        "official"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "agents"
+        ],
+        "identity": "official",
+        "homepage": "https://github.blog/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:59:01.093Z",
+        "sample": {
+          "title": "AI is changing developer work. Here are three skills to strengthen.",
+          "url": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
+          "publishedAt": "2026-10-02T15:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 3591,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-agent-huggingface",
+      "name": "Hugging Face Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://huggingface.co/blog/feed.xml",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "agents"
+      ],
+      "tags": [
+        "en",
+        "official"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "agents"
+        ],
+        "identity": "official",
+        "homepage": "https://huggingface.co/blog",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:59:02.995Z",
+        "sample": {
+          "title": "Record, train, and deploy from one place with Strands Agents, LeRobot, and Hugging Face Storage Buckets",
+          "url": "https://huggingface.co/blog/amazon/strands-lerobot-streaming-data-loop",
+          "publishedAt": "2026-08-13T17:16:04.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 26550,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-play-godot",
+      "name": "Godot · Development",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://godotengine.org/rss.xml",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "play"
+      ],
+      "tags": [
+        "en",
+        "developer"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "play"
+        ],
+        "identity": "developer",
+        "homepage": "https://godotengine.org/blog/news/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:59:09.876Z",
+        "sample": {
+          "title": "Dev snapshot: Godot 4.8 dev 5",
+          "url": "https://godotengine.org/article/dev-snapshot-godot-4-8-dev-5/",
+          "publishedAt": "2026-09-10T12:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 7267,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-biology-plos",
+      "name": "PLOS Biology",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://journals.plos.org/plosbiology/feed/atom",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T1_5",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "biology",
+        "natural-history"
+      ],
+      "tags": [
+        "en",
+        "journal"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "biology",
+          "natural-history"
+        ],
+        "identity": "journal",
+        "homepage": "https://journals.plos.org/plosbiology/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:59:13.025Z",
+        "sample": {
+          "title": "Breadth of ACE2 receptor usage predicts host range and antigenic relatedness across bat sarbecoviruses",
+          "url": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3003944",
+          "publishedAt": "2026-10-01T14:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 2351,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-biology-elife-ecology",
+      "name": "eLife · Ecology",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://elifesciences.org/rss/subject/ecology.xml",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T1_5",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "biology",
+        "natural-history"
+      ],
+      "tags": [
+        "en",
+        "journal"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "biology",
+          "natural-history"
+        ],
+        "identity": "journal",
+        "homepage": "https://elifesciences.org/alerts",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:59:14.916Z",
+        "sample": {
+          "title": "Evolution of sideways locomotion in crabs",
+          "url": "https://elifesciences.org/articles/110015",
+          "publishedAt": "2026-08-27T00:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 209,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-natural-elife-evolution",
+      "name": "eLife · Evolutionary Biology",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://elifesciences.org/rss/subject/evolutionary-biology.xml",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T1_5",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "natural-history",
+        "biology"
+      ],
+      "tags": [
+        "en",
+        "journal"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "natural-history",
+          "biology"
+        ],
+        "identity": "journal",
+        "homepage": "https://elifesciences.org/alerts",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:59:17.339Z",
+        "sample": {
+          "title": "Evolution of sideways locomotion in crabs",
+          "url": "https://elifesciences.org/articles/110015",
+          "publishedAt": "2026-08-27T00:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 209,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-natural-zookeys",
+      "name": "ZooKeys",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://zookeys.pensoft.net/rss.php",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T1_5",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "natural-history",
+        "biology"
+      ],
+      "tags": [
+        "en",
+        "journal"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "natural-history",
+          "biology"
+        ],
+        "identity": "journal",
+        "homepage": "https://zookeys.pensoft.net/about",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:59:19.028Z",
+        "sample": {
+          "title": "Unveiling a small new glassfrog of the genus Vitreorana (Anura, Centrolenidae) from Cerrado, central Brazil",
+          "url": "https://zookeys.pensoft.net/article/193210/",
+          "publishedAt": "2026-09-03T16:54:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 565,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-natural-bhl",
+      "name": "Biodiversity Heritage Library",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://blog.biodiversitylibrary.org/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "natural-history"
+      ],
+      "tags": [
+        "en",
+        "library"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "natural-history"
+        ],
+        "identity": "library",
+        "homepage": "https://blog.biodiversitylibrary.org/subscribe",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:59:23.481Z",
+        "sample": {
+          "title": "Discovering Carrie B. Aaron Through Projects and Partnerships",
+          "url": "https://blog.biodiversitylibrary.org/2026/09/carrie-b-aaron",
+          "publishedAt": "2026-09-16T13:30:47.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 7979,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-sociology-socopen",
+      "name": "SocOpen · SocArXiv",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://socopen.org/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "sociology"
+      ],
+      "tags": [
+        "en",
+        "research-community"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "sociology"
+        ],
+        "identity": "research-community",
+        "homepage": "https://socopen.org/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:59:35.500Z",
+        "sample": {
+          "title": "SocArXiv wins Kohli Foundation for Sociology 2025 Infrastructure Prize",
+          "url": "https://socopen.org/2025/05/08/socarxiv-wins-kohli-foundation-for-sociology-2025-infrastructure-prize/",
+          "publishedAt": "2025-05-08T18:22:24.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4624,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-interaction-msr",
+      "name": "Microsoft Research",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.microsoft.com/en-us/research/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "interaction",
+        "agents"
+      ],
+      "tags": [
+        "en",
+        "research-institute"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "interaction",
+          "agents"
+        ],
+        "identity": "research-institute",
+        "homepage": "https://www.microsoft.com/en-us/research/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T11:06:40.474Z",
+        "sample": {
+          "title": "Forecasting space weather risks on power grids",
+          "url": "https://www.microsoft.com/en-us/research/blog/forecasting-space-weather-risks-on-power-grids/",
+          "publishedAt": "2026-09-30T16:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 8754,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-interaction-nng",
+      "name": "Nielsen Norman Group",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.nngroup.com/feed/rss/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "interaction"
+      ],
+      "tags": [
+        "en",
+        "professional-research"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "interaction"
+        ],
+        "identity": "professional-research",
+        "homepage": "https://www.nngroup.com/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T11:06:43.212Z",
+        "sample": {
+          "title": "Using AI for UX Work: Study Guide",
+          "url": "https://www.nngroup.com/articles/ai-work-study-guide/?utm_source=rss&utm_medium=feed&utm_campaign=rss-syndication",
+          "publishedAt": "2026-09-04T17:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 1285,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-play-factorio",
+      "name": "Factorio · Developer Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://factorio.com/blog/rss",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "play"
+      ],
+      "tags": [
+        "en",
+        "developer"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "play"
+        ],
+        "identity": "developer",
+        "homepage": "https://factorio.com/blog/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T11:06:46.379Z",
+        "sample": {
+          "title": "Friday Facts #447 - Factorio that you can touch",
+          "url": "https://factorio.com/blog/post/fff-447",
+          "publishedAt": "2026-09-25T00:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 12802,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-sociology-owid",
+      "name": "Our World in Data",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://ourworldindata.org/atom.xml",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "sociology",
+        "biology"
+      ],
+      "tags": [
+        "en",
+        "research-institute"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "sociology",
+          "biology"
+        ],
+        "identity": "research-institute",
+        "homepage": "https://ourworldindata.org/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T11:06:53.516Z",
+        "sample": {
+          "title": "How high is current immigration to the United States in historical perspective?",
+          "url": "https://ourworldindata.org/how-high-is-current-immigration-to-the-united-states-in-historical-perspective",
+          "publishedAt": "2026-09-21T00:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 7946,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-sociology-pew",
+      "name": "Pew Research Center",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.pewresearch.org/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T1_5",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "sociology",
+        "interaction"
+      ],
+      "tags": [
+        "en",
+        "research-institute"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "sociology",
+          "interaction"
+        ],
+        "identity": "research-institute",
+        "homepage": "https://www.pewresearch.org/about/follow-us/",
+        "limitations": [
+          "分类 feed 经核验返回全站条目，统一使用官方综合 feed，只抓一次，再按研究问题路由。",
+          "保留调查地区、时间、方法和适用范围；政治消息与周报合集不自动入选。"
+        ],
+        "verified_at": "2026-10-03T11:15:25.523Z",
+        "validation_status": "verified",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": {
+          "title": "Across the Globe, People Increasingly Say Social Media Is Harming Democracy",
+          "url": "https://www.pewresearch.org/global/2026/10/01/across-the-globe-people-increasingly-say-social-media-is-harming-democracy/",
+          "publishedAt": "2026-10-01T13:54:27.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 23792,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
       }
     }
   ]

@@ -29,3 +29,12 @@ test("an event family cannot cross development and holdout after review", () => 
   assert.throws(() => exportReviewed(rows, [review(rows[0]!, { eventFamily: "same-event", benchmarkSplit: "development" }), review(rows[1]!, { eventFamily: "same-event", benchmarkSplit: "holdout" })]), /crosses splits/);
   assert.throws(() => exportReviewed(rows, [review(rows[0]!), review(rows[0]!)]), /Duplicate review/);
 });
+
+test("seven-domain candidate index preserves provenance and explicitly unconfirmed channel suggestions", () => {
+  const channels: CandidateRow[] = readFileSync(new URL("./channel-candidates.jsonl", import.meta.url), "utf8").trim().split("\n").map(s=>JSON.parse(s));
+  assert.equal(channels.length,18);
+  for (const row of channels) {
+    assert.equal(row.annotation.status,"pending_human_confirmation");assert.equal(row.gold.decision,"either");
+    assert.equal(row.material.bodyOriginal,null);assert.ok(String(row.material.originalUrl).startsWith("https://"));
+  }
+});

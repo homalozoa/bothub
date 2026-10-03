@@ -22,15 +22,15 @@ test("network checks require explicit opt-in before importing collectors", async
 });
 test("enabled source configuration and generated verification metadata agree", () => {
   const sources = JSON.parse(readFileSync(new URL("../sources.json", import.meta.url), "utf8")).sources;
-  const records = JSON.parse(readFileSync(new URL("../../docs/source-validation.json", import.meta.url), "utf8")).records;
-  assert.ok(sources.length >= 15 && sources.length <= 25);
+  const records = [...JSON.parse(readFileSync(new URL("../../docs/source-validation.json", import.meta.url), "utf8")).records, ...JSON.parse(readFileSync(new URL("../../docs/channel-source-validation.json", import.meta.url), "utf8")).records];
+  assert.ok(sources.length >= 15);
   assert.equal(new Set(sources.map((s: any) => s.id)).size, sources.length);
   for (const source of sources) {
     assert.deepEqual(unsupportedConfig(source.kind, source.config), []);
     const record = records.find((r: any) => r.sourceId === source.id);
     assert.equal(record?.status, "verified", source.id);
     assert.equal(record?.endpoint, source.config.feedUrl ?? source.config.url);
-    for (const key of ["language", "coverage", "identity", "homepage", "limitations"]) assert.deepEqual(record[key], source.robotics[key]);
+    for (const key of ["language", "coverage", "identity", "homepage", "limitations"]) assert.deepEqual(record[key], (source.editorial ?? source.robotics)[key]);
     assert.equal(source.enabled, true);
     assert.equal(source.site_fulltext, false);
     assert.equal(source.syndicate_fulltext, false);

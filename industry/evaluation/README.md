@@ -36,3 +36,15 @@ node --env-file=.env scripts/eval-selection.ts --gold .data/robotics-gold.jsonl 
 ```bash
 node --test industry/evaluation/*.test.ts
 ```
+
+## ZooRadar 六个新增频道候选
+
+`channel-candidates.jsonl` 为每个新增频道列出正例、反例和边界候选，共18项真实 URL 索引。只读了经原采集器观察到的原标题与元数据，所有建议待人工确认、gold=either；不能当作已评估全文或分类准确率。个别来源覆盖较宽，新闻稿、发行快照、科普和机构公告是否合适仍需复核。旧材料保留原始日期，编辑价值与今天可刊状态分别评价。
+
+复用既有人工复核与导出工具：
+
+```bash
+node industry/evaluation/export-reviewed.ts --candidates industry/evaluation/channel-candidates.jsonl --reviews .data/channel-reviews.jsonl --out .data/channel-gold.jsonl
+```
+
+导出后的有效材料可用 scripts/eval-selection.ts 或后台 SelectBench；模型服务、预算与人工复核条件沿用原流程。本轮没有运行真实模型评测。

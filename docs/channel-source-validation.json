@@ -1,0 +1,1015 @@
+{
+  "method": "Production fetchRss/fetchJsonList, guardedFetch and readable; up to 3 candidates (legacy robotics checks prioritize robotics cues; editorial checks validate URL, source date and readable material), <=1 article fetch/source; no model or paid fallback",
+  "records": [
+    {
+      "sourceId": "rss-agent-openai",
+      "name": "OpenAI News",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://openai.com/news/rss.xml",
+      "language": "en",
+      "coverage": [
+        "agents"
+      ],
+      "identity": "official",
+      "homepage": "https://openai.com/news/",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "agents"
+      ],
+      "checkedAt": "2026-10-03T10:58:58.294Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "body_or_date_unconfirmed",
+      "itemCount": 1245,
+      "datedItems": 1245,
+      "samples": [
+        {
+          "title": "Improving health intelligence in ChatGPT",
+          "url": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
+          "publishedAt": "2026-06-18T11:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Using AI to help physicians diagnose rare genetic diseases affecting children",
+          "url": "https://openai.com/index/diagnose-rare-childhood-diseases",
+          "publishedAt": "2026-06-18T08:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Predicting model behavior before release by simulating deployment",
+          "url": "https://openai.com/index/deployment-simulation",
+          "publishedAt": "2026-06-16T00:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-agent-github",
+      "name": "GitHub Blog",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://github.blog/feed/",
+      "language": "en",
+      "coverage": [
+        "agents"
+      ],
+      "identity": "official",
+      "homepage": "https://github.blog/",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "agents"
+      ],
+      "checkedAt": "2026-10-03T10:59:01.093Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "AI is changing developer work. Here are three skills to strengthen.",
+          "url": "https://github.blog/ai-and-ml/ai-is-rewriting-the-developer-career-ladder-heres-how-to-stand-out/",
+          "publishedAt": "2026-10-02T15:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 3591,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "10 technical talks I’m excited about at GitHub Universe 2026",
+          "url": "https://github.blog/news-insights/company-news/10-technical-talks-im-excited-about-at-github-universe-2026/",
+          "publishedAt": "2026-10-01T15:07:16.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 6335,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Developer policy update: Transparency, state policy, and what’s ahead",
+          "url": "https://github.blog/news-insights/policy-news-and-insights/developer-policy-update-transparency-state-policy-and-whats-ahead/",
+          "publishedAt": "2026-09-29T15:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 7987,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-agent-huggingface",
+      "name": "Hugging Face Blog",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://huggingface.co/blog/feed.xml",
+      "language": "en",
+      "coverage": [
+        "agents"
+      ],
+      "identity": "official",
+      "homepage": "https://huggingface.co/blog",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "agents"
+      ],
+      "checkedAt": "2026-10-03T10:59:02.995Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 872,
+      "datedItems": 872,
+      "samples": [
+        {
+          "title": "Record, train, and deploy from one place with Strands Agents, LeRobot, and Hugging Face Storage Buckets",
+          "url": "https://huggingface.co/blog/amazon/strands-lerobot-streaming-data-loop",
+          "publishedAt": "2026-08-13T17:16:04.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 26550,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "NVIDIA Cosmos-H-Dreams: Bringing Real-Time Generative Simulation to Surgical Robotics",
+          "url": "https://huggingface.co/blog/nvidia/cosmos-h-dreams",
+          "publishedAt": "2026-07-27T09:32:20.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Grabette: an open system to record robot-manipulation data",
+          "url": "https://huggingface.co/blog/grabette",
+          "publishedAt": "2026-07-21T00:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-interaction-arxiv",
+      "name": "arXiv · cs.HC",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://rss.arxiv.org/rss/cs.HC",
+      "language": "en",
+      "coverage": [
+        "interaction",
+        "play"
+      ],
+      "identity": "research",
+      "homepage": "https://arxiv.org/list/cs.HC/recent",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "interaction",
+        "play"
+      ],
+      "checkedAt": "2026-10-03T10:59:05.866Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "empty_feed",
+      "itemCount": 0,
+      "datedItems": 0,
+      "samples": []
+    },
+    {
+      "sourceId": "rss-interaction-pew",
+      "name": "Pew · Internet & Technology",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://www.pewresearch.org/topic/internet-technology/feed/",
+      "language": "en",
+      "coverage": [
+        "interaction",
+        "sociology"
+      ],
+      "identity": "research-institute",
+      "homepage": "https://www.pewresearch.org/topic/internet-technology/",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "interaction",
+        "sociology"
+      ],
+      "checkedAt": "2026-10-03T10:59:07.676Z",
+      "status": "http_error",
+      "error": "HTTP 403",
+      "samples": []
+    },
+    {
+      "sourceId": "rss-play-godot",
+      "name": "Godot · Development",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://godotengine.org/rss.xml",
+      "language": "en",
+      "coverage": [
+        "play"
+      ],
+      "identity": "developer",
+      "homepage": "https://godotengine.org/blog/news/",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "play"
+      ],
+      "checkedAt": "2026-10-03T10:59:09.876Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 15,
+      "datedItems": 15,
+      "samples": [
+        {
+          "title": "Dev snapshot: Godot 4.8 dev 5",
+          "url": "https://godotengine.org/article/dev-snapshot-godot-4-8-dev-5/",
+          "publishedAt": "2026-09-10T12:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 7267,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Dev snapshot: Godot 4.8 dev 7",
+          "url": "https://godotengine.org/article/dev-snapshot-godot-4-8-dev-7/",
+          "publishedAt": "2026-09-29T12:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Dev snapshot: Godot 4.8 dev 6",
+          "url": "https://godotengine.org/article/dev-snapshot-godot-4-8-dev-6/",
+          "publishedAt": "2026-09-15T20:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-biology-plos",
+      "name": "PLOS Biology",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://journals.plos.org/plosbiology/feed/atom",
+      "language": "en",
+      "coverage": [
+        "biology",
+        "natural-history"
+      ],
+      "identity": "journal",
+      "homepage": "https://journals.plos.org/plosbiology/",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "biology",
+        "natural-history"
+      ],
+      "checkedAt": "2026-10-03T10:59:13.025Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 30,
+      "datedItems": 30,
+      "samples": [
+        {
+          "title": "Breadth of ACE2 receptor usage predicts host range and antigenic relatedness across bat sarbecoviruses",
+          "url": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3003944",
+          "publishedAt": "2026-10-01T14:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 2351,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Intrinsic timescale develops hierarchically from sensorimotor to association cortex in youth and stabilizes in adulthood",
+          "url": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3004037",
+          "publishedAt": "2026-09-29T14:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 1688,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Ancient inversion polymorphisms associate with sexually selected traits across natural guppy populations",
+          "url": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3004024",
+          "publishedAt": "2026-09-23T14:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 1786,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-biology-elife-ecology",
+      "name": "eLife · Ecology",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://elifesciences.org/rss/subject/ecology.xml",
+      "language": "en",
+      "coverage": [
+        "biology",
+        "natural-history"
+      ],
+      "identity": "journal",
+      "homepage": "https://elifesciences.org/alerts",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "biology",
+        "natural-history"
+      ],
+      "checkedAt": "2026-10-03T10:59:14.916Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 28,
+      "datedItems": 28,
+      "samples": [
+        {
+          "title": "Evolution of sideways locomotion in crabs",
+          "url": "https://elifesciences.org/articles/110015",
+          "publishedAt": "2026-08-27T00:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 209,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Crickets evade bats via olfaction beyond acoustic cues",
+          "url": "https://elifesciences.org/articles/110936",
+          "publishedAt": "2026-08-21T00:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Dopamine and its receptor DcDop2 are involved in the coevolution between ‘ Candidatus Liberibacter asiaticus’ and Diaphorina citri",
+          "url": "https://elifesciences.org/articles/109081",
+          "publishedAt": "2026-06-22T00:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-natural-elife-evolution",
+      "name": "eLife · Evolutionary Biology",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://elifesciences.org/rss/subject/evolutionary-biology.xml",
+      "language": "en",
+      "coverage": [
+        "natural-history",
+        "biology"
+      ],
+      "identity": "journal",
+      "homepage": "https://elifesciences.org/alerts",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "natural-history",
+        "biology"
+      ],
+      "checkedAt": "2026-10-03T10:59:17.339Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 28,
+      "datedItems": 28,
+      "samples": [
+        {
+          "title": "Evolution of sideways locomotion in crabs",
+          "url": "https://elifesciences.org/articles/110015",
+          "publishedAt": "2026-08-27T00:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 209,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "The adaptive landscapes of three global Escherichia coli transcriptional regulators",
+          "url": "https://elifesciences.org/articles/103774",
+          "publishedAt": "2026-07-21T00:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Inference of germinal center evolutionary dynamics via simulation-based deep learning",
+          "url": "https://elifesciences.org/articles/108880",
+          "publishedAt": "2026-04-28T00:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-natural-zookeys",
+      "name": "ZooKeys",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://zookeys.pensoft.net/rss.php",
+      "language": "en",
+      "coverage": [
+        "natural-history",
+        "biology"
+      ],
+      "identity": "journal",
+      "homepage": "https://zookeys.pensoft.net/about",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "natural-history",
+        "biology"
+      ],
+      "checkedAt": "2026-10-03T10:59:19.028Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 100,
+      "datedItems": 100,
+      "samples": [
+        {
+          "title": "Unveiling a small new glassfrog of the genus Vitreorana (Anura, Centrolenidae) from Cerrado, central Brazil",
+          "url": "https://zookeys.pensoft.net/article/193210/",
+          "publishedAt": "2026-09-03T16:54:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 565,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Dragons guard secrets: integrative systematics of Pteraeolidia semperi species complex (Gastropoda, Nudibranchia) from Vietnam",
+          "url": "https://zookeys.pensoft.net/article/195366/",
+          "publishedAt": "2026-10-02T16:43:06.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Two new species and two new country records of the giant pill-millipede genus Zephronia Gray, 1832 from Thailand, based on integrative taxonomy (Diplopoda, Sphaerotheriida, Zephroniidae)",
+          "url": "https://zookeys.pensoft.net/article/205518/",
+          "publishedAt": "2026-10-02T10:18:04.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-natural-bhl",
+      "name": "Biodiversity Heritage Library",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://blog.biodiversitylibrary.org/feed/",
+      "language": "en",
+      "coverage": [
+        "natural-history"
+      ],
+      "identity": "library",
+      "homepage": "https://blog.biodiversitylibrary.org/subscribe",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "natural-history"
+      ],
+      "checkedAt": "2026-10-03T10:59:23.481Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "Discovering Carrie B. Aaron Through Projects and Partnerships",
+          "url": "https://blog.biodiversitylibrary.org/2026/09/carrie-b-aaron",
+          "publishedAt": "2026-09-16T13:30:47.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 7979,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Extinct Species Descriptions: the most precious treasure in BHL",
+          "url": "https://blog.biodiversitylibrary.org/2026/09/extinct-species-descriptions",
+          "publishedAt": "2026-09-07T04:52:46.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Rejected to Accepted: E.A.W. Zimmermann’s Geographische Geschichte des Menschen, und der allgemein verbreiteten vierfüßigen Thiere",
+          "url": "https://blog.biodiversitylibrary.org/2026/08/rejected-to-accepted",
+          "publishedAt": "2026-08-18T14:26:15.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-sociology-pew-family",
+      "name": "Pew · Family & Relationships",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://www.pewresearch.org/topic/family-relationships/feed/",
+      "language": "en",
+      "coverage": [
+        "sociology"
+      ],
+      "identity": "research-institute",
+      "homepage": "https://www.pewresearch.org/about/follow-us/",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "sociology"
+      ],
+      "checkedAt": "2026-10-03T10:59:27.206Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 100,
+      "datedItems": 100,
+      "samples": [
+        {
+          "title": "Across the Globe, People Increasingly Say Social Media Is Harming Democracy",
+          "url": "https://www.pewresearch.org/global/2026/10/01/across-the-globe-people-increasingly-say-social-media-is-harming-democracy/",
+          "publishedAt": "2026-10-01T13:54:27.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 23792,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Weekly: 10.3.26",
+          "url": "https://www.pewresearch.org/newsletter/weekly-roundup/weekly-10-3-26/",
+          "publishedAt": "2026-10-02T20:02:55.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Why Americans Identify as Republicans and Democrats – and Why They Don’t",
+          "url": "https://www.pewresearch.org/short-reads/2026/10/02/why-americans-identify-as-republicans-and-democrats-and-why-they-dont/",
+          "publishedAt": "2026-10-02T19:30:49.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-sociology-pew-work",
+      "name": "Pew · Economy & Work",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://www.pewresearch.org/topic/economy-work/feed/",
+      "language": "en",
+      "coverage": [
+        "sociology"
+      ],
+      "identity": "research-institute",
+      "homepage": "https://www.pewresearch.org/about/follow-us/",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "sociology"
+      ],
+      "checkedAt": "2026-10-03T10:59:32.021Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 100,
+      "datedItems": 100,
+      "samples": [
+        {
+          "title": "Across the Globe, People Increasingly Say Social Media Is Harming Democracy",
+          "url": "https://www.pewresearch.org/global/2026/10/01/across-the-globe-people-increasingly-say-social-media-is-harming-democracy/",
+          "publishedAt": "2026-10-01T13:54:27.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 23792,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Weekly: 10.3.26",
+          "url": "https://www.pewresearch.org/newsletter/weekly-roundup/weekly-10-3-26/",
+          "publishedAt": "2026-10-02T20:02:55.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Why Americans Identify as Republicans and Democrats – and Why They Don’t",
+          "url": "https://www.pewresearch.org/short-reads/2026/10/02/why-americans-identify-as-republicans-and-democrats-and-why-they-dont/",
+          "publishedAt": "2026-10-02T19:30:49.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-sociology-socopen",
+      "name": "SocOpen · SocArXiv",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://socopen.org/feed/",
+      "language": "en",
+      "coverage": [
+        "sociology"
+      ],
+      "identity": "research-community",
+      "homepage": "https://socopen.org/",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "sociology"
+      ],
+      "checkedAt": "2026-10-03T10:59:35.500Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "SocArXiv wins Kohli Foundation for Sociology 2025 Infrastructure Prize",
+          "url": "https://socopen.org/2025/05/08/socarxiv-wins-kohli-foundation-for-sociology-2025-infrastructure-prize/",
+          "publishedAt": "2025-05-08T18:22:24.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4624,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "SocArXiv releases AI policy",
+          "url": "https://socopen.org/2026/03/09/socarxiv-releases-ai-policy/",
+          "publishedAt": "2026-03-09T01:34:45.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 2442,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Where should SocArXiv draw the AI line?",
+          "url": "https://socopen.org/2026/02/22/where-should-socarxiv-draw-the-ai-line/",
+          "publishedAt": "2026-02-22T00:54:59.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 5735,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-interaction-msr",
+      "name": "Microsoft Research",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://www.microsoft.com/en-us/research/feed/",
+      "language": "en",
+      "coverage": [
+        "interaction",
+        "agents"
+      ],
+      "identity": "research-institute",
+      "homepage": "https://www.microsoft.com/en-us/research/",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "interaction",
+        "agents"
+      ],
+      "checkedAt": "2026-10-03T11:06:40.474Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "Forecasting space weather risks on power grids",
+          "url": "https://www.microsoft.com/en-us/research/blog/forecasting-space-weather-risks-on-power-grids/",
+          "publishedAt": "2026-09-30T16:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 8754,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Introducing Quine: An AI research system designed for the complexity of biology",
+          "url": "https://www.microsoft.com/en-us/research/blog/introducing-quine-an-ai-research-system-designed-for-the-complexity-of-biology/",
+          "publishedAt": "2026-09-29T14:00:02.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 12168,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "One year in: How Microsoft Research Asia – Singapore is advancing research, partnership and talent for real-world impact",
+          "url": "https://www.microsoft.com/en-us/research/blog/one-year-in-how-microsoft-research-asia-singapore-is-advancing-research-partnership-and-talent-for-real-world-impact/",
+          "publishedAt": "2026-09-28T21:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 15011,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-interaction-nng",
+      "name": "Nielsen Norman Group",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://www.nngroup.com/feed/rss/",
+      "language": "en",
+      "coverage": [
+        "interaction"
+      ],
+      "identity": "professional-research",
+      "homepage": "https://www.nngroup.com/",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "interaction"
+      ],
+      "checkedAt": "2026-10-03T11:06:43.212Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 20,
+      "datedItems": 20,
+      "samples": [
+        {
+          "title": "Using AI for UX Work: Study Guide",
+          "url": "https://www.nngroup.com/articles/ai-work-study-guide/?utm_source=rss&utm_medium=feed&utm_campaign=rss-syndication",
+          "publishedAt": "2026-09-04T17:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 1285,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "The New Big Ball of Mud: Why Agentic AI Systems Turn Fragile",
+          "url": "https://www.nngroup.com/articles/big-ball-of-mud-ai/?utm_source=rss&utm_medium=feed&utm_campaign=rss-syndication",
+          "publishedAt": "2026-10-02T17:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 1299,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Empathy Mapping: The First Step in Design Thinking",
+          "url": "https://www.nngroup.com/articles/empathy-mapping/?utm_source=rss&utm_medium=feed&utm_campaign=rss-syndication",
+          "publishedAt": "2026-10-02T17:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 12761,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-play-factorio",
+      "name": "Factorio · Developer Blog",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://factorio.com/blog/rss",
+      "language": "en",
+      "coverage": [
+        "play"
+      ],
+      "identity": "developer",
+      "homepage": "https://factorio.com/blog/",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "play"
+      ],
+      "checkedAt": "2026-10-03T11:06:46.379Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "Friday Facts #447 - Factorio that you can touch",
+          "url": "https://factorio.com/blog/post/fff-447",
+          "publishedAt": "2026-09-25T00:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 12802,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Friday Facts #446 - An ARM and a Frame",
+          "url": "https://factorio.com/blog/post/fff-446",
+          "publishedAt": "2026-09-18T00:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 13740,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Friday Facts #443 - More Planet Deliveries",
+          "url": "https://factorio.com/blog/post/fff-443",
+          "publishedAt": "2026-06-19T00:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 14764,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-biology-bmc",
+      "name": "BMC Biology",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://bmcbiol.biomedcentral.com/articles/most-recent/rss.xml",
+      "language": "en",
+      "coverage": [
+        "biology"
+      ],
+      "identity": "journal",
+      "homepage": "https://bmcbiol.biomedcentral.com/",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "biology"
+      ],
+      "checkedAt": "2026-10-03T11:06:48.402Z",
+      "status": "parse_error",
+      "error": "not an RSS/Atom document",
+      "samples": []
+    },
+    {
+      "sourceId": "rss-sociology-owid",
+      "name": "Our World in Data",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://ourworldindata.org/atom.xml",
+      "language": "en",
+      "coverage": [
+        "sociology",
+        "biology"
+      ],
+      "identity": "research-institute",
+      "homepage": "https://ourworldindata.org/",
+      "limitations": [
+        "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+        "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+      ],
+      "channelHints": [
+        "sociology",
+        "biology"
+      ],
+      "checkedAt": "2026-10-03T11:06:53.516Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "How high is current immigration to the United States in historical perspective?",
+          "url": "https://ourworldindata.org/how-high-is-current-immigration-to-the-united-states-in-historical-perspective",
+          "publishedAt": "2026-09-21T00:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 7946,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Is organic farming better for the environment than conventional farming?",
+          "url": "https://ourworldindata.org/is-organic-farming-better-for-the-environment-than-conventional-farming",
+          "publishedAt": "2026-09-14T00:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "A never-ending childhood of malaria",
+          "url": "https://ourworldindata.org/a-never-ending-childhood-of-malaria",
+          "publishedAt": "2026-09-07T00:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-sociology-pew",
+      "name": "Pew Research Center",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://www.pewresearch.org/feed/",
+      "language": "en",
+      "coverage": [
+        "sociology",
+        "interaction"
+      ],
+      "identity": "research-institute",
+      "homepage": "https://www.pewresearch.org/about/follow-us/",
+      "limitations": [
+        "分类 feed 经核验返回全站条目，统一使用官方综合 feed，只抓一次，再按研究问题路由。",
+        "保留调查地区、时间、方法和适用范围；政治消息与周报合集不自动入选。"
+      ],
+      "channelHints": [
+        "sociology",
+        "interaction"
+      ],
+      "checkedAt": "2026-10-03T11:15:25.523Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 100,
+      "datedItems": 100,
+      "samples": [
+        {
+          "title": "Across the Globe, People Increasingly Say Social Media Is Harming Democracy",
+          "url": "https://www.pewresearch.org/global/2026/10/01/across-the-globe-people-increasingly-say-social-media-is-harming-democracy/",
+          "publishedAt": "2026-10-01T13:54:27.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 23792,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Weekly: 10.3.26",
+          "url": "https://www.pewresearch.org/newsletter/weekly-roundup/weekly-10-3-26/",
+          "publishedAt": "2026-10-02T20:02:55.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Why Americans Identify as Republicans and Democrats – and Why They Don’t",
+          "url": "https://www.pewresearch.org/short-reads/2026/10/02/why-americans-identify-as-republicans-and-democrats-and-why-they-dont/",
+          "publishedAt": "2026-10-02T19:30:49.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    }
+  ]
+}

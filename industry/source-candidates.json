@@ -396,6 +396,182 @@
         ],
         "disabledReason": "2026-10-03：按运营者非简体中文来源偏好停用；此前RSS解析验证通过，不是技术故障或逐条失实判定。"
       }
+    },
+    {
+      "id": "rss-agent-openai",
+      "name": "OpenAI News",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://openai.com/news/rss.xml",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "agents"
+      ],
+      "tags": [
+        "en",
+        "official"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "agents"
+        ],
+        "identity": "official",
+        "homepage": "https://openai.com/news/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:58:58.294Z",
+        "sample": {
+          "title": "Improving health intelligence in ChatGPT",
+          "url": "https://openai.com/index/improving-health-intelligence-in-chatgpt",
+          "publishedAt": "2026-06-18T11:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        "validation_status": "body_or_date_unconfirmed",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-interaction-arxiv",
+      "name": "arXiv · cs.HC",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://rss.arxiv.org/rss/cs.HC",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T1_5",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "interaction",
+        "play"
+      ],
+      "tags": [
+        "en",
+        "research"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "interaction",
+          "play"
+        ],
+        "identity": "research",
+        "homepage": "https://arxiv.org/list/cs.HC/recent",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:59:05.866Z",
+        "sample": null,
+        "validation_status": "empty_feed",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification"
+      }
+    },
+    {
+      "id": "rss-interaction-pew",
+      "name": "Pew · Internet & Technology",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.pewresearch.org/topic/internet-technology/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T1_5",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "interaction",
+        "sociology"
+      ],
+      "tags": [
+        "en",
+        "research-institute"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "interaction",
+          "sociology"
+        ],
+        "identity": "research-institute",
+        "homepage": "https://www.pewresearch.org/topic/internet-technology/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T10:59:07.676Z",
+        "sample": null,
+        "validation_status": "http_error",
+        "validation_scope": "feed-structure-only"
+      }
+    },
+    {
+      "id": "rss-biology-bmc",
+      "name": "BMC Biology",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://bmcbiol.biomedcentral.com/articles/most-recent/rss.xml",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "biology"
+      ],
+      "tags": [
+        "en",
+        "journal"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "biology"
+        ],
+        "identity": "journal",
+        "homepage": "https://bmcbiol.biomedcentral.com/",
+        "limitations": [
+          "仅使用合法可访问的摘要；来源身份不等于独立核验。",
+          "广泛来源由预筛按主要问题路由，不机械收录所有条目。"
+        ],
+        "verified_at": "2026-10-03T11:06:48.402Z",
+        "sample": null,
+        "validation_status": "parse_error",
+        "validation_scope": "feed-structure-only"
+      }
     }
   ]
 }

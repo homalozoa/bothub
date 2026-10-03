@@ -4,12 +4,12 @@
     {
       "key": "company",
       "name": "公司与机构",
-      "blurb": "追踪不同公司与开源机构在机器人领域的具体进展"
+      "blurb": "追踪公司、研究机构、博物馆与开源组织的进展"
     },
     {
       "key": "field",
-      "name": "技术与产品方向",
-      "blurb": "按机器人研发问题、系统资产与产品形态持续阅读"
+      "name": "问题与方向",
+      "blurb": "沿着技术、生命、自然和日常生活的问题继续阅读"
     },
     {
       "key": "genre",
@@ -652,6 +652,87 @@
         "long-term-autonomy",
         "engineering"
       ]
+    },
+    {
+      "slug": "agent-memory",
+      "name": "长期记忆",
+      "group": "field",
+      "tags": [
+        "长期记忆"
+      ],
+      "definition": "Agent 的记忆、任务延续和权限边界"
+    },
+    {
+      "slug": "interaction-trust",
+      "name": "交互与信任",
+      "group": "field",
+      "tags": [
+        "交互/信任"
+      ],
+      "definition": "人如何理解、依赖与使用技术"
+    },
+    {
+      "slug": "virtual-life",
+      "name": "虚拟生命",
+      "group": "field",
+      "tags": [
+        "虚拟生命"
+      ],
+      "definition": "角色、养成系统、游戏机制与长期体验"
+    },
+    {
+      "slug": "animal-behavior",
+      "name": "动物行为",
+      "group": "field",
+      "tags": [
+        "动物行为"
+      ],
+      "definition": "学习、感觉、认知与行为机制"
+    },
+    {
+      "slug": "plant-ecology",
+      "name": "植物与生态",
+      "group": "field",
+      "tags": [
+        "植物/生态"
+      ],
+      "definition": "植物、微生物与生态系统"
+    },
+    {
+      "slug": "evolution-history",
+      "name": "演化历史",
+      "group": "field",
+      "tags": [
+        "演化历史"
+      ],
+      "definition": "物种、标本、地层与演化解释"
+    },
+    {
+      "slug": "taxonomy-fieldwork",
+      "name": "分类与田野",
+      "group": "field",
+      "tags": [
+        "标本/田野"
+      ],
+      "definition": "分类依据、物种分布与田野材料"
+    },
+    {
+      "slug": "family-care",
+      "name": "家庭与照护",
+      "group": "field",
+      "tags": [
+        "家庭/照护"
+      ],
+      "definition": "家庭、独居、照护关系和生活实践"
+    },
+    {
+      "slug": "work-leisure",
+      "name": "工作与休闲",
+      "group": "field",
+      "tags": [
+        "工作/休闲"
+      ],
+      "definition": "工作、休闲、社区与社会关系"
     }
   ]
 }

@@ -8,7 +8,9 @@ import type { Candidate, SourceRow } from "../packages/backend/src/sources/types
 export interface SourceSpec extends Omit<SourceRow, "cursor" | "fail_count"> {
   site_fulltext: boolean;
   syndicate_fulltext: boolean;
-  robotics: { language: string; coverage: string[]; identity: string; homepage: string; limitations: string[] };
+  channel_hints?: string[];
+  editorial?: { language: string; coverage: string[]; identity: string; homepage: string; limitations: string[] };
+  robotics?: { language: string; coverage: string[]; identity: string; homepage: string; limitations: string[] };
 }
 export interface SampleCheck {
   title: string;
@@ -65,7 +67,7 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
   const pause = () => new Promise((resolve) => setTimeout(resolve, delayMs));
   for (const source of sources) {
     const checkedAt = new Date().toISOString();
-    const base = { sourceId: source.id, name: source.name, kind: source.kind, enabled: source.enabled, endpoint: source.config.feedUrl ?? source.config.url, ...source.robotics, checkedAt };
+    const base = { sourceId: source.id, name: source.name, kind: source.kind, enabled: source.enabled, endpoint: source.config.feedUrl ?? source.config.url, ...source.robotics, ...source.editorial, channelHints: source.channel_hints ?? ["robotics"], checkedAt };
     try {
       assertSupportedConfig(source.kind, source.config);
       if (!['rss', 'json_list'].includes(source.kind)) throw new Error("Unsupported by this free checker; candidate remains unverified.");
@@ -84,7 +86,7 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
         let bodyStatus: SampleCheck["bodyStatus"] = body.length >= 200 ? "feed" : "missing";
         // Relevance uses original material. Repository releases may have numeric titles;
         // their robot-specific scope is documented in source identity, not invented by a model.
-        if (bodyStatus === "missing" && !detailUsed && (roboticsCue(candidate.title + " " + (candidate.excerpt ?? "")) || /releases/.test(source.id))) {
+        if (bodyStatus === "missing" && !detailUsed && (!!source.editorial || roboticsCue(candidate.title + " " + (candidate.excerpt ?? "")) || /releases/.test(source.id))) {
           detailUsed = true;
           bodyFetches += 1;
           await pause();
@@ -101,8 +103,10 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
           roboticsCue: roboticsCue([candidate.title, candidate.excerpt ?? "", body].join(" ")) || projectCue(candidate),
           relevanceBasis: roboticsCue([candidate.title, candidate.excerpt ?? "", body].join(" ")) ? "material-text" : projectCue(candidate) ? "robotics-project-url" : "none" });
       }
-      const status = summarizeCheck(samples, candidates.length);
-      checks.push({ ...base, status, itemCount: candidates.length, datedItems: candidates.filter((c) => c.publishedAt).length, samples });
+      const status = source.editorial
+        ? candidates.length === 0 ? "empty_feed" : samples.some(s => s.publishedAt && s.url && s.bodyStatus !== "missing") ? "verified" : "body_or_date_unconfirmed"
+        : summarizeCheck(samples, candidates.length);
+      checks.push({ ...base, validationScope: source.editorial ? "feed-url-date-readable-material; not editorial classification" : "robotics-material", status, itemCount: candidates.length, datedItems: candidates.filter((c) => c.publishedAt).length, samples });
       console.log(`${source.id}: ${status} (${candidates.length} parsed items)`);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
@@ -111,7 +115,7 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
     }
     await pause();
   }
-  const report = { checkedAt: new Date().toISOString(), method: "Production fetchRss/fetchJsonList, guardedFetch and readable; up to 3 candidates prioritizing original-text robotics cues, <=1 article fetch/source; no model or paid fallback", limits: { sources: sources.length, delayMs, feedTimeoutMs: 25000, bodyTimeoutMs: 20000, maxBodyBytes: 6 * 1024 * 1024 }, requests: { collectorRuns, bodyFetches, note: "Counts of parser runs and detail requests; SSRF-checked redirects can add HTTP requests." }, records: checks };
+  const report = { checkedAt: new Date().toISOString(), method: "Production fetchRss/fetchJsonList, guardedFetch and readable; up to 3 candidates (legacy robotics checks prioritize robotics cues; editorial checks validate URL, source date and readable material), <=1 article fetch/source; no model or paid fallback", limits: { sources: sources.length, delayMs, feedTimeoutMs: 25000, bodyTimeoutMs: 20000, maxBodyBytes: 6 * 1024 * 1024 }, requests: { collectorRuns, bodyFetches, note: "Counts of parser runs and detail requests; SSRF-checked redirects can add HTTP requests." }, records: checks };
   const { mkdirSync } = await import("node:fs");
   mkdirSync(path.dirname(values.out!), { recursive: true });
   writeFileSync(values.out!, JSON.stringify(report, null, 2) + "\n");
