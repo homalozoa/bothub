@@ -13,3 +13,11 @@
 法律页面的元数据只展示部分字段，并从首个二级标题开始解析正文；联系链接已放入实际渲染正文，元数据保留纯文本姓名。Cloudflare对HTML邮箱链接的地址保护保持启用，浏览器解码后可正常点击；没有为了检查邮件链接关闭保护。
 
 [线上截图](screenshots/personal-operator-live.jpg)。剩余事项见 [待办](launch-todos.md)。
+
+## X 联系入口
+
+2026-10-03（Asia/Singapore），按运营者提供的账号，在 OpenZoo 首页页脚加入 [X · @homalozoa](https://x.com/homalozoa)，与 GitHub 和邮箱并列。普通链接在新标签页打开，使用 `noopener noreferrer`。
+
+本次仅原子替换静态首页 HTML，保留线上 CSS/JS 的版本参数。旧首页保存在服务器私有目录 `${PRIVATE_BACKUP_FILE}`，可用于回滚；公开文件权限保持0644。应用镜像和发布版本沿用现有配置。
+
+验证：类型检查、网页构建、589后端测试、39前端测试与43项公网smoke通过。线上浏览器确认链接目标为 `https://x.com/homalozoa`；1280桌面及390手机页脚可读，页面宽度分别为1280与390，无横向溢出。检查没有发送X帖子。
