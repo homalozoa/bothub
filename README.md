@@ -2,7 +2,7 @@
 
 ZooRadar 是 OpenZoo 的七频道资讯阅读站：机器人、Agent 与工程、人机交互、游戏与角色、生物学、自然史、社会学。真实来源共用采集、中文摘要、事件归组与发布链路，读者无需注册。
 
-线上入口：[OpenZoo](https://openzoo.ai/) · [资讯站](https://news.openzoo.ai/)。本轮重构已在本机验证，尚未发布到线上。迁移、兼容、信源、截图和实测范围见 [多频道说明](docs/multichannel.md)。后台继续仅通过 SSH 隧道访问。
+线上入口：[OpenZoo](https://openzoo.ai/) · [资讯站](https://news.openzoo.ai/)。七频道重构已正式上线，应用版本 `0b539b9`；生产验证见 [部署记录](docs/zooradar-deployment.md)。迁移、兼容、信源和开发验证见 [多频道说明](docs/multichannel.md)。后台继续仅通过 SSH 隧道访问。
 
 基于 [KKKKhazix/AIHOT](https://github.com/KKKKhazix/AIHOT)，保留 MIT [LICENSE](LICENSE)、[NOTICE](NOTICE) 及必要署名。内部包名与公开 MCP 前缀 bothot 保持兼容。
 

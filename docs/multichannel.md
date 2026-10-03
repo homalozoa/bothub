@@ -1,5 +1,7 @@
 # ZooRadar 七频道改造
 
+2026-10-03 已正式部署到 openzoo.ai 与 news.openzoo.ai，应用版本0b539b9，见 [生产记录](zooradar-deployment.md)。以下“未部署”和本地固定响应说明是此前开发阶段的实测记录，生产结果另列，保留原测试边界。
+
 ## 审计与实现范围
 
 2026-10-03 检查到 OpenZoo 品牌主页与 news.openzoo.ai 资讯站，源码为 React Router 8 + React 19、Node 24、PostgreSQL、既有 worker / publication / RSS / API / MCP。改造前网页为机器人视觉、三类导航，资讯名称机闻 / OpenZoo News。截图保存在 output/playwright/before-*.png。Git 工作区起始无未提交改动。

@@ -1,0 +1,50 @@
+{
+  "release": "0b539b9",
+  "channels": [
+    {
+      "domain": "robotics",
+      "total": 448,
+      "selected": 20
+    },
+    {
+      "domain": "agents",
+      "total": 8,
+      "selected": 0
+    },
+    {
+      "domain": "interaction",
+      "total": 5,
+      "selected": 0
+    },
+    {
+      "domain": "play",
+      "total": 6,
+      "selected": 0
+    },
+    {
+      "domain": "biology",
+      "total": 13,
+      "selected": 2
+    },
+    {
+      "domain": "natural-history",
+      "total": 12,
+      "selected": 2
+    },
+    {
+      "domain": "sociology",
+      "total": 7,
+      "selected": 0
+    }
+  ],
+  "realBiologyExample": {
+    "id": "jwypy5aqz48fklo6tbns0n630",
+    "title": "ACE2 受体使用广度预测蝙蝠 sarbecovirus 的宿主范围与抗原相关性",
+    "source": "PLOS Biology",
+    "publishedAt": "2026-10-01T14:00:00.000Z",
+    "original": "https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3003944",
+    "canonical": "https://news.openzoo.ai/items/jwypy5aqz48fklo6tbns0n630",
+    "historical": false,
+    "selected": true
+  }
+}

@@ -119,3 +119,7 @@ docker compose --env-file .env -f deploy/production.compose.yml up -d --no-deps 
 ## 当前资讯时效修正
 
 2026-10-03，API/worker/web同步发布到 `1edefea`。评分前检查原日期48小时收录延迟与7天窗口，发布和当前资讯读取独立复查。31条历史回灌退出当前精选，保留评分和归档；新增ROS论坛公告源后默认20个非简体中文来源。完整Lyrical公告已经作为2026-05-22历史资料收录，未伪装成今天的新闻。640项程序测试和43项生产smoke通过，DB未重启、原模型预算与SSH后台权限保留。详见 [时效与覆盖核验](news-time-audit.md)。
+
+## ZooRadar 七频道生产版本
+
+2026-10-03，API/worker/web与OpenZoo静态主页同步发布到 `0b539b9`。0042迁移完成，34个启用来源与52个主题，14个新源首轮实际采集均成功；真实PLOS Biology材料已由原模型链路归组并发布。公网43项smoke、七频道页面/订阅和私有端会话检查通过，原预算、密钥、数据库及其他项目容器保留。备份、截图、具体边界与回滚见 [ZooRadar部署记录](zooradar-deployment.md)。
