@@ -123,3 +123,7 @@ docker compose --env-file .env -f deploy/production.compose.yml up -d --no-deps 
 ## ZooRadar 七频道生产版本
 
 2026-10-03，API/worker/web与OpenZoo静态主页同步发布到 `0b539b9`。0042迁移完成，34个启用来源与52个主题，14个新源首轮实际采集均成功；真实PLOS Biology材料已由原模型链路归组并发布。公网43项smoke、七频道页面/订阅和私有端会话检查通过，原预算、密钥、数据库及其他项目容器保留。备份、截图、具体边界与回滚见 [ZooRadar部署记录](zooradar-deployment.md)。
+
+## 当前四频道版本
+
+2026-10-03，API/worker/web及静态主页更新到 `70e9329`。领域导航为综合＋四频道，三项旧频道入口308至主题；自然史通过读取层并入生物学，旧文章/订阅保留。暂停三源、补入Sociological Science，32个启用来源与55主题；无新数据库迁移。652项程序检查、公网43项smoke与私有端认证复查通过。当前备份、兼容和截图见 [四频道记录](four-domain-consolidation.md)。

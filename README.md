@@ -2,7 +2,7 @@
 
 ZooRadar 是 OpenZoo 的四主频道资讯阅读站：机器人、AI 与 Agent、生物学、社会学。综合加四频道共五个领域入口；自然史、人机交互、游戏与角色通过主题聚合。真实来源共用采集、中文摘要、事件归组与发布链路，读者无需注册。
 
-线上入口：[OpenZoo](https://openzoo.ai/) · [资讯站](https://news.openzoo.ai/)。七频道重构已正式上线，应用版本 `0b539b9`；生产验证见 [部署记录](docs/zooradar-deployment.md)。迁移、兼容、信源和开发验证见 [多频道说明](docs/multichannel.md)。后台继续仅通过 SSH 隧道访问。
+线上入口：[OpenZoo](https://openzoo.ai/) · [资讯站](https://news.openzoo.ai/)。五个领域入口已正式上线，应用版本 `70e9329`；生产验证见 [四频道记录](docs/four-domain-consolidation.md)。迁移、兼容、信源和开发验证见 [多频道说明](docs/multichannel.md)。后台继续仅通过 SSH 隧道访问。
 
 基于 [KKKKhazix/AIHOT](https://github.com/KKKKhazix/AIHOT)，保留 MIT [LICENSE](LICENSE)、[NOTICE](NOTICE) 及必要署名。内部包名与公开 MCP 前缀 bothot 保持兼容。
 
@@ -34,7 +34,7 @@ node --env-file=.env apps/web/server.ts
 
 ## 编辑与来源
 
-- 七个一级频道与类别、内容形态、主题和来源方式独立。科学与社会材料不要求机器人或 AI 关联。类别 key、既有链接和机器人原订阅保留。
+- 四个主频道与类别、内容形态、主题和来源方式独立。科学与社会材料不要求机器人或 AI 关联。类别 key、既有链接和机器人原订阅保留。
 - 精选看信息增量与决策价值，热点看事件传播讨论。模型分数是编辑排序依据，双次评分不等于两个独立来源核验。
 - [20 个启用来源、9 个未接入候选与1个按偏好停用来源](docs/sources-robotics.md)，配置在 `industry/sources.json`；公开短摘要和原文链接，默认不展示全文或抓取图片。
 - 日报默认 Asia/Shanghai 08:00，通常最多 3 条、配置上限 5 条；允许空刊，核对近 14 天已刊事实。数据库时间使用 UTC，刊期时区可配置。

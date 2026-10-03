@@ -1,0 +1,40 @@
+{
+  "release": "70e9329",
+  "channels": [
+    {
+      "key": "robotics",
+      "total": 448
+    },
+    {
+      "key": "agents",
+      "total": 8
+    },
+    {
+      "key": "biology",
+      "total": 16
+    },
+    {
+      "key": "sociology",
+      "total": 10
+    }
+  ],
+  "topics": [
+    {
+      "key": "natural-history",
+      "slug": "natural-history",
+      "total": 12
+    },
+    {
+      "key": "interaction",
+      "slug": "human-interaction",
+      "total": 5
+    },
+    {
+      "key": "play",
+      "slug": "games-and-characters",
+      "total": 6
+    }
+  ],
+  "naturalHistoryInBiology": 12,
+  "originalBiologyArticleDate": "2026-10-01T14:00:00.000Z"
+}
