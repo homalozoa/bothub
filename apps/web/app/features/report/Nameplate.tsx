@@ -1,5 +1,5 @@
 // The report nameplates (industry/brand/nameplates/, made by scripts/nameplates.ts from the pack's
-// subject word). Each logotype is cached on its own; the two paths take the theme's ink and accent.
+// site name). Each logotype is cached on its own; the two paths take the theme's ink and accent.
 import daily from "@aihot/industry/brand/nameplates/daily.svg?url&no-inline";
 import weekly from "@aihot/industry/brand/nameplates/weekly.svg?url&no-inline";
 import monthly from "@aihot/industry/brand/nameplates/monthly.svg?url&no-inline";

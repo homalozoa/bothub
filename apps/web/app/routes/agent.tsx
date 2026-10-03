@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useLoaderData, useNavigate, useSearchParams } from "react-router";
 import type { Route } from "./+types/agent";
-import { SITE, withSubject } from "@aihot/industry/site";
+import { SITE, withBrand } from "@aihot/industry/site";
 import { FEATURES } from "@aihot/industry/features";
 import { CATEGORY_KEYS } from "@aihot/contracts/taxonomy";
 import { MCP_TOOL_NAMES as T } from "@aihot/contracts/mcp";
@@ -92,7 +92,7 @@ function MarkdownTab({ base }: { base: string }) {
       <Bullets items={[
         "最新资讯与搜索：过去 24 小时或最近 7 天，可按分类筛选。",
         "当前热点：按榜单顺序阅读，再顺着返回的事件地址查看来龙去脉。",
-        `${withSubject("日报")}：最新一期或指定日期的固定刊物。`,
+        `${withBrand("日报")}：最新一期或指定日期的固定刊物。`,
         "资料来自外部信源，重要事实仍请回原文核对。",
       ]} />
     </Section>
@@ -118,7 +118,7 @@ function McpTab({ base }: { base: string }) {
           <><Mono>{T.search}</Mono>：搜索最近 7 天的公司、产品、人物或话题</>,
           <><Mono>{T.hot}</Mono>：当前热点榜与事件排名</>,
           <><Mono>{T.story}</Mono>：一个热点事件的时间线与持续更新的综述</>,
-          <><Mono>{T.daily}</Mono>：最新或指定日期的{withSubject("日报")}</>,
+          <><Mono>{T.daily}</Mono>：最新或指定日期的{withBrand("日报")}</>,
         ]} />
         <p className="mt-4">验证一次真实调用：<span className="font-medium text-ink">请调用 {T.latest}，告诉我过去 24 小时最重要的 5 条动态，并附链接。</span></p>
       </Section>
@@ -138,7 +138,7 @@ function RssTab({ base }: { base: string }) {
     ["精选摘要（推荐）", "最新 50 条精选摘要，保留标题、站内阅读与原文入口。", "/feed.xml"],
     ["精选全文", "与精选摘要相同的最新 50 条；只对明确允许再分发的来源内联正文。", "/feed/full.xml"],
     ["最近 7 天全部动态", "最近 7 天公开动态，按真实发布时间倒序。", "/feed/all.xml"],
-    [withSubject("日报"), `每天 08:00 北京时间发布的${withSubject("日报")}，保留最近 30 期。`, "/feed/daily.xml"],
+    [withBrand("日报"), `每天 08:00 北京时间发布的${withBrand("日报")}，保留最近 30 期。`, "/feed/daily.xml"],
   ];
   const categories = CATEGORY_KEYS.join("|");
   return (
@@ -184,9 +184,9 @@ function ApiTab({ base }: { base: string }) {
       : []),
     ["/api/v1/hot-topics", "当前热点榜与事件排名"],
     ["/api/v1/stories/{publicId}", "事件详情：报道时间线、综述与关联事件"],
-    ["/api/v1/dailies", `${withSubject("日报")}日期索引`],
-    ["/api/v1/dailies/latest", `最新${withSubject("日报")}`],
-    ["/api/v1/dailies/{date}", `指定日期的${withSubject("日报")}`],
+    ["/api/v1/dailies", `${withBrand("日报")}日期索引`],
+    ["/api/v1/dailies/latest", `最新${withBrand("日报")}`],
+    ["/api/v1/dailies/{date}", `指定日期的${withBrand("日报")}`],
     ["/api/v1/weeklies", "周报索引；/latest 或 /{YYYY-Www} 读取一期"],
     ["/api/v1/monthlies", "月报索引；/latest 或 /{YYYY-MM} 读取一期"],
     ["/api/v1/selected/snapshot", "当前全部精选；首次完整同步（分页）"],

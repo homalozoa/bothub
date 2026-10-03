@@ -2,6 +2,7 @@
 // and wording come from the industry pack (industry/site.ts); its address from SITE_URL.
 import type { MetaDescriptor } from "react-router";
 import { SITE } from "@aihot/industry/site";
+import { BRAND_ASSET_VERSION } from "@aihot/industry/branding";
 
 /**
  * The site's address: SITE_URL while rendering on the server (what crawlers and share previews read),
@@ -50,7 +51,8 @@ export function pageMeta(input: PageMetaInput): MetaDescriptor[] {
   const title = input.title ? (input.rawTitle ? input.title : titled(input.title)) : HOME_TITLE;
   const description = input.description ?? SITE_DESCRIPTION;
   const url = `${base}${input.path}`;
-  const image = input.image ? (input.image.startsWith("http") ? input.image : `${base}${input.image}`) : `${base}/og/site.png`;
+  let image = input.image ? (input.image.startsWith("http") ? input.image : `${base}${input.image}`) : `${base}/og/site.png`;
+  if (image.startsWith(`${base}/og/`)) image += `${image.includes("?") ? "&" : "?"}v=${BRAND_ASSET_VERSION}`;
   const tags: MetaDescriptor[] = [
     { title },
     { name: "description", content: description },
@@ -82,7 +84,7 @@ export function organizationLd() {
     "@type": "Organization",
     name: SITE.organization.name,
     url: base,
-    logo: `${base}/icon.png`,
+    logo: `${base}/icon.png?v=${BRAND_ASSET_VERSION}`,
     ...(founder ? { founder: { "@type": "Person", name: founder.name, ...(founder.description ? { description: founder.description } : {}), ...(founder.url ? { sameAs: [founder.url] } : {}) } } : {}),
   };
 }

@@ -1,3 +1,4 @@
+import { BRAND_ASSET_VERSION } from "@aihot/industry/branding";
 // Share poster sheet: the server-rendered poster (with a QR code to the article), to save or hand to the
 // system share sheet. Loaded on demand from the article page; slides up on phones, centred on desktop.
 import { useEffect, useState } from "react";
@@ -6,7 +7,7 @@ import { Presence } from "../../components/ui/Presence";
 import { IconClose, IconDownload, IconShare } from "../../components/icons";
 
 export default function PosterSheet({ id, title, open, onClose }: { id: string; title: string; open: boolean; onClose: () => void }) {
-  const src = `/og/posters/${id}.png`;
+  const src = `/og/posters/${id}.png?v=${BRAND_ASSET_VERSION}`;
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
   const [canShareFile, setCanShareFile] = useState(false);

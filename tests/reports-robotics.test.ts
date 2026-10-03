@@ -7,7 +7,8 @@ import { CATEGORIES } from "@aihot/industry/taxonomy";
 import { closeDb, sql } from "@aihot/backend/db";
 import { stopBoss } from "@aihot/backend/jobs/queue";
 import { candidates, composeDaily } from "@aihot/backend/reports/compose";
-import { loadReport } from "@aihot/backend/publication/reports";
+import { withBrand } from "@aihot/industry/site";
+import { loadReport, reportHeadline } from "@aihot/backend/publication/reports";
 
 const T = tag();
 const SOURCE = `robotics-reports-${T}`;
@@ -110,4 +111,13 @@ test("report citations keep original dates unknown and exclude historical backfi
   const edition = await loadReport("daily", "2096-01-16");
   assert.equal(edition!.stories.find((entry) => entry.itemId === unknown)!.publishedAt, null);
   assert.equal(edition!.stories.find((entry) => entry.itemId === dated)!.publishedAt, "2096-01-15T10:00:00.000Z");
+});
+
+// A compact branded issue name must not masquerade as a news headline after a withdrawal.
+test("branded issue names preserve public headline fallback and withdrawal filtering", () => {
+  const themes = [{ storyRefs: [{ itemId: "gone", title: "已撤回的事实" }, { itemId: "safe", title: "仍公开的机器人进展" }] }];
+  for (const title of ["机器人热点 周报 · 2026-W39", `${withBrand("周报")} · 2026-W39`, `${withBrand("月报")} · 2026-09`]) {
+    assert.equal(reportHeadline({ title, themes }, "periodic", new Set(["gone"])), "仍公开的机器人进展");
+    assert.equal(reportHeadline({ title, themes }, "periodic", new Set(["gone", "safe"])), null);
+  }
 });

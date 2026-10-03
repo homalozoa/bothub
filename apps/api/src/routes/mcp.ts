@@ -6,7 +6,7 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { createMcpHandler, McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
 import { PUBLIC_API_CATEGORY_KEYS } from "@aihot/contracts/taxonomy";
-import { SITE, withSubject } from "@aihot/industry/site";
+import { SITE, withBrand } from "@aihot/industry/site";
 import { config } from "@aihot/backend/config";
 import { MCP_TOOL_NAMES as T } from "@aihot/contracts/mcp";
 import { isValidDate } from "@aihot/contracts/time";
@@ -171,7 +171,7 @@ export function buildMcpServer(): McpServer {
       if (args.date && !isValidDate(args.date)) return fail("invalid_request", `${args.date} 不是有效日期。`);
       // Read publication permissions now; a cached final answer can retain a withdrawn input's prose.
       const res = await v1Daily(args.date ?? "latest");
-      if (!res) return fail("not_found", args.date ? `没有 ${args.date} 的公开${withSubject("日报")}。` : `还没有公开的${withSubject("日报")}。`);
+      if (!res) return fail("not_found", args.date ? `没有 ${args.date} 的公开${withBrand("日报")}。` : `还没有公开的${withBrand("日报")}。`);
       const r = res.report;
       return ok(dailyAnswer(r, "mcp"), res);
     }),

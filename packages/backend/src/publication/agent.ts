@@ -1,4 +1,4 @@
-import { SITE, withSubject } from "@aihot/industry/site";
+import { SITE, withBrand } from "@aihot/industry/site";
 import { FEATURES } from "@aihot/industry/features";
 import { MCP_TOOL_NAMES as T } from "@aihot/contracts/mcp";
 import { PUBLIC_API_CATEGORY_KEYS } from "@aihot/contracts/taxonomy";
@@ -253,7 +253,7 @@ export function agentGuide(): string {
     `| 某个关键词 | ${u("/search?q=关键词")} |`,
     `| 当前热点排名 | ${u("/hot")} |`,
     "| 某个热点的来龙去脉 | 使用热点结果提供的事件地址，不猜 public_id |",
-    `| ${withSubject("日报")} | ${u("/daily")}；指定日期使用 ${u("/daily/YYYY-MM-DD")} |`,
+    `| ${withBrand("日报")} | ${u("/daily")}；指定日期使用 ${u("/daily/YYYY-MM-DD")} |`,
   ];
   if (FEATURES.codexResetMonitor) lines.push(`| Codex 额度重置和发卡公告 | ${u("/codex-resets")} |`);
   lines.push("", "## 参数和范围", "",

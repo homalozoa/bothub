@@ -1,5 +1,5 @@
 // /llms.txt — generated from the site's own configuration; only real, available resources are listed.
-import { SITE, withSubject } from "@aihot/industry/site";
+import { SITE, withBrand } from "@aihot/industry/site";
 import { FEATURES } from "@aihot/industry/features";
 import { CATEGORY_KEYS } from "@aihot/contracts/taxonomy";
 import { siteUrl } from "./links.ts";
@@ -23,7 +23,7 @@ export const PUBLIC_VERSIONS = {
 
 export function llmsTxt(opts: { hasDailies: boolean; hasWeekly: boolean; hasMonthly: boolean; hasLeaderboard: boolean }): string {
   const u = siteUrl;
-  const daily = withSubject("日报");
+  const daily = withBrand("日报");
   const lines: string[] = [];
   lines.push(`# ${SITE.name}`, "");
   lines.push(`> ${SITE.description}`, "");
@@ -69,8 +69,8 @@ export function llmsTxt(opts: { hasDailies: boolean; hasWeekly: boolean; hasMont
     lines.push(`- [${daily}](${u("/daily")}): 每日精编汇总`);
     lines.push(`- [${daily}存档](${u("/daily/archive")}): 历史${daily}归档`);
   }
-  if (opts.hasWeekly) lines.push(`- [${withSubject("周报")}](${u("/weekly")}): 每周综合回顾`);
-  if (opts.hasMonthly) lines.push(`- [${withSubject("月报")}](${u("/monthly")}): 每月盘点`);
+  if (opts.hasWeekly) lines.push(`- [${withBrand("周报")}](${u("/weekly")}): 每周综合回顾`);
+  if (opts.hasMonthly) lines.push(`- [${withBrand("月报")}](${u("/monthly")}): 每月盘点`);
   lines.push(`- [主题](${u("/topics")}): 按公司、方向、内容形态聚合的主题页`);
   if (FEATURES.leaderboard && opts.hasLeaderboard) {
     lines.push(`- [模型榜](${u("/leaderboard")}): 汇总多家公开模型评测榜单的共识排名`);

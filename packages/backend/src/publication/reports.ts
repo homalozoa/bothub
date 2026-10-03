@@ -6,7 +6,7 @@ import { listedCondition } from "./scope.ts";
 import { cached, type Cached } from "../lib/cache.ts";
 import { proxiedImage, proxiedImageSet } from "../media/imgproxy.ts";
 import { dailyUrl, itemUrl, siteUrl } from "./links.ts";
-import { SITE, withSubject } from "@aihot/industry/site";
+import { SITE, withBrand } from "@aihot/industry/site";
 
 export type { ReportKind };
 
@@ -92,7 +92,7 @@ export function reportHeadline(content: Record<string, any>, kind: "daily" | "pe
 /** A weekly or monthly's own headline; the composer's "<site> 周报 · 2026-W38" names the issue, not its news. */
 function periodicHeadline(content: Record<string, any>): string | null {
   const text = String(content.headline ?? content.title ?? "");
-  return text && !/^.+ [周月]报 · \d{4}-/.test(text) ? text : null;
+  return text && !/^.+ ?[周月]报 · \d{4}-/.test(text) ? text : null;
 }
 
 function reportInputIds(content: Record<string, any>): string[] {
@@ -243,7 +243,7 @@ export async function loadReport(kind: ReportKind, key: string): Promise<ReportD
   const [{ prev, next }, picture] = await Promise.all([neighbors(kind, key), leadItem?.itemId && leadItem.available ? leadCover(leadItem.itemId) : null]);
   const cover = picture && leadItem ? { ...picture, caption: kind === "daily" ? null : leadItem.title } : null;
   const headline = kind === "daily" ? null : periodicHeadline(c);
-  const title = kind === "daily" ? `${withSubject("日报")} · ${key}` : String(c.title ?? (kind === "weekly" ? `${SITE.name} 周报 · ${key}` : `${SITE.name} 月报 · ${key}`));
+  const title = `${withBrand(kind === "daily" ? "日报" : kind === "weekly" ? "周报" : "月报")} · ${key}`;
   return {
     kind,
     key,
@@ -366,7 +366,7 @@ export async function v1Period(kind: "weekly" | "monthly", key: string | "latest
       windowEnd: r.window_end.toISOString(),
       links: { aihot: url },
       attribution: attribution(url),
-      title: String(c.title ?? `${SITE.name} ${kind === "weekly" ? "周报" : "月报"} · ${r.key}`),
+      title: `${withBrand(kind === "weekly" ? "周报" : "月报")} · ${r.key}`,
       headline: reportHeadline(c, "periodic", new Set([...avail].filter(([, value]) => !value.available).map(([id]) => id))),
       overview: c.overview ?? null,
       themes: (c.themes ?? []).map((theme: any) => ({
