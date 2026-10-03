@@ -1,6 +1,6 @@
 # 机器人信源验证
 
-最近检查（UTC）：2026-10-02T11:33:58.809Z。机器记录见 [source-validation.json](source-validation.json)，配置见 [sources.json](../industry/sources.json)。本表由同一次检查按配置元数据生成。
+首次整批检查（UTC）：2026-10-02T11:33:58.809Z。机器记录见 [source-validation.json](source-validation.json)，配置见 [sources.json](../industry/sources.json)。首批表格由同一次检查按配置元数据生成，后续追加检查保留条目各自的时间。
 
 “verified”表示原采集器解析到了条目，并在最多三个样例（优先选择原材料包含机器人线索的条目）中找到同一条具有原文 URL、发布时间、可提取正文和机器人关联的材料。ROS 2、Nav2、MoveIt 2 和 ros2_control 的数字版本标题通过原始机器人项目 release URL 确认范围，relevanceBasis 字段区分该依据与正文关键词。它不代表逐条事实核验、独立复现或所有未来条目可用。全文只在检查内存中使用；报告只保留标题、URL、时间、字数和状态。
 
@@ -24,6 +24,10 @@
 | DepthAI Core Releases | en / hardware | project / 启用 | [rss](https://github.com/luxonis/depthai-core/releases.atom) | verified |
 | Weekly Robotics | en / hardware, research | editor / 启用 | [rss](https://www.weeklyrobotics.com/atom.xml) | verified |
 | Robotiq Blog | en / hardware, industry | company / 启用 | [rss](https://blog.robotiq.com/rss.xml) | verified |
+| Microduck Blog | en / hardware, research, industry | project / 启用 | [rss](https://pollen-robotics.com/microduck/blog/rss.xml) | verified |
+| Microduck Releases | en / hardware, research | project / 启用 | [rss](https://github.com/pollen-robotics/microduck/releases.atom) | verified |
+
+2026-10-03 单独补验 Microduck 两个官方入口，既有 18 个来源保留原检查时间。此次未重新验证其全部内容。
 
 ## 样例与限制
 
@@ -206,6 +210,24 @@ ROS/Gazebo 官方组织博客；刊期稀疏，活动通知不自动进入精选
 - [Robotiq Releases an Open-Source C++ SDK for Adaptive Grippers](https://blog.robotiq.com/robotiq-releases-open-source-c-sdk-for-adaptive-gripper)；原始日期 2026-08-12T11:14:05.000Z；正文 feed（5782 字符）；机器人线索 有。
 
 夹爪、传感器与系统集成官方资料；案例效果为厂商陈述，保留硬件版本和实验条件。
+
+### Microduck Blog
+
+检查：2026-10-03T02:59:39.989Z；verified。1 个解析条目，1 个有日期。
+
+- [Meet Microduck](https://pollen-robotics.com/microduck/blog/introducing-microduck/)；原始日期 2026-08-27T00:00:00.000Z；正文 readability（6682 字符）；机器人线索 有。
+
+Pollen Robotics 的 Microduck 官方发布；当前 feed 仅一篇 2026-08-27 公告。产品、价格及预售说法按厂商自报处理，保留原始日期。
+
+### Microduck Releases
+
+检查：2026-10-03T02:59:43.313Z；verified。10 个解析条目，10 个有日期。
+
+- [daemon 0.14.1-dev.1189.1794b74 (mediad-gst-deinit)](https://github.com/pollen-robotics/microduck/releases/tag/daemon-dev-mediad-gst-deinit)；原始日期 2026-10-02T14:57:29.000Z；正文 feed（384 字符）；机器人线索 有。
+- [daemon 0.15.1](https://github.com/pollen-robotics/microduck/releases/tag/daemon-v0.15.1)；原始日期 2026-10-01T15:32:33.000Z；正文 feed（1215 字符）；机器人线索 有。
+- [daemon 0.15.1-dev.1183.534d9e1 (standup-retry)](https://github.com/pollen-robotics/microduck/releases/tag/daemon-dev-standup-retry)；原始日期 2026-10-01T16:13:31.000Z；正文 feed（376 字符）；机器人线索 有。
+
+官方 daemon/SDK 发布，不能据此宣称全部硬件开源或已经完成真实机器人验证。过滤标题中的 -dev. 开发构建，保留稳定版本。
 
 ## 复验与维护
 

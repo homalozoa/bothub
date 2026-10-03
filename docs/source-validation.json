@@ -1,17 +1,17 @@
 {
-  "checkedAt": "2026-10-02T11:33:58.809Z",
+  "checkedAt": "2026-10-03T02:59:46.925Z",
   "method": "Production fetchRss/fetchJsonList, guardedFetch and readable; up to 3 candidates prioritizing original-text robotics cues, <=1 article fetch/source; no model or paid fallback",
   "limits": {
-    "sources": 18,
+    "sources": 20,
     "delayMs": 1000,
     "feedTimeoutMs": 25000,
     "bodyTimeoutMs": 20000,
     "maxBodyBytes": 6291456
   },
   "requests": {
-    "collectorRuns": 18,
-    "bodyFetches": 7,
-    "note": "Counts of parser runs and detail requests; SSRF-checked redirects can add HTTP requests."
+    "collectorRuns": 20,
+    "bodyFetches": 8,
+    "note": "Counts of parser runs and detail requests; SSRF-checked redirects can add HTTP requests. Microduck sources checked separately on 2026-10-03; other records retain their original checkedAt."
   },
   "records": [
     {
@@ -905,6 +905,89 @@
           "publishedAt": "2026-08-12T11:14:05.000Z",
           "bodyStatus": "feed",
           "bodyChars": 5782,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-microduck-blog",
+      "name": "Microduck Blog",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://pollen-robotics.com/microduck/blog/rss.xml",
+      "language": "en",
+      "coverage": [
+        "hardware",
+        "research",
+        "industry"
+      ],
+      "identity": "project",
+      "homepage": "https://pollen-robotics.com/microduck/",
+      "limitations": [
+        "Pollen Robotics 的 Microduck 官方发布；当前 feed 仅一篇 2026-08-27 公告。产品、价格及预售说法按厂商自报处理，保留原始日期。"
+      ],
+      "checkedAt": "2026-10-03T02:59:39.989Z",
+      "status": "verified",
+      "itemCount": 1,
+      "datedItems": 1,
+      "samples": [
+        {
+          "title": "Meet Microduck",
+          "url": "https://pollen-robotics.com/microduck/blog/introducing-microduck/",
+          "publishedAt": "2026-08-27T00:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 6682,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-microduck-releases",
+      "name": "Microduck Releases",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://github.com/pollen-robotics/microduck/releases.atom",
+      "language": "en",
+      "coverage": [
+        "hardware",
+        "research"
+      ],
+      "identity": "project",
+      "homepage": "https://github.com/pollen-robotics/microduck",
+      "limitations": [
+        "官方 daemon/SDK 发布，不能据此宣称全部硬件开源或已经完成真实机器人验证。过滤标题中的 -dev. 开发构建，保留稳定版本。"
+      ],
+      "checkedAt": "2026-10-03T02:59:43.313Z",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "daemon 0.14.1-dev.1189.1794b74 (mediad-gst-deinit)",
+          "url": "https://github.com/pollen-robotics/microduck/releases/tag/daemon-dev-mediad-gst-deinit",
+          "publishedAt": "2026-10-02T14:57:29.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 384,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "daemon 0.15.1",
+          "url": "https://github.com/pollen-robotics/microduck/releases/tag/daemon-v0.15.1",
+          "publishedAt": "2026-10-01T15:32:33.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 1215,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "daemon 0.15.1-dev.1183.534d9e1 (standup-retry)",
+          "url": "https://github.com/pollen-robotics/microduck/releases/tag/daemon-dev-standup-retry",
+          "publishedAt": "2026-10-01T16:13:31.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 376,
           "roboticsCue": true,
           "relevanceBasis": "material-text"
         }

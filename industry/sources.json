@@ -626,6 +626,82 @@
           "夹爪、传感器与系统集成官方资料；案例效果为厂商陈述，保留硬件版本和实验条件。"
         ]
       }
+    },
+    {
+      "id": "rss-microduck-blog",
+      "name": "Microduck Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://pollen-robotics.com/microduck/blog/rss.xml",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "en",
+        "project"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "robotics": {
+        "language": "en",
+        "coverage": [
+          "hardware",
+          "research",
+          "industry"
+        ],
+        "identity": "project",
+        "homepage": "https://pollen-robotics.com/microduck/",
+        "limitations": [
+          "Pollen Robotics 的 Microduck 官方发布；当前 feed 仅一篇 2026-08-27 公告。产品、价格及预售说法按厂商自报处理，保留原始日期。"
+        ]
+      }
+    },
+    {
+      "id": "rss-microduck-releases",
+      "name": "Microduck Releases",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://github.com/pollen-robotics/microduck/releases.atom",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        },
+        "ingestNoiseFilter": {
+          "dropMarkersTitleOnly": [
+            "-dev."
+          ]
+        }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "en",
+        "project"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "robotics": {
+        "language": "en",
+        "coverage": [
+          "hardware",
+          "research"
+        ],
+        "identity": "project",
+        "homepage": "https://github.com/pollen-robotics/microduck",
+        "limitations": [
+          "官方 daemon/SDK 发布，不能据此宣称全部硬件开源或已经完成真实机器人验证。过滤标题中的 -dev. 开发构建，保留稳定版本。"
+        ]
+      }
     }
   ]
 }
