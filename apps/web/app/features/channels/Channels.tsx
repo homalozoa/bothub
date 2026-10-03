@@ -23,11 +23,18 @@ export function DomainNav({ active = "all", base }: { active?: DomainKey | "all"
   useEffect(() => {
     const scroller = ref.current;
     const selected = scroller?.querySelector<HTMLElement>('[aria-current="page"]');
-    if (!scroller || !selected || scroller.scrollWidth <= scroller.clientWidth) return;
-    const bounds = scroller.getBoundingClientRect();
-    const item = selected.getBoundingClientRect();
-    if (item.left < bounds.left) scroller.scrollLeft -= bounds.left - item.left;
-    else if (item.right > bounds.right) scroller.scrollLeft += item.right - bounds.right;
+    if (!scroller || !selected) return;
+    const reveal = () => {
+      if (scroller.scrollWidth <= scroller.clientWidth) return;
+      const bounds = scroller.getBoundingClientRect();
+      const item = selected.getBoundingClientRect();
+      if (item.left < bounds.left) scroller.scrollLeft -= bounds.left - item.left;
+      else if (item.right > bounds.right) scroller.scrollLeft += item.right - bounds.right;
+    };
+    reveal();
+    const resize = new ResizeObserver(reveal);
+    resize.observe(scroller);
+    return () => resize.disconnect();
   }, [active]);
   const { search } = useLocation();
   const keep = new URLSearchParams(search);

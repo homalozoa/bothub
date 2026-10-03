@@ -23,12 +23,16 @@ function Thumb({ id }: { id: string }) {
     const el = ref.current;
     if (!el) return;
     const scroller = el.closest<HTMLElement>("[data-pill-track]")?.parentElement;
-    if (scroller && scroller.scrollWidth > scroller.clientWidth) {
+    const reveal = () => {
+      if (!scroller || scroller.scrollWidth <= scroller.clientWidth) return;
       const selected = el.parentElement!.getBoundingClientRect();
       const bounds = scroller.getBoundingClientRect();
       if (selected.left < bounds.left) scroller.scrollLeft -= bounds.left - selected.left;
       else if (selected.right > bounds.right) scroller.scrollLeft += selected.right - bounds.right;
-    }
+    };
+    reveal();
+    const resize = new ResizeObserver(reveal);
+    if (scroller) resize.observe(scroller);
     const now = placeOf(el);
     const prev = thumbs.get(id);
     const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -39,6 +43,7 @@ function Thumb({ id }: { id: string }) {
       );
     }
     return () => {
+      resize.disconnect();
       thumbs.set(id, placeOf(el));
     };
   }, [id, entrance]);
