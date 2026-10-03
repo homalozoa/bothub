@@ -4,7 +4,7 @@ import type { SiteStats } from "@aihot/contracts/site";
 import { apiGet } from "../lib/api.server";
 import { shortSourceName } from "../lib/format";
 import { ABOUT, SITE, withBrand } from "@aihot/industry/site";
-import { organizationLd, pageMeta } from "../lib/seo";
+import { websiteLd, pageMeta } from "../lib/seo";
 import { Kicker } from "../components/ui/Kicker";
 import { buttonClass } from "../components/ui/Controls";
 import { IconArrowRight } from "../components/icons";
@@ -31,7 +31,7 @@ export async function loader({ request }: { request: Request }) {
 }
 
 export function meta() {
-  return pageMeta({ title: "关于", description: `关于 ${SITE.name}：${SITE.description}`, path: "/about", image: "/og/pages/about.png", jsonLd: organizationLd() });
+  return pageMeta({ title: "关于", description: `关于 ${SITE.name}：${SITE.description}`, path: "/about", image: "/og/pages/about.png", jsonLd: websiteLd() });
 }
 
 const NO_SOURCES: RiverSource[] = [];
@@ -148,13 +148,14 @@ function Maker({ maker, contact }: { maker: NonNullable<typeof ABOUT.maker>; con
         <h2 id="maker" className="mt-4 flex items-center gap-3.5 text-[26px] font-black leading-[1.3] tracking-[-0.02em] text-ink xl:gap-4 xl:text-[34px]">
           {contact.makerAvatar && <MakerFace src={contact.makerAvatar} />}
           <span>
-            嗨，我是 <span className="whitespace-nowrap text-accent">{maker.name}</span>
+            嗨，我是 {maker.url ? <a className="whitespace-nowrap text-accent hover:underline" href={maker.url} target="_blank" rel="noopener noreferrer">{maker.name}</a> : <span className="whitespace-nowrap text-accent">{maker.name}</span>}
           </span>
         </h2>
         <div className="mt-5 space-y-4 text-[15.5px] leading-[1.9] text-ink-2 xl:text-[16.5px]">
           {maker.greeting.map((line) => (
             <p key={line}>{line}</p>
           ))}
+          {SITE.contactEmail && <p>联系邮箱：<a className="text-accent hover:underline" href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a></p>}
           <p className="text-ink-3">
             它一直在改，改了什么都写在
             <Link to="/changelog" className="text-accent hover:underline">

@@ -27,14 +27,16 @@ export const SITE = {
    */
   mcpPrefix: "bothot",
   /** 对外联系邮箱（选填）：使用规则、llms.txt、响应头里会写。 */
-  contactEmail: null as string | null,
+  contactEmail: "homalozoax@gmail.com" as string | null,
   /** 页脚的一行小字（选填）。 */
   footerNote: "自动筛选与生成摘要 · 请以原文为准",
   /** 中国大陆网站的 ICP 备案号（选填），填了就显示在页脚并链接到工信部备案系统。 */
   icp: null as string | null,
   /** 结构化数据里的网站运营者（搜索引擎用）。 */
   organization: {
-    name: "机闻（运营主体待确认）",
+    name: "Homalozoa",
+    type: "Person",
+    url: "https://github.com/homalozoa",
     /** 创始人（选填）：{ name, url, description }。 */
     founder: null as null | { name: string; url?: string; description?: string },
   },
@@ -51,7 +53,7 @@ export const ABOUT = {
   lead: `${SITE.name} 从 {sources} 个已配置信源发现机器人与具身 AI 动态，用模型筛选和生成中文摘要，将同一发生的报道归组。精选关注信息价值，热点反映传播讨论；两次模型评分不等于独立事实核验。公开阅读无需注册。`,
   /** 信源河动画下面的四个环节。 */
   steps: {
-    collect: "从公开官方新闻、研究与开源项目和专业媒体采集，优先一手材料。X 和公众号是需要授权与服务密钥的可选扩展。",
+    collect: "默认优先非简体中文的公开官方新闻、研究与开源项目和专业媒体，优先一手原始材料；站内继续提供中文摘要。新增来源先检查语言、出处、日期和正文。",
     store: "保留原文链接和原始日期，同一次发布的转载归组。后续代码、权重、价格变化和独立复现作为新进展，旧闻重抓不会变成新发布。",
     select: "关注能改变研发、采购或商业判断的事实、可复用资产和低热度早期信号。厂商声明、仿真结果和真机证据分别表达，不把自动筛选称为人工审核。",
     publish: "网站、RSS、公开 API 和 MCP 读取同一批已发布内容。日报通常重点讲 2–3 条，最多 5 条；信息不足允许空刊。默认刊期为 Asia/Shanghai 每日 08:00，可由运营者配置。",
@@ -61,9 +63,14 @@ export const ABOUT = {
    * avatarSourceId：一个 X 账号信源的 id，头像取它的（选填）。
    * 二维码在后台“设置”里上传，或者放进 industry/brand/contact/；没有二维码就不显示那张卡片。
    */
-  maker: null as null | {
+  maker: {
+    name: "Homalozoa",
+    url: "https://github.com/homalozoa",
+    greeting: ["机闻由我以个人身份维护，持续整理机器人与 AI 领域值得跟进的进展。", "默认优先非简体中文的原始来源，用中文摘要连接原文；来源中的声明和实际验证条件分别表达。"],
+  } as null | {
     name: string;
     greeting: string[];
+    url?: string;
     avatarSourceId?: string | null;
     wechat?: { title: string; note: string };
     feishu?: { title: string; note: string };

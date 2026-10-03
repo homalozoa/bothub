@@ -76,16 +76,20 @@ export function pageMeta(input: PageMetaInput): MetaDescriptor[] {
   return tags;
 }
 
-export function organizationLd() {
+export function websiteLd() {
   const base = siteUrl();
-  const founder = SITE.organization.founder;
   return {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    name: SITE.organization.name,
+    "@type": "WebSite",
+    name: SITE.name,
     url: base,
-    logo: `${base}/icon.png?v=${BRAND_ASSET_VERSION}`,
-    ...(founder ? { founder: { "@type": "Person", name: founder.name, ...(founder.description ? { description: founder.description } : {}), ...(founder.url ? { sameAs: [founder.url] } : {}) } } : {}),
+    image: `${base}/icon.png?v=${BRAND_ASSET_VERSION}`,
+    publisher: {
+      "@type": SITE.organization.type,
+      name: SITE.organization.name,
+      url: SITE.organization.url,
+      ...(SITE.contactEmail ? { email: SITE.contactEmail } : {}),
+    },
   };
 }
 
