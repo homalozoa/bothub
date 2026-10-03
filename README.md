@@ -1,4 +1,4 @@
-# 机器人热点 · bothot
+# 机闻 · OpenZoo News
 
 为机器人创业者、研发负责人和工程师聚合机器人与相关 AI 动态：真实来源采集、中文摘要、事件归组、精选、热点、主题检索与每日简报。默认中文，沿用 AIHOT 的阅读布局与后台，不要求读者注册。
 
@@ -60,4 +60,4 @@ node scripts/check-sources.ts --live --out .data/source-validation.json
 
 [运行与纠错](docs/robotics.md) · [信源验证](docs/sources-robotics.md) · [精选校准](docs/selection.md) · [事件归组](docs/grouping.md) · [部署与备份](docs/deploy.md) · [架构](docs/architecture.md)
 
-正式站名与图标、运营者、联系渠道、隐私与条款待确认；资讯域名 `news.openzoo.ai` 已部署。当前待办见 [清单](docs/launch-todos.md)，名称/icon候选见 [方案](docs/brand-exploration/README.md)。`industry/pages/` 为未生效草稿。模型排行榜及 Codex 重置监控已关闭。内部包名与既有安全、回执、预算、授权和迁移体系沿用上游。
+正式站名为“机闻”，标记为折页 Z；运营者、联系渠道、隐私与条款仍待补充。资讯域名 `news.openzoo.ai` 已部署。当前待办见 [清单](docs/launch-todos.md)，名称/icon候选见 [方案](docs/brand-exploration/README.md)。`industry/pages/` 为未生效草稿。模型排行榜及 Codex 重置监控已关闭。内部包名与既有安全、回执、预算、授权和迁移体系沿用上游。

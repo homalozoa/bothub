@@ -90,8 +90,8 @@
 
 ## 7. 品牌：`industry/brand/`
 
-- `logo.svg`、`icon.png`（512）、`icon-192.png`、`apple-icon.png`（180）、`favicon.ico`：站点图标。
-- `nameplates/`：日报、周报、月报页顶部的报头字（比如“AI日报”）。换了行业词以后重新生成：
+- `logo.svg`、`logo-mono.svg`、`logo-reversed.svg`、`icon.png`（512）、`icon-192.png`、`apple-icon.png`（180）、`favicon.ico`：站点图标。当前折页Z定义在 `industry/branding.ts`；运行 `node industry/brand/generate.ts` 重建导出。
+- `nameplates/`：日报、周报、月报页顶部的品牌报头字。换了站名后运行 `node scripts/nameplates.ts`，默认使用仓库内字体；也可以使用 Black 字重字体包：
   ```bash
   npm pack @fontsource/noto-sans-sc@5.3.0 && tar xzf fontsource-noto-sans-sc-5.3.0.tgz
   node scripts/nameplates.ts package

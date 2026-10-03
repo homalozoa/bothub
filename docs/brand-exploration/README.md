@@ -1,6 +1,6 @@
 # 名称与图标候选
 
-2026-10-03。按 OpenZoo 下属的机器人与AI资讯站设计，继续使用 `news.openzoo.ai`。推荐组合为 **机闻｜OpenZoo News + A 机器人信使**。这是一组可供选择的品牌草案，未替换生产名称或图标。
+2026-10-03。按 OpenZoo 下属的机器人与AI资讯站设计，继续使用 `news.openzoo.ai`。用户已确认 **机闻｜OpenZoo News + C 折页 Z**。本页保留候选探索，正式标记与尺寸导出位于 `industry/brand/`，源路径定义在 `industry/branding.ts`。
 
 ## 名称
 

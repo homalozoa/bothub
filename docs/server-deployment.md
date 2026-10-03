@@ -62,9 +62,9 @@ docker compose --env-file .env -f deploy/production.compose.yml up -d
 ```bash
 install -d -m 0700 ${DEPLOY_ROOT}
 umask 077
-docker compose --env-file .env -f deploy/production.compose.yml exec -T db \
+docker compose --env-file .env -f deploy/production.compose.yml exec --interactive=false -T db \
   pg_dump -U aihot -d aihot -Fc > ${PRIVATE_BACKUP_FILE}
-docker compose --env-file .env -f deploy/production.compose.yml run --rm --no-deps api \
+docker compose --env-file .env -f deploy/production.compose.yml run --rm --no-deps --interactive=false -T api \
   tar -C /data -czf - . > ${PRIVATE_BACKUP_FILE}
 ```
 
@@ -107,3 +107,7 @@ docker compose --env-file .env -f deploy/production.compose.yml up -d --no-deps 
 ## 当前资讯域名
 
 `SITE_URL=https://news.openzoo.ai` 已在 API、worker、web 生效，主页9处阅读入口也已替换。既有文章 ID 和数据不变，RSS/API/canonical/sitemap 使用新域名。旧 `hub.openzoo.ai` 已无DNS，未配置公网旧域名跳转；以后如要恢复旧链接，应先恢复DNS并为旧域名单独签发证书。详见 [迁移记录](news-domain-migration.md)。
+
+## 当前站名与发布版本
+
+2026-10-03，站名正式使用“机闻”，英文OpenZoo News，折页Z为统一标记。API/worker版本为 `fda0e29`，web版本为 `e8d750b`，域名保持news.openzoo.ai；具体资产、备份和验证见 [品牌落地](jiwen-brand-rollout.md)。原始运营资料和人工校准事项仍在 [待办](launch-todos.md)。
