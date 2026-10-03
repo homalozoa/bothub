@@ -1,6 +1,6 @@
 # 机器人信源验证
 
-当前默认启用19个非简体中文来源。量子位已于2026-10-03按运营者偏好停采，以下表格和机器记录保留当时的解析验证结果；它仍可解析，不代表当前启用。来源选择规则见 [来源语言偏好](source-preference.md)。
+当前默认启用20个非简体中文来源。量子位已于2026-10-03按运营者偏好停采，以下表格和机器记录保留当时的解析验证结果；它仍可解析，不代表当前启用。来源选择规则见 [来源语言偏好](source-preference.md)。
 
 
 首次整批检查（UTC）：2026-10-02T11:33:58.809Z。机器记录见 [source-validation.json](source-validation.json)，配置见 [sources.json](../industry/sources.json)。首批表格由同一次检查按配置元数据生成，后续追加检查保留条目各自的时间。
@@ -250,3 +250,9 @@ node scripts/check-sources.ts --live --ids rss-robot-report,rss-lerobot-releases
 X / 微信当前不启用。X 使用 x_search 与 SOCIALDATA_API_KEY，微信公众号使用 mp_account 与 DAJIALA_KEY（docs/sources.md）；先取得服务与预算授权再接入，不绕过登录或访问控制。
 
 研究源不等于同行评审，GitHub release 不等于完整开源，厂商自报不等于独立验证。媒体转载、共同通稿需按实际事件归组。纯 AI、代码工具和普通汽车内容需要原材料中明确的机器人关联才能入选。
+
+## ROS 官方公告补源（2026-10-03）
+
+新增 [ROS Announcements and News](https://discourse.openrobotics.org/c/ros/ros-announcements-news/112)，当前默认20个非简体中文来源（19英文、1日文）。实际入口为类别RSS，按原始发帖日期排序，description作为首帖材料；最多25条首次回灌。不会订阅每个话题的回复流，也不把最后活跃时间当成发布日期。
+
+生产RSS解析器实测25个有日期条目，无付费回退、无模型或数据库操作；记录追加到source-validation.json，旧验证保留原checkedAt。完整Lyrical发布帖在此次类别feed中，原日期2026-05-22T16:11:27Z。这个类别还含包同步、工作组和活动；相关性、重要性与时效仍逐条检查，历史公告不进入当前精选。

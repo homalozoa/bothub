@@ -142,6 +142,44 @@
       }
     },
     {
+      "id": "rss-ros-announcements",
+      "name": "ROS Announcements and News",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://discourse.openrobotics.org/c/ros/ros-announcements-news/112.rss",
+        "summaryIsBody": true,
+        "sortByPublishedAt": true,
+        "_aihot": {
+          "initialBackfillLimit": 25
+        }
+      },
+      "tier": "T1_5",
+      "first_party": false,
+      "owner_entity_id": "open-robotics",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "en",
+        "project"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "robotics": {
+        "language": "en",
+        "coverage": [
+          "hardware",
+          "research"
+        ],
+        "identity": "community",
+        "homepage": "https://discourse.openrobotics.org/c/ros/ros-announcements-news/112",
+        "limitations": [
+          "ROS 官方项目公告类别；RSS 的原始发帖日期不等于最后回复时间。类别也含工作组、包同步和活动，不自动入选；首次最多回灌25条，历史资料不作为当前资讯。",
+          "论坛域名由Open Robotics运营，但发帖者不一定代表该组织；一手身份需按具体作者和原文核对，不对全类别自动标为一手。"
+        ]
+      }
+    },
+    {
       "id": "rss-moveit-blog",
       "name": "MoveIt Blog",
       "kind": "rss",

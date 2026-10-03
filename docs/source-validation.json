@@ -1,17 +1,17 @@
 {
-  "checkedAt": "2026-10-03T02:59:46.925Z",
+  "checkedAt": "2026-10-03T09:49:01.612Z",
   "method": "Production fetchRss/fetchJsonList, guardedFetch and readable; up to 3 candidates prioritizing original-text robotics cues, <=1 article fetch/source; no model or paid fallback",
   "limits": {
-    "sources": 20,
+    "sources": 21,
     "delayMs": 1000,
     "feedTimeoutMs": 25000,
     "bodyTimeoutMs": 20000,
     "maxBodyBytes": 6291456
   },
   "requests": {
-    "collectorRuns": 20,
+    "collectorRuns": 21,
     "bodyFetches": 8,
-    "note": "Counts of parser runs and detail requests; SSRF-checked redirects can add HTTP requests. Microduck sources checked separately on 2026-10-03; other records retain their original checkedAt."
+    "note": "Counts of parser runs and detail requests; SSRF-checked redirects can add HTTP requests. Microduck sources checked separately on 2026-10-03; other records retain their original checkedAt. ROS Discourse checked separately on 2026-10-03; older records retain their checkedAt."
   },
   "records": [
     {
@@ -988,6 +988,57 @@
           "publishedAt": "2026-10-01T16:13:31.000Z",
           "bodyStatus": "feed",
           "bodyChars": 376,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-ros-announcements",
+      "name": "ROS Announcements and News",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://discourse.openrobotics.org/c/ros/ros-announcements-news/112.rss",
+      "language": "en",
+      "coverage": [
+        "hardware",
+        "research"
+      ],
+      "identity": "community",
+      "homepage": "https://discourse.openrobotics.org/c/ros/ros-announcements-news/112",
+      "limitations": [
+        "ROS 官方项目公告类别；RSS 的原始发帖日期不等于最后回复时间。类别也含工作组、包同步和活动，不自动入选；首次最多回灌25条，历史资料不作为当前资讯。",
+        "论坛域名由Open Robotics运营，但发帖者不一定代表该组织；一手身份需按具体作者和原文核对，不对全类别自动标为一手。"
+      ],
+      "checkedAt": "2026-10-03T09:48:56.812Z",
+      "status": "verified",
+      "itemCount": 25,
+      "datedItems": 25,
+      "samples": [
+        {
+          "title": "New Packages for Lyrical 2026-09-18",
+          "url": "https://discourse.openrobotics.org/t/new-packages-for-lyrical-2026-09-18/58251",
+          "publishedAt": "2026-09-18T22:45:49.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 1889,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "New packages for Kilted Kaiju 2026-09-17",
+          "url": "https://discourse.openrobotics.org/t/new-packages-for-kilted-kaiju-2026-09-17/58231",
+          "publishedAt": "2026-09-17T22:53:51.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 13073,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "New packages and patch release for Humble Hawksbill 2026-09-14",
+          "url": "https://discourse.openrobotics.org/t/new-packages-and-patch-release-for-humble-hawksbill-2026-09-14/58121",
+          "publishedAt": "2026-09-14T18:35:42.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 41320,
           "roboticsCue": true,
           "relevanceBasis": "material-text"
         }
