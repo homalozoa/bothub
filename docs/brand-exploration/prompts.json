@@ -1,0 +1,24 @@
+{
+  "mode": "built-in image_gen",
+  "transparent_background": true,
+  "variants": [
+    {
+      "key": "robot-message",
+      "label": "A 机器人信使",
+      "prompt": "Use case: logo-brand. Create ONE original standalone brand icon for OpenZoo's robotics and AI news site. Primary concept: a friendly robot messenger, a rounded robot head silhouette that subtly doubles as a speech bubble with one short lower-right tail. A broad violet face with a dark violet inset visor, two large mint-green rounded eyes, and one very short antenna tipped by a warm yellow dot. No body. Editorial and thoughtful, friendly but not babyish or a toy-store mascot. Style: professional flat vector-like logo, precise bold shapes, clean smooth curves, strong contrast, extremely few details; recognizable as a favicon at 32 pixels. Color palette: saturated violet #7040B7, mint #8DDFC0, butter-yellow #FFE18C, dark ink #292435. Composition: a single centered mark filling about 72% of a square canvas with generous safe margins; actual transparent background, no background square or tile. Absolutely no letters, text, captions, watermark, shading, gradients, glow, shadows, 3D rendering, hairline strokes, circuitry, or existing brand logos. Render a polished coherent icon, not an icon sheet.",
+      "file": "robot-message.png"
+    },
+    {
+      "key": "optic-signal",
+      "label": "B 信号观察器",
+      "prompt": "Use case: logo-brand. Create ONE original standalone abstract brand icon for a robotics and AI editorial publication under OpenZoo. Primary concept: a signal-observing mechanical eye, built from one thick violet open circular eye/optic ring, one large mint pupil, and one warm yellow circular signal dot near the ring opening at upper right. The overall silhouette should feel like a curious eye and a compact O, without resembling a loading spinner, flower or networking globe. Asymmetric, clever, precise, upbeat editorial identity. Style: bold professional flat vector-like logo with soft geometric curves, only 3 or 4 large shapes, highly legible at favicon scale. Color palette: saturated violet #7040B7, mint #8DDFC0, butter-yellow #FFE18C. Composition: one centered compact mark filling 72% of a square canvas, generous safe margins, actual transparent background and no background tile. No lettering, words, tiny details, captions, watermark, thin orbital lines, gradients, shadows, glossy materials, glow, or 3D. This is a logo candidate, not a product mockup or icon sheet.",
+      "file": "optic-signal.png"
+    },
+    {
+      "key": "folded-z",
+      "label": "C 折页 Z",
+      "prompt": "Use case: logo-brand. Create ONE original standalone logo icon for OpenZoo News, a robotics and AI news publication with a lively sophisticated dopamine palette. Primary concept: one bold folded news-sheet or ribbon forming a distinctive capital Z silhouette. Use just three broad interlocking geometric folds, smoothly rounded outer corners, a confident diagonal, clever white/transparent negative space; the sheet/ribbon suggests reading and new information without printed text or little newspaper lines. Color blocking in saturated violet #7040B7, mint #8DDFC0, and warm yellow #FFE18C. The Z is a geometric symbol, not typography and not a wordmark. Modern, playful but credible scientific/engineering editorial identity. Style: precise professional flat vector-like emblem, solid colors, extremely economical detail and recognizable at 32px. Composition: single centered mark occupying 72% of a square canvas, generous safe margins, actual transparent background, no background square or tile. No other letters, words, captions, mockups, watermark, shadows, gradient, glossy material, 3D perspective, tiny text, extra motifs or existing logo references.",
+      "file": "folded-z.png"
+    }
+  ]
+}
