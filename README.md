@@ -2,7 +2,7 @@
 
 为机器人创业者、研发负责人和工程师聚合机器人与相关 AI 动态：真实来源采集、中文摘要、事件归组、精选、热点、主题检索与每日简报。默认中文，沿用 AIHOT 的阅读布局与后台，不要求读者注册。
 
-线上入口：[OpenZoo主页](https://openzoo.ai/) · [机器人热点](https://hub.openzoo.ai/)。生产内容尚在初始化，后台仅通过SSH隧道访问；见[服务器运维说明](docs/server-deployment.md)。
+线上入口：[OpenZoo主页](https://openzoo.ai/) · [机器人热点](https://news.openzoo.ai/)。生产内容尚在初始化，后台仅通过SSH隧道访问；见[服务器运维说明](docs/server-deployment.md)。
 
 基于 [KKKKhazix/AIHOT](https://github.com/KKKKhazix/AIHOT) 模板实现。采用的上游提交是 `3343fe2b20db4be7269113752d82d3992fc52b6b`，bothot 初始提交 `d367cf5` 与该提交文件树一致。保留 MIT [LICENSE](LICENSE)、[NOTICE](NOTICE) 与必要署名；本站不代表上游官方。
 
