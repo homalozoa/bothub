@@ -236,7 +236,7 @@ function savedTheme(raw: string | null): SavedTheme | null {
 }
 
 export function getThemePreference(): ThemePreference {
-  const pref = volatileTheme ?? savedTheme(readRaw(KEYS.theme)) ?? "light";
+  const pref = volatileTheme ?? savedTheme(readRaw(KEYS.theme)) ?? "auto";
   return pref === "auto" ? null : pref;
 }
 
@@ -256,7 +256,7 @@ export function resolvedTheme(pref: ThemePreference = getThemePreference()): "li
 }
 
 /** Inline script run before paint so the first frame already has the reader's theme. */
-export const THEME_BOOT_SCRIPT = `(function(){var t='light';try{var p=localStorage.getItem('${KEYS.theme}');if(p==='"light"'||p==='"dark"'||p==='"auto"')p=JSON.parse(p);if(p==='light'||p==='dark')t=p;else if(p==='auto')t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}catch(e){}document.documentElement.setAttribute('data-theme',t)})();`;
+export const THEME_BOOT_SCRIPT = `(function(){var p=null,t='light';try{p=localStorage.getItem('${KEYS.theme}');if(p==='"light"'||p==='"dark"'||p==='"auto"')p=JSON.parse(p)}catch(e){}if(p==='light'||p==='dark')t=p;else try{t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}catch(e){}document.documentElement.setAttribute('data-theme',t)})();`;
 
 // --- changelog red dot ---
 export function getChangelogSeen(): string | null {
@@ -383,7 +383,7 @@ export function useReadSet(): Set<string> {
 }
 
 export function useThemePreference(): ThemePreference {
-  return useSyncExternalStore(subscribeTheme, getThemePreference, () => "dark");
+  return useSyncExternalStore(subscribeTheme, getThemePreference, () => null);
 }
 
 export function useChangelogSeen(): string | null {

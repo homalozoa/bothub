@@ -34,13 +34,15 @@ async function reader(raw?: string, darkSystem = false) {
   return { state, values, browser, boot };
 }
 
-test("fresh and invalid preferences default to light even on a dark system, matching first paint", async () => {
-  for (const raw of [undefined, "", "broken", "null", '"system"']) {
-    const { state, boot } = await reader(raw, true);
-    assert.equal(state.getThemePreference(), "light");
-    assert.equal(state.resolvedTheme(), "light");
-    assert.equal(boot(), "light");
-    assert.equal(state.exportBundle().theme, "light");
+test("fresh and invalid preferences follow the system, matching first paint", async () => {
+  for (const darkSystem of [false, true]) {
+    for (const raw of [undefined, "", "broken", "null", '"system"']) {
+      const { state, boot } = await reader(raw, darkSystem);
+      assert.equal(state.getThemePreference(), null);
+      assert.equal(state.resolvedTheme(), darkSystem ? "dark" : "light");
+      assert.equal(boot(), darkSystem ? "dark" : "light");
+      assert.equal(state.exportBundle().theme, "auto");
+    }
   }
 });
 
@@ -82,19 +84,19 @@ test("the setter saves auto for system and ordinary strings for explicit appeara
   assert.equal(state.getThemePreference(), "dark");
 });
 
-test("denied storage defaults light but an in-document choice still works", async () => {
-  const { state, browser, boot } = await reader();
+test("denied storage still follows the system and allows an in-document choice", async () => {
+  const { state, browser, boot } = await reader(undefined, true);
   const deniedStorage = { getItem: () => { throw new Error("denied"); }, setItem: () => { throw new Error("denied"); }, removeItem: () => { throw new Error("denied"); } };
   Object.defineProperty(browser, "localStorage", { configurable: true, get: () => { throw new Error("denied"); } });
-  assert.equal(state.getThemePreference(), "light");
-  assert.equal(state.resolvedTheme(), "light");
-  assert.equal(boot(deniedStorage), "light");
+  assert.equal(state.getThemePreference(), null);
+  assert.equal(state.resolvedTheme(), "dark");
+  assert.equal(boot(deniedStorage), "dark");
   state.setThemePreference("light");
   assert.equal(state.getThemePreference(), "light");
   assert.equal(state.resolvedTheme(), "light");
   state.setThemePreference(null);
   assert.equal(state.getThemePreference(), null);
-  assert.equal(state.resolvedTheme(), "light");
+  assert.equal(state.resolvedTheme(), "dark");
   assert.equal(state.exportBundle().theme, "auto");
 });
 
@@ -131,6 +133,6 @@ test("imports preserve every explicit saved preference and missing or unsupporte
     const report = await state.importBundle(JSON.stringify({ version: 1, starred: [], read: [], theme }));
     assert.equal(report.themeApplied, false);
     assert.equal(values.has(state.KEYS.theme), false);
-    assert.equal(state.getThemePreference(), "light");
+    assert.equal(state.getThemePreference(), null);
   }
 });

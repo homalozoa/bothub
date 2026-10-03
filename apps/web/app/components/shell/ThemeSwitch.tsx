@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { IconMonitor, IconMoon, IconSun } from "../icons";
-import { resolvedTheme, setThemePreference, useThemePreference, type ThemePreference } from "../../lib/local-state";
+import { getThemePreference, resolvedTheme, setThemePreference, useThemePreference, type ThemePreference } from "../../lib/local-state";
 
 type Choice = "dark" | "system" | "light";
 
@@ -9,6 +9,21 @@ const OPTIONS: Array<{ key: Choice; label: string; icon: ReactNode }> = [
   { key: "system", label: "跟随系统", icon: <IconMonitor size={14} /> },
   { key: "light", label: "浅色", icon: <IconSun size={14} /> },
 ];
+
+/** Keep every route in sync with system changes and preferences from other tabs. */
+export function ThemeSync() {
+  const pref = useThemePreference();
+  useEffect(() => {
+    // Read the saved value directly: hydration's initial snapshot may still be "system".
+    const apply = () => document.documentElement.setAttribute("data-theme", resolvedTheme());
+    apply();
+    if (getThemePreference() !== null || typeof window.matchMedia !== "function") return;
+    const system = window.matchMedia("(prefers-color-scheme: dark)");
+    system.addEventListener("change", apply);
+    return () => system.removeEventListener("change", apply);
+  }, [pref]);
+  return null;
+}
 
 /** Three-way appearance switch (dark / follow the system / light) with a sliding thumb. */
 export function ThemeSwitch({ className = "" }: { className?: string }) {

@@ -15,6 +15,7 @@ import { buttonClass } from "./components/ui/Controls";
 import { THEME_BOOT_SCRIPT } from "./lib/local-state";
 import { apiGet } from "./lib/api.server";
 import { useHydratedFlag } from "./lib/hydration";
+import { ThemeSync } from "./components/shell/ThemeSwitch";
 
 export const links: Route.LinksFunction = () => [
   { rel: "icon", href: "/favicon.ico?v=zooradar-z", sizes: "any" },
@@ -51,6 +52,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
+        <ThemeSync />
         {children}
         <ScrollRestoration getKey={(location) => location.key} />
         <Scripts />
