@@ -5,7 +5,7 @@
 ## 在线入口与目录
 
 - `https://openzoo.ai/`：静态 OpenZoo 首页，源码 `deploy/home/public/`，发布目录 `/var/www/openzoo/public`。
-- `https://hub.openzoo.ai/`：bothot 阅读站，源码目录 `${DEPLOY_ROOT}`，配置 `${DEPLOY_ROOT}`。
+- `https://news.openzoo.ai/`：bothot 阅读站，源码目录 `${DEPLOY_ROOT}`，配置 `${DEPLOY_ROOT}`。
 - 使用既有主机 Nginx、Docker、Certbot；新增 `/etc/nginx/conf.d/openzoo.conf`，保留其他站点、服务及端口配置。
 - Docker Compose 项目 `bothot`，配置 `deploy/production.compose.yml`；数据库与文件卷分别 `bothot_db`、`bothot_data`。
 - 应用发布版本以 `/api/health` 的 `release` 为准，镜像标签采用普通 Git 提交版本；旧镜像可保留用于回滚。服务器使用代码归档，不含本机数据库、演示内容或密钥。
@@ -33,7 +33,7 @@ ssh -N -o ExitOnForwardFailure=yes \
 
 DNS目前由Cloudflare代理，Nginx仅在[官方IP范围](https://www.cloudflare.com/ips/)内信任CF-Connecting-IP，再覆盖传给应用的Forwarded/IP头，防止直接访客伪造限速地址。配置 `deploy/nginx/cloudflare-realip.conf` 安装为 `/etc/nginx/snippets/openzoo-cloudflare-realip.conf`，仅这两个新vhost引用。更新时核对官方范围。
 
-证书位于 `/etc/letsencrypt/live/openzoo.ai/`，SAN覆盖两个域名。本次证书有效期至2026-12-31；沿用已有 `certbot.timer` 与 `renewal-hooks/deploy/reload-nginx.sh` 自动续期后重载Nginx。HTTP重定向HTTPS，HTTP ACME路径保留。`nginx -t`、证书校验、公网与直接源站HTTPS均已实测；没有绕过证书校验。续期任务已确认启用，本次未额外运行续期dry-run。
+2026-10-03 阅读站改为 `news.openzoo.ai`。主页和资讯站分别使用 `/etc/letsencrypt/live/openzoo.ai/`、`/etc/letsencrypt/live/news.openzoo.ai/` 的独立证书，有效期均至2027-01-01。旧hub DNS已移除，主页证书不再包含它，避免续期依赖不存在的域名；沿用已有 `certbot.timer` 与 `renewal-hooks/deploy/reload-nginx.sh` 自动续期后重载Nginx。HTTP重定向HTTPS，HTTP ACME路径保留。`nginx -t`、证书校验、公网与直接源站HTTPS均已实测；没有绕过证书校验。续期任务已确认启用，本次未额外运行续期dry-run。
 
 ## 运维与更新
 
@@ -88,7 +88,7 @@ docker compose --env-file .env -f deploy/production.compose.yml up -d --no-deps 
 ## 本次实测
 
 - 生产Docker镜像构建及API/worker/web启动、数据库健康、seed与38项迁移通过；Node24.21.0。
-- 公网 `node scripts/smoke.ts --base https://hub.openzoo.ai --public`：**43/43**，包括公开阅读、RSS/API/MCP和私有入口隐藏。
+- 公网 `node scripts/smoke.ts --base https://news.openzoo.ai --public`：**43/43**，包括公开阅读、RSS/API/MCP和私有入口隐藏。
 - 原始反斜杠路径400、编码后台路径404；敏感文件404；静态未知路径404、POST403。
 - Docker端口绑定、服务器监听及实际HTTP协议检查确认18090仅回环；DB/API未映射端口。机器网络代理会接受无服务端口的TCP连接，所以不把裸connect成功当成公网服务可达证据。
 - 前端环境私有密钥集合为空，仅连接app网络；Nginx不能写静态目录；`.env`0600。
@@ -103,3 +103,7 @@ docker compose --env-file .env -f deploy/production.compose.yml up -d --no-deps 
 当前 `WEB_RELEASE=d574c24`，仅更新网页容器和静态主页，API/worker 的 `BOTHOT_RELEASE=8f8a410` 保留。生产43项公开/私有入口检查通过，后端容器未重启；权限复查与截图见 [亮色改版](dopamine-redesign.md)。
 
 另通过既有 `seedSources` 幂等导入两个已验证的 Microduck 官方来源，启用来源从18增至20，保持原管理员配置与摘要权限。自动处理已收录一篇历史公告与两个稳定版本更新，历史公告评分71进入精选；保留日期与首次回灌标记，详见 [覆盖调查](microduck-coverage-audit.md)。
+
+## 当前资讯域名
+
+`SITE_URL=https://news.openzoo.ai` 已在 API、worker、web 生效，主页9处阅读入口也已替换。既有文章 ID 和数据不变，RSS/API/canonical/sitemap 使用新域名。旧 `hub.openzoo.ai` 已无DNS，未配置公网旧域名跳转；以后如要恢复旧链接，应先恢复DNS并为旧域名单独签发证书。详见 [迁移记录](news-domain-migration.md)。

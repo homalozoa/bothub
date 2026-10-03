@@ -49,4 +49,4 @@
 
 三条均保留首次回灌标记。官方公告独立评分为 71，进一步说明不能把原周报的 20 当作项目自身的评价；这个分数仍是当前模型的编辑判断，不是经过校准的事实可信度。稳定版本更新被收录但未达到精选门槛，并没有人为降低标准。
 
-[查看实际公开条目](https://hub.openzoo.ai/items/lrfn00psffxgmj1w3iuwcysz7)，[实际入选截图](screenshots/microduck-selected-live.jpg)。官方摘要中的“今日开启预售”已通过 `overrideFields` 编辑纠错改为明确的 2026-08-27 历史公告表述，补充厂商归属；保留原模型评分、入选结果及原始材料，产生已有审计记录，没有直接改数据库发布表。
+[查看实际公开条目](https://news.openzoo.ai/items/lrfn00psffxgmj1w3iuwcysz7)，[实际入选截图](screenshots/microduck-selected-live.jpg)。官方摘要中的“今日开启预售”已通过 `overrideFields` 编辑纠错改为明确的 2026-08-27 历史公告表述，补充厂商归属；保留原模型评分、入选结果及原始材料，产生已有审计记录，没有直接改数据库发布表。
