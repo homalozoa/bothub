@@ -1,4 +1,4 @@
-import { DOMAIN_LABELS } from "@aihot/industry/channels";
+import { DOMAIN_LABELS, domainPath } from "@aihot/industry/channels";
 // One report in a feed. Desktop (≥ 961px): a white card beside the time rail. Mobile: a compact row
 // with a divider, the reason in a grey box. One markup, two presentations, as on the original site.
 import { memo } from "react";
@@ -32,7 +32,7 @@ export const FeedItem = memo(function FeedItem({ item, group, filters, read = fa
   return (
     <article className="relative min-w-0 lg:card lg:card-hover lg:px-[18px] lg:pb-[14px] lg:pt-[15px]" data-item-id={item.id}>
       <header className="flex min-h-[18px] items-center gap-2 text-[12.5px] leading-[18px] text-ink-4">
-        {item.primaryChannel && (!filters?.domain || filters.domain === "all") && <span className="relative z-10 hidden sm:inline"><Link to={`/channels/${item.primaryChannel}`} className="text-accent">{DOMAIN_LABELS[item.primaryChannel]}</Link><span className="ml-2">·</span></span>}
+        {item.primaryChannel && (!filters?.domain || filters.domain === "all") && <span className="relative z-10 hidden sm:inline"><Link to={domainPath(item.primaryChannel)} className="text-accent">{DOMAIN_LABELS[item.primaryChannel]}</Link><span className="ml-2">·</span></span>}
         <SourceLine item={item} className="text-ink-4" />
         {item.historical && <Badge title="历史资料，保留原始日期；不属于当前资讯">历史资料</Badge>}
         {item.selected && (

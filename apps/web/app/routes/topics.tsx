@@ -1,3 +1,4 @@
+import { retainedTopic } from "@aihot/industry/channels";
 import { data as withHeaders, Link, useLoaderData } from "react-router";
 import { subjectAfter, withSubject } from "@aihot/industry/site";
 import catalog from "@aihot/industry/topics.json";
@@ -59,13 +60,13 @@ export default function TopicsPage() {
                   <Link
                     to={`/topics/${t.slug}`}
                     prefetch="intent"
-                    aria-label={`查看${t.name}相关精选文章`}
+                    aria-label={`查看${t.name}相关文章`}
                     className="card card-hover group flex h-full flex-col px-5 py-[18px]"
                   >
                     <span className="text-[15px] font-bold text-ink transition-colors group-hover:text-accent">{t.name}</span>
                     <span className="mt-1.5 line-clamp-2 flex-1 text-[12.5px] leading-[1.7] text-ink-3">{t.definition}</span>
                     <span className="mono mt-3 text-[11.5px] text-accent">
-                      查看 {t.total} 条精选 <span className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+                      查看 {t.total} 条{retainedTopic(t.slug) ? "资料" : "精选"} <span className="inline-block transition-transform duration-200 group-hover:translate-x-0.5">→</span>
                     </span>
                   </Link>
                 </li>

@@ -17,17 +17,17 @@ Object.assign(process.env, {
   MODEL_CALLS_ENABLED: "true", COLLECT_ENABLED: "false", FEISHU_CONTENT_PUSH_ENABLED: "false", FEISHU_INTERNAL_ENABLED: "false",
   INDEXNOW_SUBMIT_ENABLED: "false", AIHOT_CREDENTIALS_DIR: "/nonexistent-demo-credentials", LOG_LEVEL: "error",
 });
-const summaries: Record<string, { title: string; summary: string; category: string; type: string; tag: string; domain?: string; related?: string[] }> = {
+const summaries: Record<string, { title: string; summary: string; category: string; type: string; tag: string; themes?: string[]; domain?: string; related?: string[] }> = {
   DEMO_CODE: { title: "【离线演示】操作策略项目发布训练代码", summary: "这是一条合成演示材料：示例项目发布了操作策略训练代码及运行配置，用于展示原文、摘要和事件归组。演示材料没有模型权重或数据集，不能称为完整开源，也不能据此判断真实机器人领域筛选效果。", category: "research", type: "tool_or_prompt", tag: "开源/仓库" },
   DEMO_WEIGHTS: { title: "【离线演示】同一操作策略项目后续开放权重", summary: "这是一条合成后续进展：示例项目在代码发布之后开放权重，用于展示同一事件中的新增事实。材料只描述仿真测试，没有真机或跨环境验证，数据和硬件设计许可仍为未知。", category: "research", type: "model_release", tag: "模型发布" },
   DEMO_SENSOR: { title: "【离线演示】传感器同步方案提供测量日志", summary: "这是一条合成硬件材料：示例传感器同步方案提供测量日志与接线说明，用于展示硬件与系统分类。延迟数据仅代表示例条件，不是独立测试或厂商真实指标，温度范围、可靠性和采购价格尚未验证。", category: "hardware", type: "product_launch", tag: "产品更新" },
 };
 if (process.env.MULTICHANNEL_DEMO === "true") Object.assign(summaries, {
   DEMO_AGENT: { domain: "agents", title: "【离线演示】长任务 Agent 的权限与失败恢复", summary: "合成材料展示一个长任务系统如何请求工具权限、保存中断位置并恢复任务。示例未提供真实任务成功率或成本，固定本地响应只验证领域路由与页面。", category: "research", type: "tool_or_prompt", tag: "开源/仓库" },
-  DEMO_INTERACTION: { domain: "interaction", title: "【离线演示】长期交互研究记录使用者的退出原因", summary: "合成研究材料展示一项交互观察如何同时记录使用、喜欢与退出，保留参与者与持续时间的解释边界。它不代表真实研究结果，也不宣称改善了生活。", category: "research", type: "research_paper", tag: "论文/研究" },
-  DEMO_PLAY: { domain: "play", title: "【离线演示】角色养成机制的开发复盘", summary: "合成开发复盘讨论角色反馈、玩家创造与重复体验。开发者自述和玩家个案分别呈现，示例没有留存或商业数据。", category: "industry", type: "opinion_analysis", tag: "观点/分析" },
-  DEMO_BIOLOGY: { domain: "biology", related: ["play"], title: "【离线演示】动物游戏行为的观察与替代解释", summary: "合成生物学材料展示如何描述一个物种的游戏行为、观察条件和替代解释。材料不涉及机器人或商业应用，也不能将单物种观察推广到所有动物。关联游戏频道仍使用同一个详情地址。", category: "research", type: "research_paper", tag: "论文/研究" },
-  DEMO_NATURAL: { domain: "natural-history", title: "【离线演示】一组标本修订了物种演化的解释", summary: "合成自然史材料展示标本背景、地层、测年和分类依据。未知条件保持未知，原始发表时间不因被收录而更新。这是页面和程序样例，没有真实发现结论。", category: "research", type: "research_paper", tag: "论文/研究" },
+  DEMO_INTERACTION: { domain: "agents", themes: ["人机交互"], title: "【离线演示】AI助手交互研究记录使用者的退出原因", summary: "合成研究材料展示一项AI助手交互观察如何同时记录使用、喜欢与退出，保留参与者与持续时间的解释边界。它不代表真实研究结果，也不宣称改善了生活。", category: "research", type: "research_paper", tag: "论文/研究" },
+  DEMO_PLAY: { domain: "sociology", themes: ["游戏与角色"], title: "【离线演示】玩家社群中的角色关系访谈", summary: "合成社会学材料描述玩家社群的共同活动和角色关系，保留参与者、观察时段与群体背景。访谈个案不能推及所有玩家，示例不代表真实研究或商业数据。", category: "industry", type: "opinion_analysis", tag: "观点/分析" },
+  DEMO_BIOLOGY: { domain: "biology", themes: ["游戏与角色"], title: "【离线演示】动物游戏行为的观察与替代解释", summary: "合成生物学材料展示如何描述一个物种的游戏行为、观察条件和替代解释。材料不涉及机器人或商业应用，也不能将单物种观察推广到所有动物。关联游戏频道仍使用同一个详情地址。", category: "research", type: "research_paper", tag: "论文/研究" },
+  DEMO_NATURAL: { domain: "biology", themes: ["自然史"], title: "【离线演示】一组标本修订了物种演化的解释", summary: "合成自然史材料展示标本背景、地层、测年和分类依据。未知条件保持未知，原始发表时间不因被收录而更新。这是页面和程序样例，没有真实发现结论。", category: "research", type: "research_paper", tag: "论文/研究" },
   DEMO_SOCIAL: { domain: "sociology", title: "【离线演示】照护与工作如何进入家庭的日常", summary: "合成社会学材料展示一个地区的家庭照护田野访谈，讨论受访者经验、时间与生活背景。小样本不等同于低质量，也不将相关性写成普遍因果。", category: "research", type: "opinion_analysis", tag: "观点/分析" },
 });
 let calls = 0;
@@ -43,10 +43,10 @@ const server = createServer(async (req, res) => {
   const marker = Object.keys(summaries).find((m) => user.includes(m)) ?? "DEMO_CODE";
   const item = summaries[marker]!;
   let content: unknown;
-  if (system.includes("宽召回")) content = { label: "PASS", reason: "离线演示固定响应", primaryChannel: item.domain ?? "robotics", relatedChannels: item.related ?? [] };
+  if (system.includes("四频道宽召回预筛")) content = { label: "PASS", reason: "离线演示固定响应", primaryChannel: item.domain ?? "robotics", relatedChannels: item.related ?? [] };
   else if (system.includes("事件注意力评分器")) content = { attentionScore: 82 };
-  else if (system.includes("内容理解编辑")) content = { itemType: item.type, authorRole: "unknown", tags: [item.tag], editorialJudgment: "离线演示：固定分数仅测试流程，不是编辑评测。", titleZh: item.title, summaryZh: item.summary };
-  else if (system.includes("资料结构化助手")) content = { primaryChannel: item.domain ?? "robotics", relatedChannels: item.related ?? [], category: item.category, tags: [item.tag], subjects: [], fact: { title: item.title, subject: "演示项目", action: marker === "DEMO_WEIGHTS" ? "开放权重" : "发布代码", object: marker === "DEMO_SENSOR" ? "传感器" : "操作策略", occurredAt: null } };
+  else if (system.includes("内容理解编辑")) content = { itemType: item.type, authorRole: "unknown", tags: [item.tag, ...(item.themes ?? [])], editorialJudgment: "离线演示：固定分数仅测试流程，不是编辑评测。", titleZh: item.title, summaryZh: item.summary };
+  else if (system.includes("资料结构化助手")) content = { primaryChannel: item.domain ?? "robotics", relatedChannels: item.related ?? [], category: item.category, tags: [item.tag, ...(item.themes ?? [])], subjects: [], fact: { title: item.title, subject: "演示项目", action: marker === "DEMO_WEIGHTS" ? "开放权重" : "发布代码", object: marker === "DEMO_SENSOR" ? "传感器" : "操作策略", occurredAt: null } };
   else if (user.includes("【候选")) content = { query: "演示项目发布", decisions: [...user.matchAll(/【候选 (C\d+)】/g)].map((m) => ({ id: m[1], relation: item.domain ? "UNRELATED" : user.includes("后续开放权重") ? "SAME_STORY" : "SAME_OCCURRENCE", confidence: 0.95, note: "离线固定关系" })) };
   else if (user.includes("报道 A")) content = { a: "发布", b: "发布", relation: item.domain ? "UNRELATED" : user.includes("后续开放权重") ? "SAME_STORY" : "SAME_OCCURRENCE", difference: "离线演示", confidence: 0.95 };
   else if (system.includes("日报主编")) content = { title: "【离线演示】机器人资讯流程试读", leadParagraph: "本页使用合成材料和本地固定响应，展示采集、摘要、归组和日报页面。没有访问外部模型，没有真实筛选质量结论。", highlights: [1, 2, 3] };

@@ -1,4 +1,4 @@
-import { DOMAINS } from "@aihot/industry/channels";
+import { DOMAINS, DOMAIN_LABELS, retainedTopic } from "@aihot/industry/channels";
 import { SITE } from "@aihot/industry/site";
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
@@ -359,7 +359,7 @@ export default function ContentItem({ loaderData }: Route.ComponentProps) {
           return (await run("POST", `${base}/override`, { fields: next, clear, reason, version }, { label: "override", success: "修正已保存并重新发布" })) !== null;
         }}
       >
-        <Field label="主频道"><Select value={fields.primaryChannel} onChange={e => setFields({ ...fields, primaryChannel: e.target.value })}><option value="">跟随自动分析</option>{DOMAINS.map(d => <option key={d.key} value={d.key}>{d.label}</option>)}</Select></Field>
+        <Field label="主频道"><Select value={fields.primaryChannel} onChange={e => setFields({ ...fields, primaryChannel: e.target.value })}><option value="">跟随自动分析</option>{retainedTopic(fields.primaryChannel) && <option value={fields.primaryChannel}>{DOMAIN_LABELS[fields.primaryChannel as keyof typeof DOMAIN_LABELS]}（保留的历史设置）</option>}{DOMAINS.map(d => <option key={d.key} value={d.key}>{d.label}</option>)}</Select></Field>
         <Field label="关联频道 slug（最多两个，逗号分隔）"><Input value={fields.relatedChannels} onChange={e => setFields({ ...fields, relatedChannels: e.target.value })} /></Field>
         <Field label="标题"><Input value={fields.title} placeholder={p?.title ?? ""} onChange={(e) => setFields({ ...fields, title: e.target.value })} /></Field>
         <Field label="摘要"><Textarea rows={3} value={fields.summary} placeholder={p?.summary ?? ""} onChange={(e) => setFields({ ...fields, summary: e.target.value })} /></Field>

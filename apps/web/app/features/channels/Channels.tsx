@@ -1,5 +1,5 @@
-import { Link, useLocation } from "react-router";
-import { DOMAINS, type DomainKey } from "@aihot/industry/channels";
+import { Link, useLocation, useSearchParams } from "react-router";
+import { DOMAINS, RETAINED_TOPICS, type DomainKey } from "@aihot/industry/channels";
 import type { TimelineCard } from "@aihot/contracts/site";
 
 export interface ChannelOverview { channels: Array<(typeof DOMAINS)[number] & { featured: TimelineCard | null }>; refreshAt: string | null }
@@ -34,4 +34,13 @@ export function ChannelGrid({ channels, compact = false }: { channels: ChannelOv
       {!compact && (d.featured ? <Link className="channel-preview" to={`/items/${d.featured.item.id}`}><span>频道精选</span>{d.featured.item.title}</Link> : <p className="channel-empty">暂未有新的频道精选</p>)}
     </article>)}
   </div>;
+}
+
+export function TopicLinks({ domain }: { domain?: DomainKey }) {
+  const [params] = useSearchParams();
+  const topics = RETAINED_TOPICS.filter(t => !domain || (t.parents as readonly string[]).includes(domain));
+  return <div className="topic-shortcuts"><span>按主题看</span>{topics.map(t => {
+    const sp = new URLSearchParams(params); sp.delete("page"); sp.delete("cursor"); sp.set("topic", t.slug);
+    return <Link key={t.slug} to={domain ? `/channels/${domain}?${sp}` : `/topics/${t.slug}`}>{t.name} <span aria-hidden="true">↗</span></Link>;
+  })}<Link to="/topics">全部主题 ↗</Link></div>;
 }

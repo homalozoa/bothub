@@ -1,4 +1,4 @@
-import { ChannelGrid, DomainNav, type ChannelOverview } from "../features/channels/Channels";
+import { ChannelGrid, DomainNav, TopicLinks, type ChannelOverview } from "../features/channels/Channels";
 import { Link } from "react-router";
 import { data as withHeaders, redirect, useLoaderData } from "react-router";
 import type { Route } from "./+types/home";
@@ -46,8 +46,9 @@ export default function Home() {
     <div className="pb-6">
       <DomainNav />
       <SignalHero />
-      <div className="radar-section-heading"><div><p className="radar-eyebrow">FOLLOW A THREAD</p><h2>七个频道，一整个世界</h2></div><Link to="/channels">频道精选 ↗</Link></div>
+      <div className="radar-section-heading"><div><p className="radar-eyebrow">FOLLOW A THREAD</p><h2>四个频道，沿着好奇心阅读</h2></div><Link to="/channels">频道精选 ↗</Link></div>
       <ChannelGrid channels={overview.channels} compact />
+      <TopicLinks />
       <div className="radar-section-heading feed-heading"><div><p className="radar-eyebrow">THE LATEST SELECTION</p><h2>{title === "精选" ? "最新精选" : title}</h2></div><a href="/feed/channels/all.xml" className="rss-link">综合 RSS ↗</a></div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><CategoryTabs base="/" category={filters.category} channel={filters.channel} layoutId="home-cat" className="min-w-0" /><SearchField variant="track" keep={{ category: filters.category }} /></div>
       <p className="reader-note">先在各频道内筛选，再沿原始来源阅读。模型评分用于编辑选择，来源数量不代表真实性。</p>

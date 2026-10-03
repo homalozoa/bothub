@@ -1,5 +1,5 @@
-import { Form, Link, data as withHeaders, useLoaderData, useSearchParams } from "react-router";
-import { domainInfo, isDomainKey } from "@aihot/industry/channels";
+import { Form, Link, redirect, data as withHeaders, useLoaderData, useSearchParams } from "react-router";
+import { domainInfo, isDomainKey, domainPath, retainedTopic, RETAINED_TOPICS } from "@aihot/industry/channels";
 import { isCategoryKey, isChannelKey } from "@aihot/contracts/taxonomy";
 import type { PoolResponse, TimelineResponse } from "@aihot/contracts/site";
 import type { Route } from "./+types/channel";
@@ -8,11 +8,13 @@ import { pageMeta } from "../lib/seo";
 import { Timeline } from "../features/feed/Timeline";
 import { DayList, Pagination } from "../features/feed/DayList";
 import { EmptyState } from "../components/ui/Page";
-import { DomainNav, ChannelIcon } from "../features/channels/Channels";
+import { DomainNav, ChannelIcon, TopicLinks } from "../features/channels/Channels";
 import { SearchField, hrefWith } from "../features/feed/Filters";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   if (!isDomainKey(params.domain)) throw new Response("Unknown channel", { status: 404 });
+  const legacy = retainedTopic(params.domain);
+  if (legacy) throw redirect(`${domainPath(params.domain)}${new URL(request.url).search}`, 308);
   const domain = domainInfo(params.domain);
   const url = new URL(request.url);
   const sp = url.searchParams;
@@ -25,7 +27,8 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   const since = rawSince && /^\d{4}-\d{2}-\d{2}$/.test(rawSince) && Number.isFinite(Date.parse(rawSince)) && new Date(rawSince).toISOString().slice(0, 10) === rawSince ? rawSince : null;
   const page = Math.min(Math.max(Number.parseInt(sp.get("page") ?? "1", 10) || 1, 1), 50);
   const upstream = new Headers();
-  const filters = { domain: domain.key, channel, category, tag, since };
+  const topic = sp.get("topic")?.trim().slice(0, 100) || null;
+  const filters = { domain: domain.key, channel, category, tag, topic, since };
   const endpoint = mode === "latest" ? "/api/site/pool" : "/api/site/timeline";
   const result = await loadOr404<TimelineResponse | PoolResponse>(`${endpoint}${queryString({ ...filters, channel: channel === "all" ? null : channel, q, page: page > 1 ? page : null, tab: sp.get("tab") })}`, { signal: request.signal, responseHeaders: upstream });
   return withHeaders({ domain, mode, result, q, since }, { headers: releaseBoundCache("refreshAt" in result ? result.refreshAt : null, 60, Date.now(), upstream) });
@@ -42,13 +45,14 @@ export default function Channel() {
   const [params] = useSearchParams();
   const base = `/channels/${domain.key}`;
   const f = result.filters;
-  const keep = { view: "latest", tag: f.tag, category: f.category, channel: f.channel === "all" ? null : f.channel, since };
+  const keep = { view: "latest", topic: f.topic ?? null, tag: f.tag, category: f.category, channel: f.channel === "all" ? null : f.channel, since };
   return <div className="radar-page">
     <DomainNav active={domain.key} />
     <header className={`channel-header domain-${domain.key}`}>
       <div><p className="radar-eyebrow">ZOORADAR / {domain.english.toUpperCase()}</p><h1>{domain.label}<span className="title-dot">.</span></h1><p>{domain.description}</p></div>
       <ChannelIcon domain={domain.key} className="channel-header-icon" />
     </header>
+    <TopicLinks domain={domain.key} />
     <div className="reader-toolbar">
       <nav aria-label="阅读方式" className="reading-switch">
         <Link aria-current={mode === "selected" ? "page" : undefined} to={hrefWith(base, params, { view: null, q: null, tab: null })}>精选</Link>
@@ -60,6 +64,7 @@ export default function Channel() {
       <SearchField action={base} defaultValue={q ?? ""} keep={keep} variant="bar" />
       <Form method="get" action={base} className="channel-filter-form">
         <input type="hidden" name="view" value={mode} />{q && <input type="hidden" name="q" value={q} />}
+        <label>主题<select name="topic" defaultValue={f.topic ?? ""} key={`topic-${f.topic}`}><option value="">全部主题</option>{RETAINED_TOPICS.filter(t => (t.parents as readonly string[]).includes(domain.key)).map(t => <option key={t.slug} value={t.slug}>{t.name}</option>)}</select></label>
         <label>内容形态<select name="tag" defaultValue={f.tag ?? ""} key={`tag-${f.tag}`}><option value="">全部形态</option>{types.map(t => <option key={t}>{t}</option>)}</select></label>
         <label>来源<select name="channel" defaultValue={f.channel} key={`source-${f.channel}`}><option value="all">全部来源</option><option value="firstParty">一手来源</option><option value="news">资讯</option><option value="x">X</option></select></label>
         <label>起始日期<input type="date" name="since" defaultValue={since ?? ""} key={`since-${since}`} /></label>

@@ -29,7 +29,7 @@ export const SIDEBAR: Array<{ title: string; items: NavItem[] }> = [
       { to: "/starred", label: "收藏", icon: IconBookmark },
     ],
   },
-  { title: "七个频道", items: DOMAINS.map(d => ({ to: `/channels/${d.key}`, label: d.label, icon: IconGrid })) },
+  { title: "四个频道", items: DOMAINS.map(d => ({ to: `/channels/${d.key}`, label: d.label, icon: IconGrid })) },
   // The optional AI-only modules (industry/features.ts).
   ...(FEATURES.leaderboard || FEATURES.codexResetMonitor
     ? [

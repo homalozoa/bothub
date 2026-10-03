@@ -56,14 +56,14 @@ type ItemList = Awaited<ReturnType<typeof v1Items>>;
 const LATEST_INPUT = z.strictObject({
   window: z.enum(["24h", "7d"]).default("24h").describe("Time window. Use 24h for a current briefing and 7d for a weekly view."),
   mode: z.enum(["selected", "all"]).default("selected").describe("selected returns editorial picks; all returns every public item."),
-  domain: z.enum(["all", ...DOMAIN_KEYS]).optional().describe("Editorial domain; omitted keeps robotics. Use all for all seven domains."),
+  domain: z.enum(["all", ...DOMAIN_KEYS]).optional().describe("Editorial domain; omitted keeps robotics. Use all for the four active domains; old domain keys remain available for retained-topic queries."),
   category,
   limit: z.number().int().min(1).max(30).default(10).describe("Maximum number of results, from 1 to 30."),
 });
 const SEARCH_INPUT = z.strictObject({
   q: z.string().min(2).max(200).describe("Search query, 2 to 200 characters."),
   window: z.enum(["24h", "7d"]).default("7d").describe("Search window. Defaults to the latest 7 days."),
-  domain: z.enum(["all", ...DOMAIN_KEYS]).optional().describe("Editorial domain; omitted keeps robotics. Use all for all seven domains."),
+  domain: z.enum(["all", ...DOMAIN_KEYS]).optional().describe("Editorial domain; omitted keeps robotics. Use all for the four active domains; old domain keys remain available for retained-topic queries."),
   category,
   limit: z.number().int().min(1).max(30).default(10).describe("Maximum number of results, from 1 to 30."),
 });
