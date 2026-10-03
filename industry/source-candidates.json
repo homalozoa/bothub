@@ -1,5 +1,5 @@
 {
-  "comment": "未接入候选和被排除入口；enabled=false，不由 seed 导入。状态说明来自实际检查，尚无完整正文或关联验证的不算已接入。",
+  "comment": "默认不启用的来源：9个尚未接入候选及1个按运营者语言偏好停用的量子位。保留原端点和验证记录，不能计作启用来源；不删除历史文章。",
   "sources": [
     {
       "id": "rss-robotics-business-review",
@@ -359,6 +359,42 @@
           "status": "body_unconfirmed",
           "itemCount": 10
         }
+      }
+    },
+    {
+      "id": "rss-qbitai",
+      "name": "量子位",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.qbitai.com/feed",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "first_party": false,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "zh",
+        "media"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "robotics": {
+        "language": "zh",
+        "coverage": [
+          "research",
+          "industry"
+        ],
+        "identity": "media",
+        "homepage": "https://www.qbitai.com/",
+        "limitations": [
+          "综合 AI 媒体，只保留原材料明确涉及机器人的报道。"
+        ],
+        "disabledReason": "2026-10-03：按运营者非简体中文来源偏好停用；此前RSS解析验证通过，不是技术故障或逐条失实判定。"
       }
     }
   ]

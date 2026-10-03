@@ -1,5 +1,5 @@
 {
-  "comment": "机器人初始信源。仅纳入公开采集器实际解析并确认样例日期、正文和关联的来源；检查记录见 docs/source-validation.json。seed 保留后台已有设置。",
+  "comment": "机闻默认启用的19个非简体中文信源。新增来源优先一手原始材料，逐项验证语言、日期、正文和机器人关联；已停用量子位移到source-candidates.json，保留原检查记录和历史文章。seed不覆盖管理员设置。",
   "sources": [
     {
       "id": "rss-robot-report",
@@ -103,41 +103,6 @@
         "homepage": "https://robotstart.info/",
         "limitations": [
           "关注服务、伙伴和消费机器人；日文标题需保留归属，公关稿须降权。"
-        ]
-      }
-    },
-    {
-      "id": "rss-qbitai",
-      "name": "量子位",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://www.qbitai.com/feed",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T2",
-      "first_party": false,
-      "owner_entity_id": null,
-      "participation_mode": "editorial",
-      "interval_minutes": 120,
-      "tags": [
-        "zh",
-        "media"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false,
-      "enabled": true,
-      "robotics": {
-        "language": "zh",
-        "coverage": [
-          "research",
-          "industry"
-        ],
-        "identity": "media",
-        "homepage": "https://www.qbitai.com/",
-        "limitations": [
-          "综合 AI 媒体，只保留原材料明确涉及机器人的报道。"
         ]
       }
     },
