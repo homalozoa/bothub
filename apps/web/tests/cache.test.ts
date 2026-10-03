@@ -1,3 +1,4 @@
+import { DOMAINS } from "@aihot/industry/channels";
 // Run after `npm run build -w @aihot/web`. Real production server/router, synthetic HTTP API only.
 import assert from "node:assert/strict";
 import { spawn, type ChildProcess } from "node:child_process";
@@ -15,6 +16,8 @@ let logs = "";
 let deadline: number;
 let refreshAt: string;
 let metaDelayMs = 0;
+let showEditorialExample = false;
+const siteQueries: string[] = [];
 const apiCookies: Array<string | undefined> = [];
 const api = createServer((req, res) => {
   const url = new URL(req.url!, "http://api.local");
@@ -24,12 +27,17 @@ const api = createServer((req, res) => {
     const respond = () => res.end(JSON.stringify({ changelogVersion: "2026-09-28T12:00" }));
     return metaDelayMs ? setTimeout(respond, metaDelayMs) : respond();
   }
-  if (url.pathname === "/api/site/channels") return res.end(JSON.stringify({ channels: [], refreshAt: null }));
+  if (url.pathname === "/api/site/channels") return res.end(JSON.stringify({ channels: showEditorialExample ? DOMAINS.map(d=>({...d,total:8,featured:d.key === "biology" ? {key:"abio-fixture",anchorAt:"2026-09-28T00:00:00Z",group:null,item:{id:"bio-fixture",title:"公开生物学精选示例",source:{name:"科学期刊"},publishedAt:"2026-09-28T00:00:00Z",timelineAt:"2026-09-28T00:00:00Z"}} : null})) : [], refreshAt: null }));
   if (url.pathname === "/api/site/timeline") {
-    const filters = { channel: "all", category: url.searchParams.get("category"), tag: null, topic: null };
+    siteQueries.push(url.pathname+url.search);
+    const filters = { domain:url.searchParams.get("domain") ?? "all", channel:url.searchParams.get("channel") ?? "all", category: url.searchParams.get("category"), tag:url.searchParams.get("tag"), topic: null };
     res.setHeader("X-Accel-Expires", `@${deadline}`);
     res.setHeader("Cache-Control", "public, max-age=30, s-maxage=30");
     return res.end(JSON.stringify({ filters, cards: [], nextCursor: null, refreshAt, dayCounts: [], hot: null, generatedAt: "2026-09-28T00:00:00Z" }));
+  }
+  if (url.pathname === "/api/site/pool") {
+    siteQueries.push(url.pathname+url.search);
+    return res.end(JSON.stringify({filters:{domain:url.searchParams.get("domain") ?? "all",channel:"all",category:null,tag:url.searchParams.get("tag"),topic:null,q:url.searchParams.get("q"),tab:"time"},items:[],page:1,pageCount:1,total:0,todayCount:0,freshness:"2026-09-28T00:00:00Z",generatedAt:"2026-09-28T00:00:00Z"}));
   }
   if (url.pathname === "/api/site/topics" || url.pathname === "/api/site/topics/test-topic") {
     res.setHeader("X-Accel-Expires", `@${deadline}`);
@@ -254,4 +262,27 @@ test("主题HTML和导航数据共享发布截止，过期上游不得续期", a
       await res.text();
     }
   } finally { deadline = savedDeadline; refreshAt = savedRefresh; }
+});
+
+test("comprehensive picks show actual biology previews and honest empty-domain links, with cross-domain content filters", async()=>{
+  showEditorialExample=true;
+  try {
+    const r=await fetch(origin+'/');assert.equal(r.status,200);const html=await r.text();
+    assert.match(html,/公开生物学精选示例/);assert.match(html,/items\/bio-fixture/);
+    assert.match(html,/已收录 8 条，暂无当前精选/);assert.match(html,/channels\/agents\?view=latest/);
+    assert.match(html,/论文\/研究/);assert.doesNotMatch(html,/产品与商业化/);
+  } finally { showEditorialExample=false; }
+});
+test("home domain selections reach the publication query and scope stays present in search and content-shape links",async()=>{
+  siteQueries.length=0;
+  const r=await fetch(origin+'/?domain=biology&tag='+encodeURIComponent('论文/研究'));assert.equal(r.status,200);const html=await r.text();
+  assert.ok(siteQueries.some(q=>q.startsWith('/api/site/timeline?')&&new URL(q,'http://api.local').searchParams.get('domain')==='biology'));
+  assert.match(html,/生物学精选/);assert.match(html,/name="domain" value="biology"/);
+  assert.doesNotMatch(html,/THE OPENZOO READING ROOM/);
+  assert.match(html,/domain=sociology/);
+});
+test("latest-domain navigation keeps the latest view and keyword search instead of switching into selected pages",async()=>{
+  const r=await fetch(origin+'/all?domain=biology&q=learning');assert.equal(r.status,200);const html=await r.text();
+  assert.match(html,/\/all\?domain=sociology(?:&amp;|&)q=learning/);
+  assert.match(html,/name="domain" value="biology"/);assert.doesNotMatch(html,/产品与商业化/);
 });

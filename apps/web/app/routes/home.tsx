@@ -1,3 +1,4 @@
+import { DOMAIN_LABELS, isDomainKey } from "@aihot/industry/channels";
 import { ChannelGrid, DomainNav, TopicLinks, type ChannelOverview } from "../features/channels/Channels";
 import { Link } from "react-router";
 import { data as withHeaders, redirect, useLoaderData } from "react-router";
@@ -7,7 +8,7 @@ import { isCategoryKey, isChannelKey } from "@aihot/contracts/taxonomy";
 import { loadOr404, queryString, releaseBoundCache } from "../lib/api.server";
 import { listPath, websiteLd, pageMeta } from "../lib/seo";
 import { Timeline } from "../features/feed/Timeline";
-import { CategoryTabs, SearchField } from "../features/feed/Filters";
+import { ContentTabs, SearchField } from "../features/feed/Filters";
 import { SignalHero } from "../components/SignalHero";
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -15,6 +16,8 @@ export async function loader({ request }: Route.LoaderArgs) {
   const q = url.searchParams.get("q");
   // Search lives on /all; keep the parameters so old links still land on results.
   if (q && q.trim()) throw redirect(`/all${url.search}`);
+  const domainParam = url.searchParams.get("domain");
+  const domain = isDomainKey(domainParam) ? domainParam : "all";
   const channelParam = url.searchParams.get("channel") ?? "all";
   const categoryParam = url.searchParams.get("category");
   const channel = isChannelKey(channelParam) ? channelParam : "all";
@@ -23,15 +26,15 @@ export async function loader({ request }: Route.LoaderArgs) {
   const upstream = new Headers();
   const [overview, data] = await Promise.all([
     loadOr404<ChannelOverview>("/api/site/channels", { signal: request.signal }),
-    loadOr404<TimelineResponse>(`/api/site/timeline${queryString({ channel: channel === "all" ? null : channel, category, tag })}`, { responseHeaders: upstream, signal: request.signal }),
+    loadOr404<TimelineResponse>(`/api/site/timeline${queryString({ domain, channel: channel === "all" ? null : channel, category, tag })}`, { responseHeaders: upstream, signal: request.signal }),
   ]);
   const refreshAt = [data.refreshAt, overview.refreshAt].filter((d): d is string => !!d).sort()[0] ?? null;
-  return withHeaders({ data, overview, filters: { channel, category, tag, topic: null } }, { headers: releaseBoundCache(refreshAt, 60, Date.now(), upstream) });
+  return withHeaders({ data, overview, filters: data.filters }, { headers: releaseBoundCache(refreshAt, 60, Date.now(), upstream) });
 }
 
 export function meta({ loaderData }: Route.MetaArgs) {
   const f = loaderData?.filters;
-  const path = listPath("/", { channel: f && f.channel !== "all" ? f.channel : null, category: f?.category, tag: f?.tag });
+  const path = listPath("/", { domain: f?.domain && f.domain !== "all" ? f.domain : null, channel: f && f.channel !== "all" ? f.channel : null, category: f?.category, tag: f?.tag });
   return pageMeta({ path, jsonLd: path === "/" ? websiteLd() : undefined });
 }
 
@@ -41,17 +44,21 @@ export function headers({ loaderHeaders }: Route.HeadersArgs) {
 
 export default function Home() {
   const { data, overview, filters } = useLoaderData<typeof loader>();
-  const title = filters.tag ? `#${filters.tag}` : "精选";
+  const domainTitle = filters.domain && filters.domain !== "all" ? `${DOMAIN_LABELS[filters.domain]}精选` : "综合精选";
+  const title = filters.tag ? `${domainTitle} · #${filters.tag}` : domainTitle;
+  const comprehensive = !filters.domain || filters.domain === "all";
   return (
     <div className="pb-6">
-      <DomainNav />
+      <DomainNav base="/" active={filters.domain ?? "all"} />
+      {comprehensive && <>
       <SignalHero />
-      <div className="radar-section-heading"><div><p className="radar-eyebrow">FOLLOW A THREAD</p><h2>四个频道，沿着好奇心阅读</h2></div><Link to="/channels">频道精选 ↗</Link></div>
-      <ChannelGrid channels={overview.channels} compact />
+      <div className="radar-section-heading"><div><p className="radar-eyebrow">FOLLOW A THREAD</p><h2>四个领域的精选</h2></div><Link to="/channels">频道精选 ↗</Link></div>
+      <ChannelGrid channels={overview.channels} selectedOverview />
       <TopicLinks />
-      <div className="radar-section-heading feed-heading"><div><p className="radar-eyebrow">THE LATEST SELECTION</p><h2>{title === "精选" ? "最新精选" : title}</h2></div><a href="/feed/channels/all.xml" className="rss-link">综合 RSS ↗</a></div>
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><CategoryTabs base="/" category={filters.category} channel={filters.channel} layoutId="home-cat" className="min-w-0" /><SearchField variant="track" keep={{ category: filters.category }} /></div>
-      <p className="reader-note">先在各频道内筛选，再沿原始来源阅读。模型评分用于编辑选择，来源数量不代表真实性。</p>
+      </>}
+      <div className="radar-section-heading feed-heading"><div><p className="radar-eyebrow">THE LATEST SELECTION</p><h1 className="text-[22px] font-bold text-ink">{title}</h1></div><a href="/feed/channels/all.xml" className="rss-link">综合 RSS ↗</a></div>
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><ContentTabs base="/" tag={filters.tag} category={filters.category} channel={filters.channel} layoutId="home-cat" className="min-w-0" /><SearchField variant="track" keep={{ domain: filters.domain === "all" ? null : filters.domain ?? null, channel: filters.channel === "all" ? null : filters.channel, category: filters.category, tag: filters.tag }} /></div>
+      <p className="reader-note">综合精选按原始时间排列；上方可直接阅读各领域的精选。模型评分用于编辑选择，来源数量不代表真实性。</p>
       <Timeline initial={data} filters={data.filters} />
     </div>
   );

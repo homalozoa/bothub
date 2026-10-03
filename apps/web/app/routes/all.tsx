@@ -8,7 +8,7 @@ import type { PoolResponse } from "@aihot/contracts/site";
 import { isCategoryKey, isChannelKey } from "@aihot/contracts/taxonomy";
 import { loadOr404, queryString } from "../lib/api.server";
 import { listPath, pageMeta } from "../lib/seo";
-import { CategoryTabs, SearchField } from "../features/feed/Filters";
+import { ContentTabs, SearchField } from "../features/feed/Filters";
 import { PillTabs } from "../components/ui/Tabs";
 import { DayList, Pagination } from "../features/feed/DayList";
 import { EmptyState } from "../components/ui/Page";
@@ -68,7 +68,7 @@ export default function AllPage() {
   const navigation = useNavigation();
   const f = data.filters;
   const busy = navigation.state === "loading" && navigation.location?.pathname === "/all";
-  const keep = { domain: f.domain === "all" ? null : f.domain ?? null, since: f.since ?? null, channel: f.channel === "all" ? null : f.channel, category: f.category };
+  const keep = { tag: f.tag, topic: f.topic ?? null, domain: f.domain === "all" ? null : f.domain ?? null, since: f.since ?? null, channel: f.channel === "all" ? null : f.channel, category: f.category };
   const searchTabHref = (tab: "time" | "relevance") => {
     const sp = new URLSearchParams(params);
     sp.delete("page");
@@ -81,12 +81,12 @@ export default function AllPage() {
 
   return (
     <div className="pb-6 radar-page">
-      <DomainNav active={f.domain ?? "all"} />
+      <DomainNav base="/all" active={f.domain ?? "all"} />
       {/* Desktop, as on 精选: the title, then one filter row with the search field aligned on the right. */}
       <div className="hidden lg:block">
         <h1 className="text-[24px] font-semibold leading-[1.3] text-ink">{title ?? `全部${withSubject("动态")}`}</h1>
         <div className="mb-5 mt-4 flex items-center justify-between gap-4">
-          <CategoryTabs base="/all" category={f.category} channel={f.channel} layoutId="all-cat-desk" className="min-w-0" />
+          <ContentTabs base="/all" tag={f.tag} category={f.category} channel={f.channel} layoutId="all-cat-desk" className="min-w-0" />
           <SearchField variant="track" defaultValue={f.q ?? ""} keep={keep} />
         </div>
       </div>
@@ -103,7 +103,7 @@ export default function AllPage() {
         </div>
         <SearchField variant="bar" defaultValue={f.q ?? ""} keep={keep} autoFocus={params.get("search") === "1"} />
         <div className="-mx-4 mt-3 border-b border-line-soft px-4 pb-3">
-          <CategoryTabs base="/all" category={f.category} channel={f.channel} layoutId="all-cat-mobile" size="sm" className="min-w-0" />
+          <ContentTabs base="/all" tag={f.tag} category={f.category} channel={f.channel} layoutId="all-cat-mobile" size="sm" className="min-w-0" />
         </div>
       </div>
 

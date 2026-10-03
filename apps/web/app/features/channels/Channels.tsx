@@ -1,8 +1,9 @@
+import { monthDayTime } from "../../lib/format";
 import { Link, useLocation, useSearchParams } from "react-router";
 import { DOMAINS, RETAINED_TOPICS, type DomainKey } from "@aihot/industry/channels";
 import type { TimelineCard } from "@aihot/contracts/site";
 
-export interface ChannelOverview { channels: Array<(typeof DOMAINS)[number] & { featured: TimelineCard | null }>; refreshAt: string | null }
+export interface ChannelOverview { channels: Array<(typeof DOMAINS)[number] & { featured: TimelineCard | null; total?: number; hasSelected?: boolean }>; refreshAt: string | null }
 
 const paths: Record<DomainKey, string> = {
   robotics: "M9 9h22v19H9z M15 9V5m10 4V5M5 14v9m30-9v9M15 17h.1m10 0h.1M15 23h10M13 28v7m14-7v7",
@@ -16,22 +17,28 @@ const paths: Record<DomainKey, string> = {
 export function ChannelIcon({ domain, className = "" }: { domain: DomainKey; className?: string }) {
   return <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}><path d={paths[domain]} /></svg>;
 }
-export function DomainNav({ active = "all" }: { active?: DomainKey | "all" }) {
+export function DomainNav({ active = "all", base }: { active?: DomainKey | "all"; base?: "/" | "/all" }) {
   const { search } = useLocation();
   const keep = new URLSearchParams(search);
   keep.delete("page"); keep.delete("domain"); keep.delete("q"); keep.delete("since"); keep.delete("tag");
   const suffix = keep.toString() ? `?${keep}` : "";
+  const target = (key: DomainKey | "all") => {
+    if (!base) return key === "all" ? "/" : `/channels/${key}${suffix}`;
+    const sp = new URLSearchParams(search); sp.delete("page"); sp.delete("cursor"); sp.delete("category"); sp.delete("topic");
+    if (key === "all") sp.delete("domain"); else sp.set("domain", key);
+    return base + (sp.toString() ? `?${sp}` : "");
+  };
   return <nav className="domain-nav" aria-label="领域频道">
-    <Link to="/" aria-current={active === "all" ? "page" : undefined} className={active === "all" ? "active" : ""}>综合</Link>
-    {DOMAINS.map(d => <Link key={d.key} to={`/channels/${d.key}${suffix}`} aria-current={active === d.key ? "page" : undefined} className={active === d.key ? "active" : ""}>{d.label}</Link>)}
+    <Link to={target("all")} aria-current={active === "all" ? "page" : undefined} className={active === "all" ? "active" : ""}>综合</Link>
+    {DOMAINS.map(d => <Link key={d.key} to={target(d.key)} aria-current={active === d.key ? "page" : undefined} className={active === d.key ? "active" : ""}>{d.label}</Link>)}
   </nav>;
 }
-export function ChannelGrid({ channels, compact = false }: { channels: ChannelOverview["channels"]; compact?: boolean }) {
-  return <div className={`channel-grid ${compact ? "compact" : ""}`}>
+export function ChannelGrid({ channels, compact = false, selectedOverview = false }: { channels: ChannelOverview["channels"]; compact?: boolean; selectedOverview?: boolean }) {
+  return <div className={`channel-grid ${compact ? "compact" : ""} ${selectedOverview ? "selected-overview" : ""}`}>
     {channels.map((d, i) => <article key={d.key} className={`channel-tile domain-${d.key}`}>
       <Link to={`/channels/${d.key}`} className="channel-tile-heading"><ChannelIcon domain={d.key} /><span className="channel-index">0{i + 1}</span><h2>{d.label}</h2><span className="channel-arrow" aria-hidden="true">↗</span></Link>
       {!compact && <p className="channel-description">{d.description}</p>}
-      {!compact && (d.featured ? <Link className="channel-preview" to={`/items/${d.featured.item.id}`}><span>频道精选</span>{d.featured.item.title}</Link> : <p className="channel-empty">暂未有新的频道精选</p>)}
+      {!compact && (d.featured ? <Link className="channel-preview" to={`/items/${d.featured.item.id}`}><span>频道精选 · {d.featured.item.source.name} · {monthDayTime(d.featured.item.publishedAt ?? d.featured.item.timelineAt)}</span>{d.featured.item.title}</Link> : <div className="channel-empty"><p>{typeof d.total === "number" ? d.hasSelected ? "本频道精选已在其他领域展示" : `已收录 ${d.total} 条，暂无当前精选` : "暂无当前精选"}</p><Link to={`/channels/${d.key}${d.hasSelected ? "" : "?view=latest"}`} className="mt-2 inline-block text-accent">{d.hasSelected ? "查看本频道精选" : "查看最新"} →</Link></div>)}
     </article>)}
   </div>;
 }

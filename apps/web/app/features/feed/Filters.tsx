@@ -1,7 +1,7 @@
 // Feed filters: the channel and category row, and search.
 import { useEffect, useRef, useState } from "react";
 import { Form, Link, useNavigation, useSearchParams } from "react-router";
-import { CATEGORY_KEYS, CATEGORY_LABELS, CHANNEL_LABELS, type CategoryKey, type ChannelKey } from "@aihot/contracts/taxonomy";
+import { CATEGORY_LABELS, type CategoryKey, type ChannelKey } from "@aihot/contracts/taxonomy";
 import { IconClose, IconSearch } from "../../components/icons";
 import { PillTabs } from "../../components/ui/Tabs";
 
@@ -18,20 +18,19 @@ export function hrefWith(base: string, params: URLSearchParams, patch: Record<st
   return s ? `${base}?${s}` : base;
 }
 
-/**
- * The feed's one filter row (精选 and 全部动态 alike): 全部, 一手, then the categories. One choice at a
- * time: picking 一手 clears the category and picking a category clears 一手. Older 资讯 / X links
- * still filter; the row then shows 全部.
- */
-export function CategoryTabs({ base, category, channel = "all", layoutId, size = "md", className = "" }: { base: string; category: CategoryKey | null; channel?: ChannelKey; layoutId: string; size?: "md" | "sm"; className?: string }) {
+/** Content shape and source are independent of the editorial domain. Legacy category URLs remain readable. */
+export function ContentTabs({ base, tag, category, channel = "all", layoutId, size = "md", className = "" }: { base: string; tag: string | null; category?: CategoryKey | null; channel?: ChannelKey; layoutId: string; size?: "md" | "sm"; className?: string }) {
   const [params] = useSearchParams();
+  const forms = ["论文/研究", "模型发布", "产品更新", "开源/仓库", "观点/分析", "教程/实践"];
   const items = [
-    { key: "all", label: "全部", to: hrefWith(base, params, { category: null, channel: null }) },
-    { key: "firstParty", label: CHANNEL_LABELS.firstParty, to: hrefWith(base, params, { category: null, channel: "firstParty" }) },
-    ...CATEGORY_KEYS.map((k) => ({ key: k, label: CATEGORY_LABELS[k], to: hrefWith(base, params, { category: k, channel: null }) })),
+    { key: "all", label: "全部形态", to: hrefWith(base, params, { tag: null, category: null, channel: null }) },
+    { key: "firstParty", label: "一手来源", to: hrefWith(base, params, { tag: null, category: null, channel: "firstParty" }) },
+    ...forms.map(key => ({ key, label: key, to: hrefWith(base, params, { tag: key, category: null, channel: null }) })),
+    ...(tag && !forms.includes(tag) ? [{ key: tag, label: `#${tag}`, to: hrefWith(base, params, { tag }) }] : []),
+    ...(category ? [{ key: category, label: `原方向：${CATEGORY_LABELS[category]}`, to: hrefWith(base, params, { category }) }] : []),
   ];
-  const active = channel === "firstParty" ? "firstParty" : (category ?? "all");
-  return <PillTabs items={items} active={active} layoutId={layoutId} label="筛选" size={size} className={className} />;
+  const active = channel === "firstParty" ? "firstParty" : (tag ?? category ?? "all");
+  return <PillTabs items={items} active={active} layoutId={layoutId} label="内容形态与来源" size={size} className={className} />;
 }
 
 function useSlashFocus(ref: React.RefObject<HTMLInputElement | null>) {

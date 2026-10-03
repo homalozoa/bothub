@@ -164,7 +164,9 @@ test("four active streams keep retained topics and legacy natural-history record
   const games=await loadTopicArchive('games-and-characters',{now,q:'既有游戏引擎'});assert.equal(games!.items[0]!.id,oldGame.articleId);
   assert.ok(!(await loadTopicArchive('natural-history',{now,q:'既有游戏引擎'}))!.items.length);
   assert.equal(await loadTopicArchive('natural-history',{now,page:51}),null);
-  assert.equal((await channelOverview()).channels.length,4);
+  const overview=await channelOverview();assert.equal(overview.channels.length,4);
+  assert.equal(overview.channels.find(c=>c.key==='biology')!.total,(await loadPool(filters('biology'))).total);
+  assert.ok(overview.channels.every(c=>!c.featured || c.featured.item.id!==ids.BEE_SAMPLE));
   const app=await buildApp();const read=await app.inject(`/api/site/topics/games-and-characters?q=${encodeURIComponent('既有游戏引擎')}`);assert.equal(read.statusCode,200);assert.equal(read.json().items[0].id,oldGame.articleId);
   assert.equal((await app.inject('/api/site/topics/natural-history?page=-1')).statusCode,404);
   await setVisibility(oldGame.articleId,{visibility:'withdrawn',reason:'测试撤回',version:0},'test');
