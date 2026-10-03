@@ -11,7 +11,7 @@ import { escapeXml } from "../lib/text.ts";
 import { proxyBodyImages } from "../media/imgproxy.ts";
 import { reportHeadline, reportIndex } from "./reports.ts";
 import { textToHtml } from "../content/sanitize.ts";
-import { categoryCondition, domainCondition, xView, type ItemRow } from "./items.ts";
+import { categoryCondition, domainCondition, legacyRoboticsCondition, xView, type ItemRow } from "./items.ts";
 import { dailyUrl, itemUrl, siteUrl } from "./links.ts";
 
 interface FeedMeta {
@@ -120,7 +120,7 @@ export async function itemFeed(kind: ItemFeedKind, category: PublicApiCategoryKe
         AND coalesce(p.published_at, p.discovered_at) <= ${now}`
     : sql`${selectedCondition(now)} ${categoryCondition(category, true)}
         ${category ? sql`AND coalesce(p.published_at, p.discovered_at) >= ${new Date(now.getTime() - 7 * 86400_000)}` : sql``}`;
-  const domainScope = domainCondition(domain);
+  const domainScope = domainFeed ? domainCondition(domain) : legacyRoboticsCondition();
   const rows = await sql<FeedRow[]>`
     WITH page AS MATERIALIZED (
       SELECT p.article_id FROM publications p WHERE ${scope} ${domainScope}

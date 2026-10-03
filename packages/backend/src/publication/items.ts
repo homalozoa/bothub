@@ -92,6 +92,11 @@ export function domainCondition(domain: DomainKey | "all" | null | undefined) {
   return sql`AND (coalesce(p.primary_channel, 'robotics') = ${domain} OR p.related_channels @> ${[domain]}::text[])`;
 }
 
+/** Pre-expansion subscriptions keep the original robotics stream, including unclassified old rows. */
+export function legacyRoboticsCondition() {
+  return sql`AND (p.primary_channel IS NULL OR p.primary_channel = 'robotics')`;
+}
+
 export function sinceCondition(since: string | null | undefined) {
   return since ? sql`AND coalesce(p.published_at, p.discovered_at) >= ${new Date(`${since}T00:00:00+08:00`)}` : sql``;
 }

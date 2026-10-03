@@ -5,7 +5,7 @@ import type { PublicApiCategoryKey } from "@aihot/contracts/taxonomy";
 import { sql, type Db } from "../db.ts";
 import { decodeCursor, encodeCursor, InvalidCursorError, queryBinding } from "../lib/cursor.ts";
 import { newShortId } from "../lib/ids.ts";
-import { categoryCondition, domainCondition, API_ITEM_COLUMNS, API_ITEM_FROM, type ApiItemRow } from "./items.ts";
+import { categoryCondition, domainCondition, legacyRoboticsCondition, API_ITEM_COLUMNS, API_ITEM_FROM, type ApiItemRow } from "./items.ts";
 import { publicMatchCondition, searchTerms, withSearchCapacity } from "./pool.ts";
 import { v1Payload, type V1ItemPayload } from "./publish.ts";
 
@@ -22,7 +22,7 @@ export interface V1ItemsQuery {
 
 export interface V1ItemsResult {
   schemaVersion: 1;
-  query: { mode: string; category: string | null; window: string; q: string | null; by: string; ordering: string };
+  query: { domain?: DomainKey | "all"; mode: string; category: string | null; window: string; q: string | null; by: string; ordering: string };
   items: V1ItemPayload[];
   page: { count: number; hasMore: boolean; nextCursor: string | null };
 }
@@ -54,7 +54,7 @@ export async function v1Items(query: V1ItemsQuery, now = new Date()): Promise<V1
 
   const run = (db: Db) => db<(ApiItemRow & { sort_at: Date })[]>`
     SELECT ${API_ITEM_COLUMNS}, ${sortCol} AS sort_at ${API_ITEM_FROM}
-    WHERE ${scope} ${domainCondition(query.domain ?? "robotics")} ${categoryCondition(query.category, true)} ${publicMatchCondition(terms)}
+    WHERE ${scope} ${query.domain === undefined ? legacyRoboticsCondition() : domainCondition(query.domain)} ${categoryCondition(query.category, true)} ${publicMatchCondition(terms)}
       AND ${sortCol} >= ${windowStart} AND ${sortCol} <= ${now}
       ${after ? sql`AND (${sortCol}, p.article_id) < (${new Date(after.a)}, ${after.i})` : sql``}
     ORDER BY ${sortCol} DESC, p.article_id DESC
@@ -67,6 +67,7 @@ export async function v1Items(query: V1ItemsQuery, now = new Date()): Promise<V1
   return {
     schemaVersion: 1,
     query: {
+      ...(query.domain !== undefined ? { domain: query.domain } : {}),
       mode: query.mode, category: query.category, window: query.window, q: query.q, by: query.by,
       ordering: query.by === "published" ? "publishedAtDesc" : "timelineDesc",
     },

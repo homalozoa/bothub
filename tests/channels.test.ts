@@ -15,7 +15,7 @@ import { itemFeed } from "@aihot/backend/publication/feeds";
 import { v1Items } from "@aihot/backend/publication/v1";
 import { overrideFields, setVisibility } from "@aihot/backend/admin/content";
 import { candidates } from "@aihot/backend/reports/compose";
-import { stopBoss } from "@aihot/backend/jobs/queue";
+import { getBoss, stopBoss } from "@aihot/backend/jobs/queue";
 import { domainInfo, type DomainKey } from "@aihot/industry/channels";
 import { parseFilters } from "../apps/api/src/routes/site.ts";
 import { buildApp } from "../apps/api/src/app.ts";
@@ -42,6 +42,7 @@ const ids: Record<string,string>={};
 const filters=(domain:DomainKey|"all")=>({domain,channel:"all" as const,category:null,tag:null,now});
 before(async()=>{
   config.modelCallsEnabled=true;
+  await getBoss();
   await sql`INSERT INTO sources(id,name,kind,tier,participation_mode,channel_hints,enabled,next_fetch_at) VALUES(${source},'测试领域来源','rss','T1','editorial',${['biology','natural-history','sociology']},false,'2100-01-01')`;
 });
 after(async()=>{await provider.close();await stopBoss();await closeDb();});
@@ -104,6 +105,16 @@ test("new endpoints reject invalid channels/dates and administrative writes rema
   const app=await buildApp();assert.equal((await app.inject({url:"/feed/channels/biology.xml"})).statusCode,200);assert.equal((await app.inject({url:"/feed/channels/unknown.xml"})).statusCode,404);
   assert.equal((await app.inject({method:"POST",url:`/api/admin/content/${ids.CARE_SAMPLE}/override`,payload:{fields:{primaryChannel:"play"}}})).statusCode,401);await app.close();
   assert.equal(domainInfo("biology").label,"生物学");
+  // An explicit associated-domain view may include a biology-first record; old subscriptions stay primary robotics.
+  const id=ids.FOSSIL_SAMPLE!;
+  await sql`UPDATE analyses SET related_channels=${['robotics']} WHERE article_id=${id}`;
+  await publishArticle(id,{now});
+  assert.ok(!(await itemFeed('selected',null,now)).includes(id));
+  assert.ok((await itemFeed('selected',null,now,'robotics',true)).includes(id));
+  const query={mode:'selected' as const,window:'7d' as const,by:'published' as const,category:null,q:null,limit:30,cursor:null};
+  assert.ok(!(await v1Items(query,new Date(now.getTime()+1))).items.some(i=>i.id===id));
+  assert.ok((await v1Items({...query,domain:'robotics'},new Date(now.getTime()+1))).items.some(i=>i.id===id));
+
 });
 
 test("historical classification dry-run, apply and rollback preserve dates, jobs and sync; inconsistent projections fail before mutation", async () => {

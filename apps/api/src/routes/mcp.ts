@@ -105,7 +105,7 @@ export function buildMcpServer(): McpServer {
       annotations: ANNOTATIONS,
     },
     safe(T.latest, async (args: z.infer<typeof LATEST_INPUT>) => {
-      const query = { mode: args.mode, window: args.window, by: "timeline", domain: args.domain ?? "robotics", category: args.category ?? null, q: null, limit: args.limit, cursor: null } as const;
+      const query = { mode: args.mode, window: args.window, by: "timeline", domain: args.domain, category: args.category ?? null, q: null, limit: args.limit, cursor: null } as const;
       const res = await recent(`items:${JSON.stringify(query)}`, () => v1Items(query));
       return ok(latestAnswer(res, { ...args, category: args.category ?? null }), { schemaVersion: 1, query: res.query, items: res.items });
     }),
@@ -121,7 +121,7 @@ export function buildMcpServer(): McpServer {
     safe(T.search, async (args: z.infer<typeof SEARCH_INPUT>) => {
       const q = args.q.trim();
       if ([...q].length < 2) return fail("invalid_request", "搜索词需要 2 到 200 个字符。");
-      const query = (mode: "selected" | "all") => ({ mode, window: args.window, by: "timeline", domain: args.domain ?? "robotics", category: args.category ?? null, q, limit: args.limit, cursor: null } as const);
+      const query = (mode: "selected" | "all") => ({ mode, window: args.window, by: "timeline", domain: args.domain, category: args.category ?? null, q, limit: args.limit, cursor: null } as const);
       let res = await recent(`items:${JSON.stringify(query("selected"))}`, () => v1Items(query("selected")));
       let scope = "精选";
       if (res.items.length === 0) {
