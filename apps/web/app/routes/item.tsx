@@ -299,6 +299,7 @@ export default function ItemPage() {
             )}
           </div>
           {!isX && <h1 className="text-[26px] font-bold leading-[1.38] tracking-[-0.01em] text-ink lg:text-[32px] lg:leading-[1.34] xl:text-[36px] xl:leading-[1.3]">{item.title}</h1>}
+          {item.historical && <p className="mt-3 rounded-control border border-line-soft bg-bg-sunk px-4 py-3 text-[14px] leading-relaxed text-ink-2">历史资料 · {publishedIso ? `原文发布于 ${fullDateTime(publishedIso)}（UTC+08:00）` : "原文发布时间未知"}。本条保留用于查阅，不属于当前资讯；收录时间和既有评分不代表今天发生了新进展。</p>}
           <p className="mt-3 text-[12px] leading-relaxed text-ink-4">模型自动生成摘要与编辑评分，请结合原文中的实验条件和限制阅读。双次评分属于筛选流程。</p>
           <details className="mt-3 text-[12px] leading-relaxed text-ink-4 2xl:hidden">
             <summary className="cursor-pointer">来源与时间</summary>

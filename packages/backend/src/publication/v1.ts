@@ -1,4 +1,4 @@
-import { listedCondition, selectedCondition } from "./scope.ts";
+import { listedCondition, selectedCondition, currentTimeCondition } from "./scope.ts";
 // v1 items and the selected sync (snapshot + changes), read from the same public read layer.
 import type { PublicApiCategoryKey } from "@aihot/contracts/taxonomy";
 import { sql, type Db } from "../db.ts";
@@ -47,7 +47,7 @@ export async function v1Items(query: V1ItemsQuery, now = new Date()): Promise<V1
     if (c.a < windowStart.getTime()) throw new InvalidCursorError("the rolling window moved past this cursor");
     after = { a: c.a, i: c.i };
   }
-  const scope = query.mode === "selected" ? selectedCondition(now) : sql`${listedCondition(now)}`;
+  const scope = query.mode === "selected" ? selectedCondition(now) : sql`${listedCondition(now)} AND ${currentTimeCondition(now)}`;
   const terms = query.q ? searchTerms(query.q) : [];
 
   const run = (db: Db) => db<(ApiItemRow & { sort_at: Date })[]>`

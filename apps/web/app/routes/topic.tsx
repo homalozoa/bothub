@@ -60,6 +60,7 @@ export default function TopicPage() {
           </span>
         </div>
         <p className="mt-1 max-w-[640px] text-[13px] leading-relaxed text-ink-3">{topic.definition}</p>
+        <p className="mt-2 text-[12px] text-ink-4">主题保留历史入选记录；当前资讯见首页。历史资料按原文日期标注。</p>
         <div className="mt-3 flex flex-wrap items-baseline gap-x-5 gap-y-1">
           <span className="text-[12.5px] text-ink-4">
             <span className="num mr-1 text-[20px] font-bold text-ink">{topic.total.toLocaleString("zh-CN")}</span>条精选

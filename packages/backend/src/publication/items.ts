@@ -5,6 +5,7 @@ import type { FeedItemSummary, ItemSummary, MediaView, SourceKind, XPostView } f
 import { sql, type Db } from "../db.ts";
 import { proxiedImage, proxiedImageSet } from "../media/imgproxy.ts";
 import { displayTags } from "./rules.ts";
+import { newsTimeStatus } from "../content/news-time.ts";
 
 export interface ItemRow {
   id: string;
@@ -138,7 +139,7 @@ export function xView(row: Pick<ItemRow, "x_post" | "zh_text"> & Partial<Pick<It
   };
 }
 
-export function toItemSummary(row: ItemRow): ItemSummary {
+export function toItemSummary(row: ItemRow, now = new Date()): ItemSummary {
   const x = row.channel === "x" && row.body_mode === "full" ? xView(row, true) : null;
   return {
     id: row.id,
@@ -163,6 +164,7 @@ export function toItemSummary(row: ItemRow): ItemSummary {
     tags: displayTags(row.tags),
     score: row.score === null ? null : Math.round(Number(row.score)),
     selected: row.selected,
+    historical: ["historical", "expired"].includes(newsTimeStatus(row, now)),
     channel: row.channel,
     story: row.story_public_id ? { publicId: row.story_public_id, title: row.story_title ?? "" } : null,
     x,
@@ -170,12 +172,12 @@ export function toItemSummary(row: ItemRow): ItemSummary {
 }
 
 /** Project the shared public article into the exact fields a site card renders. */
-export function toFeedItemSummary(row: ItemRow): FeedItemSummary {
-  const item = toItemSummary(row);
+export function toFeedItemSummary(row: ItemRow, now = new Date()): FeedItemSummary {
+  const item = toItemSummary(row, now);
   return {
     id: item.id, title: item.title, summary: item.summary, reason: item.reason,
     source: { name: item.source.name }, publishedAt: item.publishedAt, timelineAt: item.timelineAt,
-    category: item.category, tags: item.tags, score: item.score, selected: item.selected, channel: item.channel,
+    category: item.category, tags: item.tags, score: item.score, selected: item.selected, historical: item.historical, channel: item.channel,
     x: item.x ? {
       authorName: item.x.authorName, handle: item.x.handle, avatarUrl: item.x.avatarUrl,
       ...(item.x.avatarSrcSet ? { avatarSrcSet: item.x.avatarSrcSet } : {}), media: item.x.media,

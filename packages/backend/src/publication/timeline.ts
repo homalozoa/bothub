@@ -1,4 +1,4 @@
-import { selectedCondition, pendingReleaseCondition, listedCondition } from "./scope.ts";
+import { selectedCondition, pendingReleaseCondition, listedCondition, selectionExpiresAt } from "./scope.ts";
 // Home timeline: selected items folded into reading groups (reference SELECTED_READING):
 // one card per story, per fact outside a story, or per standalone article. A card sits at its latest
 // development's first appearance, so a new development brings it back up while a representative swap
@@ -208,7 +208,7 @@ export async function loadTimeline(q: TimelineQuery): Promise<Omit<TimelineRespo
     const row = rows.get(id);
     if (!row) return [];
     if (group) group.story = row.story_public_id ? { publicId: row.story_public_id, title: row.story_title ?? "" } : null;
-    return [{ key, anchorAt, item: toFeedItemSummary(row), group }];
+    return [{ key, anchorAt, item: toFeedItemSummary(row, now), group }];
   });
 
   // Day header counts for the days on this page, over the full grouped set.
@@ -223,7 +223,8 @@ export async function loadTimeline(q: TimelineQuery): Promise<Omit<TimelineRespo
 /** Earliest pending release in this scope; caches of this scope must expire by then. */
 export async function nextRelease(q: TimelineQuery, now: Date): Promise<string | null> {
   const [row] = await sql<{ t: Date | null }[]>`
-    SELECT min(p.visible_after) AS t FROM publications p
-    WHERE ${pendingReleaseCondition(now)} ${filterSql(q)}`;
+    SELECT min(CASE WHEN p.visible_after > ${now} THEN p.visible_after ELSE ${selectionExpiresAt()} END) AS t
+    FROM publications p
+    WHERE (${pendingReleaseCondition(now)} OR (${selectedCondition(now)} AND ${selectionExpiresAt()} < ${new Date(now.getTime() + 60_000)})) ${filterSql(q)}`;
   return row?.t ? row.t.toISOString() : null;
 }

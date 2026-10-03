@@ -35,7 +35,8 @@ async function article(name: string, tags: string[], timeline: number, pending =
   ids.push(articleId);
   await sql`INSERT INTO analyses (article_id,input_revision,origin,relevance,category,title_zh,summary_zh,reason_zh,score,selected,tags)
     VALUES (${articleId},1,'rule','pass','research',${`标题 ${name}`},'测试摘要','理由',90,true,${tags})`;
-  await publishArticle(articleId, pending ? {} : { releasedAt: new Date(START - DAY) });
+  // Archive records were published when they were fresh, rather than first selected a month later.
+  await publishArticle(articleId, pending ? {} : { now: new Date(timeline), releasedAt: new Date(timeline) });
   return articleId;
 }
 const get = (url: string, etag?: string) => app.inject({ method: "GET", url, headers: etag ? { "if-none-match": etag } : {} });

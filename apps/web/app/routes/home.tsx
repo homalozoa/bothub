@@ -66,7 +66,7 @@ export default function Home() {
         </div>
       </div>
 
-      <p className="mb-3 text-[12px] leading-relaxed text-ink-4">内容由模型自动筛选与摘要，附原文供核对。精选关注编辑价值，热点反映传播讨论。</p>
+      <p className="mb-3 text-[12px] leading-relaxed text-ink-4">精选展示近 7 天资讯，按原文日期检查时效。历史资料可在全部动态中搜索。内容由模型自动筛选与摘要，附原文供核对。</p>
 
       {data.hot && <HotTopics entries={data.hot} />}
 

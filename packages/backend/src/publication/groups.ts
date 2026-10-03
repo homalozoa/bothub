@@ -145,7 +145,7 @@ export async function loadDevelopments(q: DevelopmentsQuery, now = new Date()): 
   if (rows.size !== page.length) return { kind: "changed" };
   const developments = page.flatMap(({ representativeId, ...development }) => {
     const row = rows.get(representativeId);
-    return row ? [{ ...development, representative: toItemSummary(row) }] : [];
+    return row ? [{ ...development, representative: toItemSummary(row, now) }] : [];
   });
   return {
     kind: "ok",

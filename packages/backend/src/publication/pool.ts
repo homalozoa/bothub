@@ -198,7 +198,7 @@ export async function loadPool(query: PoolQuery): Promise<PoolResponse> {
 
   return {
     filters: { channel: query.channel, category: query.category, tag: query.tag, topic: query.topic ?? null, q, tab },
-    items: rows.map(toFeedItemSummary),
+    items: rows.map(row => toFeedItemSummary(row, now)),
     page,
     pageCount: Math.min(POOL_MAX_PAGES, Math.max(1, Math.ceil(total / POOL_PAGE_SIZE))),
     total,

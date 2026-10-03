@@ -55,7 +55,7 @@ export function llmsTxt(opts: { hasDailies: boolean; hasWeekly: boolean; hasMont
     lines.push(`- [公开 API v1 · 最新月报](${u("/api/v1/monthlies/latest")}): 最新一期结构化月报`);
     lines.push(`- [公开 API v1 · 月报列表](${u("/api/v1/monthlies")}): 历史月报索引；指定月使用 /api/v1/monthlies/{YYYY-MM}`);
   }
-  lines.push(`- [公开 API v1 · 当前全部精选](${u("/api/v1/selected/snapshot")}): 首次完整快照；后续使用响应 cursor 调 selected/changes`);
+  lines.push(`- [公开 API v1 · 精选记录快照](${u("/api/v1/selected/snapshot")}): 保存入选记录，包含历史入选；当前资讯使用 /api/v1/items?mode=selected&window=7d。后续使用响应 cursor 调 selected/changes`);
   lines.push(`- [公开 API v1 · 精选增量](${u("/api/v1/selected/changes")}): 只返回新增、修改和撤选`);
   lines.push(`- [OpenAPI v1 规范](${u("/openapi-v1.json")}): 上述 API 的机器可读规范`);
   lines.push(`- [Agent 接入指南](${u("/agent")}): Markdown / MCP / RSS / REST API 接入说明`);

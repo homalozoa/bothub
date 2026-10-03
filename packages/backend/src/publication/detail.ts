@@ -52,7 +52,7 @@ export async function loadItemDetail(id: string, now = new Date()): Promise<Deta
   const row = await loadRow(id);
   if (!row || !hasItemPage({ visibility: row.visibility, sourceMode: row.source_mode })) return { kind: "not_found" };
 
-  const summary = toItemSummary(row);
+  const summary = toItemSummary(row, now);
   if (row.channel === "x" && row.body_mode === "full") summary.x = xView(row, false, true);
   if (row.visibility === "summary-only") {
     const detail: ItemDetail = {

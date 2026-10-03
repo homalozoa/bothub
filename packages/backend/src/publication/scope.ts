@@ -3,6 +3,33 @@
 // evidence, `fact_articles fa`); no other module spells visibility, the release gate or the composite
 // rule in SQL. What a publication holds is derived once, at publish time, by publish.ts and rules.ts.
 import { sql } from "../db.ts";
+import { NEWS_WINDOW_MS } from "../content/news-time.ts";
+import { STALE_ON_DISCOVERY_MS, FUTURE_TOLERANCE_MS } from "../content/materials.ts";
+
+/** Same source-date checks as publishing; old projections cannot bypass them. */
+export function currentTimeCondition(now: Date) {
+  return sql`${discoveryTimeCondition()}
+    AND coalesce(p.published_at, p.discovered_at) > ${new Date(now.getTime() - NEWS_WINDOW_MS)}
+    AND coalesce(p.published_at, p.discovered_at) <= ${new Date(now.getTime() + FUTURE_TOLERANCE_MS)}`;
+}
+
+function discoveryTimeCondition() {
+  return sql`NOT (p.backfill AND p.published_at IS NULL)
+    AND (p.published_at IS NULL OR p.discovered_at <= p.published_at + ${STALE_ON_DISCOVERY_MS} * interval '1 millisecond')`;
+}
+
+/** Historical selections for topic archives, without promoting late discoveries into news. */
+export function selectedRecordCondition(now: Date) {
+  return sql`p.visibility = 'public' AND p.selected AND p.visible_after <= ${now} AND ${discoveryTimeCondition()}`;
+}
+
+export function pendingRecordCondition(now: Date) {
+  return sql`p.visibility = 'public' AND p.selected AND p.visible_after > ${now} AND ${discoveryTimeCondition()}`;
+}
+
+export function selectionExpiresAt() {
+  return sql`coalesce(p.published_at, p.discovered_at) + ${NEWS_WINDOW_MS} * interval '1 millisecond'`;
+}
 
 /**
  * The release gate : a selected report appears once grouping settled or 180 s passed,
@@ -24,12 +51,12 @@ export function storyReportCondition(now: Date) {
 
 /** Selected reports still behind the release gate: caches of their scope must expire when it opens. */
 export function pendingReleaseCondition(now: Date) {
-  return sql`p.visibility = 'public' AND p.selected AND p.visible_after > ${now}`;
+  return sql`p.visibility = 'public' AND p.selected AND p.visible_after > ${now} AND ${currentTimeCondition(now)}`;
 }
 
-/** Selected set as the website shows it (home timeline, reading groups, topics): every selected report. */
+/** Current selected news. Older records remain available in the archive and sync history. */
 export function selectedCondition(now: Date) {
-  return sql`p.visibility = 'public' AND p.selected AND p.visible_after <= ${now}`;
+  return sql`p.visibility = 'public' AND p.selected AND p.visible_after <= ${now} AND ${currentTimeCondition(now)}`;
 }
 
 
