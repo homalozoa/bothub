@@ -1,3 +1,4 @@
+import type { DomainKey } from "@aihot/industry/channels";
 // What the judging steps read about an article: loaded once per analysis and rendered per step.
 import { beijingDate, beijingTime } from "@aihot/contracts/time";
 import { sql } from "../db.ts";
@@ -27,6 +28,7 @@ export interface AnalyzeInputArticle {
     tier: string;
     firstParty: boolean;
     tags?: string[];
+    channelHints?: DomainKey[];
     ownerEntityId?: string | null;
     /** The source asks for the article page (fetchPublicContent, detail pages, web listings). */
     fetchesBody?: boolean;
@@ -50,10 +52,10 @@ export async function loadAnalyzeInput(articleId: string): Promise<AnalyzeInputA
     id: string; revision: number; title: string; url: string; author: string | null; published_at: Date | null; discovered_at: Date; backfill: boolean;
     body_text: string | null; excerpt: string | null; body_status: string; x_post: Record<string, any> | null; x_article: { title?: string; text?: string } | null;
     media: Array<Record<string, any>>; source_name: string; source_kind: string; tier: string; first_party: boolean; source_tags: string[]; owner_entity_id: string | null;
-    config: Record<string, any>; translation_zh: string | null;
+    config: Record<string, any>; channel_hints: DomainKey[]; translation_zh: string | null;
   }[]>`
     SELECT a.id, a.revision, a.title, a.url, a.author, a.published_at, a.discovered_at, a.backfill, a.body_text, a.excerpt, a.body_status, a.x_post, a.x_article, a.media,
-           s.name AS source_name, s.kind AS source_kind, s.tier, s.first_party, s.tags AS source_tags, s.owner_entity_id, s.config,
+           s.name AS source_name, s.kind AS source_kind, s.tier, s.first_party, s.tags AS source_tags, s.owner_entity_id, s.config, s.channel_hints,
            tr.body_text AS translation_zh
     FROM articles a JOIN sources s ON s.id = a.source_id
     LEFT JOIN translations tr ON tr.article_id = a.id AND tr.lang = 'zh' AND tr.revision >= a.revision
@@ -64,6 +66,7 @@ export async function loadAnalyzeInput(articleId: string): Promise<AnalyzeInputA
     bodyText: row.body_text, excerpt: row.excerpt, bodyStatus: row.body_status, xPost: withXArticle(row.x_post, row.x_article), media: row.media,
     source: {
       name: row.source_name, kind: row.source_kind, tier: row.tier, firstParty: row.first_party, tags: row.source_tags, ownerEntityId: row.owner_entity_id,
+      channelHints: row.channel_hints,
       fetchesBody: row.config?.fetchPublicContent === true || !!row.config?.detail || row.source_kind === "web_list",
     },
     translationZh: row.translation_zh,
@@ -80,6 +83,7 @@ export function buildMaterial(a: AnalyzeInputArticle): string {
   lines.push("<source>");
   lines.push(`名称：${a.source.name}`);
   lines.push(`类型：${KIND_LABEL[a.source.kind] ?? a.source.kind}；分级：${a.source.tier}；一手来源：${a.source.firstParty ? "是" : "否"}`);
+  if (a.source.channelHints?.length) lines.push(`候选频道（不替代材料判断）：${a.source.channelHints.join("、")}`);
   lines.push("</source>");
   lines.push("<material>");
   if (a.publishedAt) lines.push(`发布时间：${beijingDate(a.publishedAt)} ${beijingTime(a.publishedAt)}（北京时间）`);

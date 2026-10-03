@@ -1,3 +1,4 @@
+import { DOMAINS } from "@aihot/industry/channels";
 import { evidenceCondition, listedCondition, releasedCondition, selectedCondition } from "./scope.ts";
 // Sitemap from the same public metadata as pages: reports, topics and their pages,
 // the latest 500 stories, leaderboard pages and indexable items. Cached ~5 minutes and rebuilt in the
@@ -54,6 +55,8 @@ async function build(): Promise<SitemapSnapshot> {
     { loc: "/privacy", changefreq: "monthly", priority: 0.4 },
     { loc: "/changelog", lastmod: latest, changefreq: "weekly", priority: 0.5 },
   );
+  for (const d of DOMAINS) entries.push({ loc: `/channels/${d.key}`, changefreq: "daily", priority: 0.8 });
+  entries.push({ loc: "/channels", changefreq: "weekly", priority: 0.8 });
   if (FEATURES.leaderboard) {
     entries.push(
       { loc: "/leaderboard", changefreq: "daily", priority: 0.8 },

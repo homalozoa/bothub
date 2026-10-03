@@ -1,3 +1,4 @@
+import { DOMAIN_KEYS, type DomainKey } from "@aihot/industry/channels";
 // Pack imports add new source IDs; existing administrator settings are deliberately preserved.
 import { audit } from "../audit.ts";
 import { sql } from "../db.ts";
@@ -14,20 +15,24 @@ export interface SeedSource {
   participation_mode?: string;
   interval_minutes?: number;
   tags?: string[];
+  channel_hints?: DomainKey[];
   site_fulltext?: boolean;
   syndicate_fulltext?: boolean;
   enabled?: boolean;
 }
 
 export async function seedSources(sources: SeedSource[]): Promise<number> {
-  for (const s of sources) assertSupportedConfig(s.kind, s.config);
+  for (const s of sources) {
+    assertSupportedConfig(s.kind, s.config);
+    if (s.channel_hints?.some(d => !DOMAIN_KEYS.includes(d))) throw new Error(`Invalid channel hint on ${s.id}`);
+  }
   return sql.begin(async (tx) => {
     let added = 0;
     for (const s of sources) {
       const inserted = await tx`
-        INSERT INTO sources (id, name, kind, config, tier, first_party, owner_entity_id, participation_mode, interval_minutes, tags, site_fulltext, syndicate_fulltext, enabled, next_fetch_at)
+        INSERT INTO sources (id, name, kind, config, tier, first_party, owner_entity_id, participation_mode, interval_minutes, tags, channel_hints, site_fulltext, syndicate_fulltext, enabled, next_fetch_at)
         VALUES (${s.id}, ${s.name}, ${s.kind}, ${tx.json(s.config as never)}, ${s.tier ?? "T2"}, ${s.first_party ?? false}, ${s.owner_entity_id ?? null},
-                ${s.participation_mode ?? "editorial"}, ${s.interval_minutes ?? 60}, ${s.tags ?? []}, ${s.site_fulltext ?? false}, ${s.syndicate_fulltext ?? false},
+                ${s.participation_mode ?? "editorial"}, ${s.interval_minutes ?? 60}, ${s.tags ?? []}, ${s.channel_hints ?? []}, ${s.site_fulltext ?? false}, ${s.syndicate_fulltext ?? false},
                 ${s.enabled ?? true}, now())
         ON CONFLICT (id) DO NOTHING RETURNING id`;
       added += inserted.length;

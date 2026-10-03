@@ -1,3 +1,5 @@
+import { channelOverview } from "@aihot/backend/publication/channels";
+import { isDomainKey, type DomainKey } from "@aihot/industry/channels";
 // First-party site API (/api/site/*). Not public, not versioned, never called /api/v2.
 // Reads through the same public read layer as v1; no cookies are read or set.
 import { FEATURES } from "@aihot/industry/features";
@@ -57,6 +59,8 @@ export function siteHandler(fn: Handler): Handler {
 }
 
 export interface FilterParams {
+  domain: DomainKey | "all";
+  since: string | null;
   channel: ChannelKey;
   category: CategoryKey | null;
   tag: string | null;
@@ -65,6 +69,10 @@ export interface FilterParams {
 }
 
 export async function parseFilters(q: Record<string, string>): Promise<FilterParams> {
+  const domain = q.domain ?? "all";
+  if (domain !== "all" && !isDomainKey(domain)) throw new BadRequest("invalid domain");
+  const since = q.since || null;
+  if (since && (!/^\d{4}-\d{2}-\d{2}$/.test(since) || !Number.isFinite(Date.parse(since)) || new Date(since).toISOString().slice(0, 10) !== since)) throw new BadRequest("invalid since date");
   const channel = q.channel ?? "all";
   if (!isChannelKey(channel)) throw new BadRequest("invalid channel");
   const category = q.category ?? null;
@@ -76,10 +84,15 @@ export async function parseFilters(q: Record<string, string>): Promise<FilterPar
     topicTags = await loadTopicTags(topic);
     if (!topicTags) throw new BadRequest("unknown topic");
   }
-  return { channel, category: category as CategoryKey | null, tag, topic, topicTags };
+  return { domain, since, channel, category: category as CategoryKey | null, tag, topic, topicTags };
 }
 
 export function registerSite(app: FastifyInstance) {
+  app.get("/api/site/channels", siteHandler(async (req, reply) => {
+    const data = await channelOverview();
+    return sendJsonWithEtag(req, reply, data, { etagPrefix: "channels", cacheControl: cacheUntil(reply, 60, data.refreshAt) });
+  }));
+
   app.get("/api/site/meta", siteHandler(async (req, reply) => {
     return sendJsonWithEtag(req, reply, siteMeta(), { etagPrefix: "meta", cacheControl: "public, max-age=60, s-maxage=60" });
   }));

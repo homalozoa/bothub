@@ -18,3 +18,10 @@ export function domainInfo(key: DomainKey) { return DOMAINS.find(d => d.key === 
 export function relatedDomains(primary: DomainKey | null, values: unknown): DomainKey[] {
   return Array.isArray(values) ? [...new Set(values.filter(isDomainKey))].filter(d => d !== primary).slice(0, 2) : [];
 }
+
+/** Discovery and current-news windows, initial editorial configuration rather than measured quality thresholds. */
+export const DOMAIN_WINDOWS: Record<DomainKey, { discoveryDays: number; newsDays: number }> = {
+  robotics: { discoveryDays: 2, newsDays: 7 }, agents: { discoveryDays: 2, newsDays: 7 },
+  interaction: { discoveryDays: 7, newsDays: 30 }, play: { discoveryDays: 7, newsDays: 30 },
+  biology: { discoveryDays: 7, newsDays: 30 }, "natural-history": { discoveryDays: 14, newsDays: 60 }, sociology: { discoveryDays: 14, newsDays: 60 },
+};

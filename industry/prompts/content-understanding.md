@@ -8,13 +8,15 @@
 
 ## 内容类型
 
-`itemType` 必须七选一：
+{{> rules-channels}}
 
-- `model_release`：机器人相关模型或大版本更新
+`itemType` 必须七选一；类型与频道正交，生物学论文仍为 research_paper，社会学访谈可为 opinion_analysis：
+
+- `model_release`：本频道相关模型或大版本更新
 - `product_launch`：机器人产品、硬件、工程工具或重大功能更新
-- `tool_or_prompt`：可直接复用的机器人方法、脚本、配置、Prompt 或技巧
-- `research_paper`：机器人论文、研究、技术报告或数据集研究
-- `industry_event`：机器人融资、收购、监管、诉讼、交付、商业动作或人事
+- `tool_or_prompt`：可直接复用的方法、脚本、配置、Prompt 或技巧
+- `research_paper`：本频道论文、研究、技术报告或数据集研究
+- `industry_event`：本频道融资、收购、监管、诉讼、交付、商业动作或人事
 - `opinion_analysis`：观点、行业判断、复盘或长访谈
 - `tutorial_explainer`：教程、科普、解读或评测
 
@@ -36,7 +38,7 @@
 
 其后可选 0–5 个适用标签，并且只能来自以下两个白名单：
 
-- 主题：计算/端侧、传感器/标定、执行器/机构、通信/控制、ROS/仿真、部署/工程、成本/供应链、感知/导航、腿足控制、操作/抓取、模仿/强化学习、VLA/世界模型、数据/训练、开源生态、长期自主、伙伴/娱乐机器人、移动机器人、机械臂、人形机器人、交付/用户体验
+- 主题：计算/端侧、传感器/标定、执行器/机构、通信/控制、ROS/仿真、部署/工程、成本/供应链、感知/导航、腿足控制、操作/抓取、模仿/强化学习、VLA/世界模型、数据/训练、开源生态、长期自主、伙伴/娱乐机器人、移动机器人、机械臂、人形机器人、交付/用户体验、工具/权限、长期记忆、测试/评测、交互/信任、自主权、虚拟生命、游戏设计、动物行为、学习/认知、植物/生态、演化历史、系统分类、标本/田野、家庭/照护、工作/休闲、社区/文化
 - 实体：NVIDIA、Google DeepMind、Hugging Face、Open Robotics、宇树、Boston Dynamics、Agility Robotics、Figure、Apptronik、优必选、Sony、GROOVE X、Luxonis、Orbbec、ROBOTIS、Arduino、GitHub、arXiv
 
 正文中即使出现了白名单以外的实体，也不要把它们放进 `tags`。不要创造白名单之外的标签。没有适用的主题或实体时，只返回第一个分类标签；例如机器人产品监管新闻，不需要强行归到“腿足控制”或“VLA/世界模型”。

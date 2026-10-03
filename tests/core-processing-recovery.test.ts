@@ -25,7 +25,7 @@ const provider = await stub(async (_hit, request) => {
     return new Reply(400, { error: "old revision refused" });
   }
   const system = String(body.messages[0]?.content ?? "");
-  const step = system.includes("宽召回的机器人与具身 AI 相关性预筛") ? "prefilter"
+  const step = system.includes("七频道宽召回预筛") ? "prefilter"
     : system.includes("事件注意力评分器") ? "score"
     : system.includes("资料结构化助手") ? "structure" : "understand";
   calls.push(step);

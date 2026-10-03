@@ -1,14 +1,16 @@
+import type { DomainKey } from "@aihot/industry/channels";
 import { listedCondition, selectedCondition, currentTimeCondition } from "./scope.ts";
 // v1 items and the selected sync (snapshot + changes), read from the same public read layer.
 import type { PublicApiCategoryKey } from "@aihot/contracts/taxonomy";
 import { sql, type Db } from "../db.ts";
 import { decodeCursor, encodeCursor, InvalidCursorError, queryBinding } from "../lib/cursor.ts";
 import { newShortId } from "../lib/ids.ts";
-import { categoryCondition, API_ITEM_COLUMNS, API_ITEM_FROM, type ApiItemRow } from "./items.ts";
+import { categoryCondition, domainCondition, API_ITEM_COLUMNS, API_ITEM_FROM, type ApiItemRow } from "./items.ts";
 import { publicMatchCondition, searchTerms, withSearchCapacity } from "./pool.ts";
 import { v1Payload, type V1ItemPayload } from "./publish.ts";
 
 export interface V1ItemsQuery {
+  domain?: DomainKey | "all";
   mode: "selected" | "all";
   window: "24h" | "7d";
   by: "timeline" | "published";
@@ -36,7 +38,7 @@ export function rowToV1(row: ApiItemRow): V1ItemPayload {
 export async function v1Items(query: V1ItemsQuery, now = new Date()): Promise<V1ItemsResult> {
   const windowMs = query.window === "24h" ? 86400000 : 7 * 86400000;
   const windowStart = new Date(now.getTime() - windowMs);
-  const binding = queryBinding({ m: query.mode, w: query.window, b: query.by, c: query.category, q: query.q });
+  const binding = queryBinding({ m: query.mode, w: query.window, b: query.by, d: query.domain ?? "robotics", c: query.category, q: query.q });
   // by=timeline is the site's own order: a selected item at its reading-group anchor, anything else at its timeline time.
   const sortCol = query.by === "published" ? sql`coalesce(p.published_at, p.discovered_at)` : query.mode === "selected" ? sql`p.sort_at` : sql`p.timeline_at`;
   let after: { a: number; i: string } | null = null;
@@ -52,7 +54,7 @@ export async function v1Items(query: V1ItemsQuery, now = new Date()): Promise<V1
 
   const run = (db: Db) => db<(ApiItemRow & { sort_at: Date })[]>`
     SELECT ${API_ITEM_COLUMNS}, ${sortCol} AS sort_at ${API_ITEM_FROM}
-    WHERE ${scope} ${categoryCondition(query.category, true)} ${publicMatchCondition(terms)}
+    WHERE ${scope} ${domainCondition(query.domain ?? "robotics")} ${categoryCondition(query.category, true)} ${publicMatchCondition(terms)}
       AND ${sortCol} >= ${windowStart} AND ${sortCol} <= ${now}
       ${after ? sql`AND (${sortCol}, p.article_id) < (${new Date(after.a)}, ${after.i})` : sql``}
     ORDER BY ${sortCol} DESC, p.article_id DESC

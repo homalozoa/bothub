@@ -1,3 +1,4 @@
+import { DOMAIN_KEYS } from "@aihot/industry/channels";
 // Source administration (F18): list, detail, preview (fetch without storing), edit, create with
 // duplicate checks, pause/resume and manual collection. Every change is audited.
 import { z } from "zod";
@@ -104,6 +105,7 @@ const EDITABLE = z
     owner_entity_id: z.string().max(120).nullable(),
     site_fulltext: z.boolean(),
     syndicate_fulltext: z.boolean(),
+    channel_hints: z.array(z.enum(DOMAIN_KEYS)).max(7),
     tags: z.array(z.string().max(60)).max(30),
     config: z.record(z.string(), z.unknown()),
   })
@@ -165,6 +167,7 @@ const CreateSchema = z
     participation_mode: z.enum(["editorial", "hot_signal", "isolated"]).default("editorial"),
     interval_minutes: z.number().int().min(1).max(1440).default(30),
     first_party: z.boolean().default(false),
+    channel_hints: z.array(z.enum(DOMAIN_KEYS)).max(7).default([]),
     tags: z.array(z.string()).default([]),
     site_fulltext: z.boolean().default(false),
     syndicate_fulltext: z.boolean().default(false),
@@ -206,8 +209,8 @@ export async function createSource(input: unknown, actor: string): Promise<Befor
     const dup = await findDuplicateSource(s.kind, s.config, undefined, tx);
     if (dup) return { created: false as const, duplicate: dup };
     const [row] = await tx<BeforeJson<AdminSource>[]>`
-    INSERT INTO sources (id, name, kind, config, tier, participation_mode, interval_minutes, first_party, tags, site_fulltext, syndicate_fulltext, next_fetch_at)
-    VALUES (${s.id}, ${s.name}, ${s.kind}, ${tx.json(s.config as never)}, ${s.tier}, ${s.participation_mode}, ${s.interval_minutes}, ${s.first_party}, ${s.tags},
+    INSERT INTO sources (id, name, kind, config, tier, participation_mode, interval_minutes, first_party, tags, channel_hints, site_fulltext, syndicate_fulltext, next_fetch_at)
+    VALUES (${s.id}, ${s.name}, ${s.kind}, ${tx.json(s.config as never)}, ${s.tier}, ${s.participation_mode}, ${s.interval_minutes}, ${s.first_party}, ${s.tags}, ${s.channel_hints},
             ${s.site_fulltext}, ${s.syndicate_fulltext}, now())
     ON CONFLICT (id) DO NOTHING RETURNING *`;
     if (!row) throw new Conflict(`信源 ID ${s.id} 已存在`);

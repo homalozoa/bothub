@@ -1,3 +1,4 @@
+import { isDomainKey, type DomainKey } from "@aihot/industry/channels";
 // Public read layer, item level. Every exit (site API, v1, RSS, MCP, sitemap) reads
 // items through these functions; visibility, release gate and body licences are applied here.
 import type { CategoryKey, ChannelKey } from "@aihot/contracts/taxonomy";
@@ -8,6 +9,8 @@ import { displayTags } from "./rules.ts";
 import { newsTimeStatus } from "../content/news-time.ts";
 
 export interface ItemRow {
+  primary_channel?: DomainKey | null;
+  related_channels?: DomainKey[];
   id: string;
   revision: number;
   title: string;
@@ -54,7 +57,7 @@ export interface ItemRow {
 /** Columns every item listing selects. Internal judgement details never leave this layer. */
 export const ITEM_COLUMNS = sql`
   p.article_id AS id, p.revision, p.title, p.original_title, p.summary, p.reason, p.category, p.tags, p.score,
-  p.selected, p.eligible, p.channel, p.url, p.published_at, p.discovered_at, p.timeline_at, p.sort_at, p.first_party, p.visibility,
+  p.primary_channel, p.related_channels, p.selected, p.eligible, p.channel, p.url, p.published_at, p.discovered_at, p.timeline_at, p.sort_at, p.first_party, p.visibility,
   p.body_mode, p.syndicate, p.indexable, p.visible_after, p.backfill, p.fact_id, p.story_id,
   s.id AS source_id, s.name AS source_name, s.kind AS source_kind, s.participation_mode AS source_mode, s.icon_url AS source_icon,
   a.x_post, a.author, a.language,
@@ -81,6 +84,16 @@ export function channelCondition(channel: ChannelKey | null | undefined) {
   if (!channel || channel === "all") return sql``;
   if (channel === "firstParty") return sql`AND p.first_party`;
   return sql`AND p.channel = ${channel}`;
+}
+
+/** Null old records stay in their original robotics scope until reviewed; this is not a backfill. */
+export function domainCondition(domain: DomainKey | "all" | null | undefined) {
+  if (!domain || domain === "all") return sql``;
+  return sql`AND (coalesce(p.primary_channel, 'robotics') = ${domain} OR p.related_channels @> ${[domain]}::text[])`;
+}
+
+export function sinceCondition(since: string | null | undefined) {
+  return since ? sql`AND coalesce(p.published_at, p.discovered_at) >= ${new Date(`${since}T00:00:00+08:00`)}` : sql``;
 }
 
 export function categoryCondition(category: CategoryKey | null | undefined, _v1 = false) {
@@ -160,6 +173,8 @@ export function toItemSummary(row: ItemRow, now = new Date()): ItemSummary {
     publishedAt: row.published_at?.toISOString() ?? null,
     discoveredAt: row.discovered_at.toISOString(),
     timelineAt: row.timeline_at.toISOString(),
+    primaryChannel: isDomainKey(row.primary_channel) ? row.primary_channel : null,
+    relatedChannels: row.related_channels ?? [],
     category: (row.category as CategoryKey | null) ?? null,
     tags: displayTags(row.tags),
     score: row.score === null ? null : Math.round(Number(row.score)),
@@ -177,7 +192,7 @@ export function toFeedItemSummary(row: ItemRow, now = new Date()): FeedItemSumma
   return {
     id: item.id, title: item.title, summary: item.summary, reason: item.reason,
     source: { name: item.source.name }, publishedAt: item.publishedAt, timelineAt: item.timelineAt,
-    category: item.category, tags: item.tags, score: item.score, selected: item.selected, historical: item.historical, channel: item.channel,
+    primaryChannel: item.primaryChannel, relatedChannels: item.relatedChannels, category: item.category, tags: item.tags, score: item.score, selected: item.selected, historical: item.historical, channel: item.channel,
     x: item.x ? {
       authorName: item.x.authorName, handle: item.x.handle, avatarUrl: item.x.avatarUrl,
       ...(item.x.avatarSrcSet ? { avatarSrcSet: item.x.avatarSrcSet } : {}), media: item.x.media,

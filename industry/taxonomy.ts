@@ -15,7 +15,7 @@ export const CATEGORY_TAGS = [
 ] as const;
 
 export const TOPIC_TAGS = [
-  "计算/端侧", "传感器/标定", "执行器/机构", "通信/控制", "ROS/仿真", "部署/工程", "成本/供应链", "感知/导航", "腿足控制", "操作/抓取", "模仿/强化学习", "VLA/世界模型", "数据/训练", "开源生态", "长期自主", "伙伴/娱乐机器人", "移动机器人", "机械臂", "人形机器人", "交付/用户体验",
+  "计算/端侧", "传感器/标定", "执行器/机构", "通信/控制", "ROS/仿真", "部署/工程", "成本/供应链", "感知/导航", "腿足控制", "操作/抓取", "模仿/强化学习", "VLA/世界模型", "数据/训练", "开源生态", "长期自主", "工具/权限", "长期记忆", "测试/评测", "交互/信任", "自主权", "虚拟生命", "游戏设计", "动物行为", "学习/认知", "植物/生态", "演化历史", "系统分类", "标本/田野", "家庭/照护", "工作/休闲", "社区/文化", "伙伴/娱乐机器人", "移动机器人", "机械臂", "人形机器人", "交付/用户体验",
 ] as const;
 
 export const ENTITY_TAGS = ["NVIDIA", "Google DeepMind", "Hugging Face", "Open Robotics", "宇树", "Boston Dynamics", "Agility Robotics", "Figure", "Apptronik", "优必选", "Sony", "GROOVE X", "Luxonis", "Orbbec", "ROBOTIS", "Arduino", "GitHub", "arXiv"] as const;

@@ -1,3 +1,4 @@
+import { DOMAIN_KEYS, relatedDomains, type DomainKey } from "@aihot/industry/channels";
 // analyzeArticle: the judging and writing steps, each with its own prompt from the industry pack
 // (industry/prompts/):
 //   1. prefilter: does the material belong to this industry at all (wide recall). Only BLOCK stops an
@@ -111,6 +112,8 @@ export function buildScoreInput(a: AnalyzeInputArticle): string {
 const PrefilterSchema = z.object({
   label: z.preprocess((v) => String(v ?? "").trim().toUpperCase(), z.enum(["PASS", "BLOCK", "UNKNOWN"])),
   reason: z.string().max(200).catch(""),
+  primaryChannel: z.enum(DOMAIN_KEYS).nullable().optional(),
+  relatedChannels: z.array(z.enum(DOMAIN_KEYS)).max(2).default([]),
 });
 
 const FactSchema = z
@@ -125,6 +128,8 @@ const FactSchema = z
   .catch(null);
 
 const StructureSchema = z.object({
+  primaryChannel: z.enum(DOMAIN_KEYS).nullable().optional(),
+  relatedChannels: z.array(z.enum(DOMAIN_KEYS)).max(2).default([]),
   category: z.enum(CATEGORY_KEYS).nullable().catch(null),
   tags: z.array(z.string()).max(12).catch([]),
   subjects: z.array(z.string()).max(6).catch([]),
@@ -155,7 +160,7 @@ const STRUCTURE_SYSTEM = promptText("structure", {
 });
 
 export interface AnalysisRun {
-  prefilter: { label: "PASS" | "BLOCK" | "UNKNOWN"; reason: string; model: string; receiptId: number; reused: boolean };
+  prefilter: { primaryChannel?: DomainKey | null; relatedChannels?: DomainKey[]; label: "PASS" | "BLOCK" | "UNKNOWN"; reason: string; model: string; receiptId: number; reused: boolean };
   /**
    * The independent score calls and the tier threshold they are held against; absent when the material
    * is not scored. `refused`: the model's content filter declined it, so it is not selected.
@@ -176,7 +181,7 @@ export interface AnalysisRun {
     receiptIds: number[];
     reused: boolean;
   } | null;
-  structure: { model: string; category: string | null; tags: string[]; subjects: string[]; fact: z.infer<typeof FactSchema>; receiptId: number; reused: boolean } | null;
+  structure: { primaryChannel?: DomainKey | null; relatedChannels?: DomainKey[]; model: string; category: string | null; tags: string[]; subjects: string[]; fact: z.infer<typeof FactSchema>; receiptId: number; reused: boolean } | null;
 }
 
 const isContentFilter = (error: unknown) => error instanceof ProviderRejectedError && !error.retryable && /contentFilter|"1301"/.test(error.message);
@@ -186,7 +191,7 @@ export function waitsForPage(a: AnalyzeInputArticle): boolean {
   return a.bodyStatus === "pending" && !a.bodyText && !a.xPost && pageFetchable(a.url, a.source.kind);
 }
 
-type StepOpts = { attemptTag?: string; scoreModel?: string };
+type StepOpts = { attemptTag?: string; scoreModel?: string; primaryChannel?: DomainKey | null };
 type ReceiptObserver = (receiptId: number) => void;
 export class AnalysisInterruptedError extends Error {}
 
@@ -217,7 +222,7 @@ async function runPrefilter(a: AnalyzeInputArticle, opts: StepOpts): Promise<Ana
   });
   // A BLOCK without material to back it counts as UNKNOWN (which goes on).
   const label = res.data.label === "BLOCK" && missingEvidence(a) ? "UNKNOWN" : res.data.label;
-  return { label, reason: res.data.reason, model: res.model, receiptId: res.receiptId, reused: res.reused };
+  return { label, primaryChannel: res.data.primaryChannel ?? null, relatedChannels: relatedDomains(res.data.primaryChannel ?? null, res.data.relatedChannels), reason: res.data.reason, model: res.model, receiptId: res.receiptId, reused: res.reused };
 }
 
 /** The production prefilter step, exposed separately so SelectBench can preserve partial receipt evidence. */
@@ -245,7 +250,7 @@ async function runScores(
 ): Promise<NonNullable<AnalysisRun["scores"]>> {
   const model = opts.scoreModel ?? (await modelFor("score"));
   const call = scoreCall(model);
-  const input = buildScoreInput(a);
+  const input = `【主频道】${opts.primaryChannel ?? "待确认；按材料的主要问题判断"}\n\n${buildScoreInput(a)}`;
   const values: number[] = [];
   const receiptIds: number[] = [];
   let reused = true;
@@ -283,7 +288,7 @@ export async function runSelectionScores(
   const threshold = tierThreshold(a.source.tier);
   // Offline benchmark samples have no discovery time: evaluate their historical editorial value.
   // Live inputs always have one. Neither a high model score nor a retry makes old news current.
-  const time = a.discoveredAt ? newsTimeStatus({ published_at: a.publishedAt, discovered_at: a.discoveredAt, backfill: a.backfill }) : "current";
+  const time = a.discoveredAt ? newsTimeStatus({ published_at: a.publishedAt, discovered_at: a.discoveredAt, backfill: a.backfill, primary_channel: opts.primaryChannel }) : "current";
   return threshold === null || time !== "current" ? null : runScores(a, threshold, opts, onReceipt);
 }
 
@@ -303,7 +308,7 @@ async function runStructure(a: AnalyzeInputArticle, opts: StepOpts): Promise<Non
     attemptTag: tagged(opts.attemptTag, "structure"),
   });
   const subjects = [...new Set(res.data.subjects.map((s) => s.trim().toLowerCase()).filter((s) => s in ENTITIES))];
-  return { model: res.model, category: res.data.category, tags: normalizeTags(res.data.tags), subjects, fact: res.data.fact, receiptId: res.receiptId, reused: res.reused };
+  return { model: res.model, primaryChannel: res.data.primaryChannel ?? null, relatedChannels: relatedDomains(res.data.primaryChannel ?? null, res.data.relatedChannels), category: res.data.category, tags: normalizeTags(res.data.tags), subjects, fact: res.data.fact, receiptId: res.receiptId, reused: res.reused };
 }
 
 /** The content understanding; null when the model's content filter declines the material. */
@@ -388,6 +393,7 @@ export async function runAnalysis(a: AnalyzeInputArticle, opts: StepOpts & { sta
   const prefilter = await runSelectionPrefilter(a, opts);
   // UNKNOWN is let through (its material is as complete as it will get); BLOCK stops here.
   if (prefilter.label === "BLOCK") return { prefilter, scores: null, writing: null, structure: null };
+  opts = { ...opts, primaryChannel: prefilter.primaryChannel };
   if (opts.stages === "selection") {
     const scores = await runSelectionScores(a, opts);
     return { prefilter, scores, writing: null, structure: null };
@@ -438,6 +444,8 @@ export function normalizeAnalysis(run: AnalysisRun) {
     scoreModel: run.scores?.model ?? null,
     scoreRefused: run.scores?.refused ?? false,
     threshold,
+    primaryChannel: run.structure?.primaryChannel ?? run.prefilter.primaryChannel ?? null,
+    relatedChannels: relatedDomains(run.structure?.primaryChannel ?? run.prefilter.primaryChannel ?? null, run.structure?.relatedChannels ?? run.prefilter.relatedChannels),
     category: run.structure?.category ?? null,
     tags,
     subjects,
@@ -474,7 +482,8 @@ export async function analyzeArticle(articleId: string, opts: StepOpts = {}): Pr
   ];
   const w = run.writing;
   const detail = {
-    prefilter: { label: run.prefilter.label, reason: run.prefilter.reason },
+    prefilter: { label: run.prefilter.label, reason: run.prefilter.reason, primaryChannel: run.prefilter.primaryChannel ?? null },
+    routing: { primaryChannel: out.primaryChannel, relatedChannels: out.relatedChannels },
     newsTime: input.discoveredAt ? newsTimeStatus({ published_at: input.publishedAt, discovered_at: input.discoveredAt, backfill: input.backfill }) : null,
     scores: out.scores, scoreModel: out.scoreModel, threshold: out.threshold, ...(out.scoreRefused ? { scoreRefused: true } : {}),
     ...(w ? { writer: w.kind, writerModel: w.model, itemType: w.itemType ?? null, authorRole: w.authorRole ?? null } : {}),
@@ -487,9 +496,9 @@ export async function analyzeArticle(articleId: string, opts: StepOpts = {}): Pr
     const stale = !current || current.revision !== input.revision;
     const [row] = await tx<{ id: number }[]>`
       INSERT INTO analyses (article_id, input_revision, origin, model, prompt_version, receipt_ids, relevance, category, tags,
-        subjects, title_zh, summary_zh, reason_zh, score, selected, output)
+        subjects, primary_channel, related_channels, title_zh, summary_zh, reason_zh, score, selected, output)
       VALUES (${articleId}, ${input.revision}, 'model', ${w?.model ?? run.prefilter.model}, ${ANALYZE_PROMPT_VERSION}, ${receiptIds},
-        ${out.relevance}, ${out.category}, ${out.tags}, ${out.subjects}, ${out.titleZh}, ${out.summaryZh}, ${out.reasonZh},
+        ${out.relevance}, ${out.category}, ${out.tags}, ${out.subjects}, ${out.primaryChannel}, ${out.relatedChannels}, ${out.titleZh}, ${out.summaryZh}, ${out.reasonZh},
         ${out.score}, ${out.selected}, ${tx.json(detail as never)})
       RETURNING id`;
     for (const id of receiptIds) await completeReceipt(tx, id);

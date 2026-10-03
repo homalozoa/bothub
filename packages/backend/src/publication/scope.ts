@@ -1,21 +1,26 @@
+import { DOMAIN_KEYS, DOMAIN_WINDOWS } from "@aihot/industry/channels";
 // Public scope at read time . Every query that decides whether a report is public now,
 // listed, selected, or evidence of its fact uses these predicates over `publications p` (and, for
 // evidence, `fact_articles fa`); no other module spells visibility, the release gate or the composite
 // rule in SQL. What a publication holds is derived once, at publish time, by publish.ts and rules.ts.
 import { sql } from "../db.ts";
-import { NEWS_WINDOW_MS } from "../content/news-time.ts";
-import { STALE_ON_DISCOVERY_MS, FUTURE_TOLERANCE_MS } from "../content/materials.ts";
+import { FUTURE_TOLERANCE_MS } from "../content/materials.ts";
+
+function windowMs(kind: "discoveryDays" | "newsDays") {
+  const cases = DOMAIN_KEYS.reduce((acc, key) => sql`${acc} WHEN ${key} THEN ${DOMAIN_WINDOWS[key][kind] * 86400_000}::double precision`, sql`CASE p.primary_channel`);
+  return sql`(${cases} ELSE ${DOMAIN_WINDOWS.robotics[kind] * 86400_000}::double precision END)`;
+}
 
 /** Same source-date checks as publishing; old projections cannot bypass them. */
 export function currentTimeCondition(now: Date) {
   return sql`${discoveryTimeCondition()}
-    AND coalesce(p.published_at, p.discovered_at) > ${new Date(now.getTime() - NEWS_WINDOW_MS)}
+    AND coalesce(p.published_at, p.discovered_at) > ${now}::timestamptz - ${windowMs('newsDays')} * interval '1 millisecond'
     AND coalesce(p.published_at, p.discovered_at) <= ${new Date(now.getTime() + FUTURE_TOLERANCE_MS)}`;
 }
 
 function discoveryTimeCondition() {
   return sql`NOT (p.backfill AND p.published_at IS NULL)
-    AND (p.published_at IS NULL OR p.discovered_at <= p.published_at + ${STALE_ON_DISCOVERY_MS} * interval '1 millisecond')`;
+    AND (p.published_at IS NULL OR p.discovered_at <= p.published_at + ${windowMs('discoveryDays')} * interval '1 millisecond')`;
 }
 
 /** Historical selections for topic archives, without promoting late discoveries into news. */
@@ -28,7 +33,7 @@ export function pendingRecordCondition(now: Date) {
 }
 
 export function selectionExpiresAt() {
-  return sql`coalesce(p.published_at, p.discovered_at) + ${NEWS_WINDOW_MS} * interval '1 millisecond'`;
+  return sql`coalesce(p.published_at, p.discovered_at) + ${windowMs('newsDays')} * interval '1 millisecond'`;
 }
 
 /**

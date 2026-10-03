@@ -1,3 +1,4 @@
+import type { DomainKey } from "@aihot/industry/channels";
 // Admin API (/api/admin/*): what each back-office endpoint returns, shared by the api's admin
 // functions and the admin pages. Only administrators reach it; it changes with the admin UI and is
 // never a public contract. Rows mirror their SQL columns (snake_case); timestamps are ISO strings.
@@ -71,6 +72,7 @@ export interface AdminSources {
 }
 
 export interface AdminSource {
+  channel_hints?: DomainKey[];
   id: string;
   name: string;
   kind: string;

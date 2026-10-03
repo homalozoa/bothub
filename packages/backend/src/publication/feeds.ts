@@ -1,3 +1,4 @@
+import { DOMAIN_LABELS, DOMAIN_WINDOWS, type DomainKey } from "@aihot/industry/channels";
 import { listedCondition, selectedCondition, currentTimeCondition } from "./scope.ts";
 // RSS feeds. GUID = article id (isPermaLink=false), <link> = the site's page, pubDate = source
 // publication time. Summary feeds never carry content:encoded; full feeds inline bodies only for
@@ -10,7 +11,7 @@ import { escapeXml } from "../lib/text.ts";
 import { proxyBodyImages } from "../media/imgproxy.ts";
 import { reportHeadline, reportIndex } from "./reports.ts";
 import { textToHtml } from "../content/sanitize.ts";
-import { categoryCondition, xView, type ItemRow } from "./items.ts";
+import { categoryCondition, domainCondition, xView, type ItemRow } from "./items.ts";
 import { dailyUrl, itemUrl, siteUrl } from "./links.ts";
 
 interface FeedMeta {
@@ -112,16 +113,17 @@ export type ItemFeedKind = "selected" | "selected-full" | "all";
 // Like the live feeds, items are the newest by their original publish time (the pubDate shown):
 // 50 per feed; a category feed holds only its last 7 days (by original publish time).
 
-export async function itemFeed(kind: ItemFeedKind, category: PublicApiCategoryKey | null, now = new Date()): Promise<string> {
+export async function itemFeed(kind: ItemFeedKind, category: PublicApiCategoryKey | null, now = new Date(), domain: DomainKey | "all" = "robotics", domainFeed = false): Promise<string> {
   const includeContent = kind === "selected-full";
   const scope = kind === "all"
-    ? sql`${listedCondition(now)} AND ${currentTimeCondition(now)} AND coalesce(p.published_at, p.discovered_at) > ${now}::timestamptz - interval '7 days'
+    ? sql`${listedCondition(now)} AND ${currentTimeCondition(now)} AND coalesce(p.published_at, p.discovered_at) > ${now}::timestamptz - ${domainFeed && domain !== 'all' ? DOMAIN_WINDOWS[domain].newsDays : 7}::double precision * interval '1 day'
         AND coalesce(p.published_at, p.discovered_at) <= ${now}`
     : sql`${selectedCondition(now)} ${categoryCondition(category, true)}
         ${category ? sql`AND coalesce(p.published_at, p.discovered_at) >= ${new Date(now.getTime() - 7 * 86400_000)}` : sql``}`;
+  const domainScope = domainCondition(domain);
   const rows = await sql<FeedRow[]>`
     WITH page AS MATERIALIZED (
-      SELECT p.article_id FROM publications p WHERE ${scope}
+      SELECT p.article_id FROM publications p WHERE ${scope} ${domainScope}
       ORDER BY coalesce(p.published_at, p.discovered_at) DESC, p.article_id DESC LIMIT 50
     )
     SELECT p.article_id AS id, p.title, p.summary, p.url, p.category, p.published_at, p.discovered_at, s.name AS source_name
@@ -148,6 +150,11 @@ export async function itemFeed(kind: ItemFeedKind, category: PublicApiCategoryKe
   } else {
     const m = FEEDS[kind === "selected" ? "selected" : kind === "selected-full" ? "selectedFull" : "all"];
     meta = { title: m.title, description: m.description, homePath: m.homePath, selfPath: m.path, ttl: m.pollHintMinutes };
+  }
+  if (domainFeed) {
+    const label = domain === "all" ? "综合" : DOMAIN_LABELS[domain];
+    meta = { title: `${SITE.name} — ${label}${kind === "all" ? "最新" : "精选"}`, description: `${label}频道的公开摘要与原文，保留原始发表日期。`,
+      homePath: domain === "all" ? "/" : `/channels/${domain}`, selfPath: `/feed/channels/${domain}${kind === "all" ? "/latest" : ""}.xml`, ttl: 60 };
   }
   return channel(meta, rows.map((r) => itemXml(r, includeContent)));
 }

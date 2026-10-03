@@ -25,7 +25,7 @@ let active: {
 const provider = await stub(async (_hit, request) => {
   const body = JSON.parse(request.body);
   const system = String(body.messages[0]?.content ?? "");
-  const step: Step = system.includes("宽召回的机器人与具身 AI 相关性预筛") ? "prefilter" : system.includes("事件注意力评分器") ? "score"
+  const step: Step = system.includes("七频道宽召回预筛") ? "prefilter" : system.includes("事件注意力评分器") ? "score"
     : system.includes("资料结构化助手") ? "structure" : "understand";
   active.calls.push(step);
   const count = active.calls.filter(s => s === step).length;

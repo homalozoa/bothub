@@ -1,3 +1,4 @@
+import { DOMAIN_KEYS, type DomainKey } from "@aihot/industry/channels";
 // Public API v1 (long-term). Field shapes follow reference/public-v1.openapi.json 2.1.0 (the paths stay /api/v1).
 import { FEATURES } from "@aihot/industry/features";
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
@@ -58,10 +59,11 @@ export function publicHandler(fn: Handler): Handler {
 
 export function registerV1(app: FastifyInstance) {
   app.get("/api/v1/items", publicHandler(async (req, reply) => {
-    const q = strictQuery(req, ["mode", "category", "window", "by", "q", "limit", "cursor"]);
+    const q = strictQuery(req, ["mode", "domain", "category", "window", "by", "q", "limit", "cursor"]);
     const mode = enumParam(q.mode, "mode", ["selected", "all"] as const, "selected");
     const window = enumParam(q.window, "window", ["24h", "7d"] as const, "7d");
     const by = enumParam(q.by, "by", ["timeline", "published"] as const, "timeline");
+    const domain = enumParam<DomainKey | "all">(q.domain, "domain", ["all", ...DOMAIN_KEYS], "robotics");
     const category = q.category === undefined ? null : enumParam<PublicApiCategoryKey>(q.category, "category", PUBLIC_API_CATEGORY_KEYS, PUBLIC_API_CATEGORY_KEYS[0]);
     let search: string | null = null;
     if (q.q !== undefined) {
@@ -71,7 +73,7 @@ export function registerV1(app: FastifyInstance) {
     }
     const limit = intParam(q.limit, "limit", 1, 100, 50);
     if (q.cursor !== undefined && q.cursor.length === 0) throw new InvalidCursorError("empty cursor");
-    const body = await v1Items({ mode, window, by, category, q: search, limit, cursor: q.cursor ?? null });
+    const body = await v1Items({ mode, window, by, domain, category, q: search, limit, cursor: q.cursor ?? null });
     return sendJsonWithEtag(req, reply, body, { etagPrefix: "v1-items", cacheControl: V1_CACHE_CONTROL.items });
   }));
 
