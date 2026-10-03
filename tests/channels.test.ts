@@ -1,3 +1,6 @@
+import { DOMAINS, ACTIVE_DOMAIN_KEYS, domainPath } from "@aihot/industry/channels";
+import { seedTopics, loadTopicArchive, loadTopicDirectory } from "@aihot/backend/publication/topics";
+import { channelOverview } from "@aihot/backend/publication/channels";
 import { spawnSync } from "node:child_process";
 import { rmSync } from "node:fs";
 // Synthetic responses test program routing and compatibility, never editorial accuracy.
@@ -22,7 +25,7 @@ import { buildApp } from "../apps/api/src/app.ts";
 const T=tag(), source=`channels-${T}`, now=new Date();
 const samples: Record<string, { domain: DomainKey; title: string; text: string }> = {
   BEE_SAMPLE: { domain:"biology", title:"蜜蜂的学习行为研究", text:"Bumblebees learn a foraging task. Researchers compare trained and untrained groups under controlled conditions and report observations and limitations." },
-  FOSSIL_SAMPLE: { domain:"natural-history", title:"标本改变化石分类解释", text:"Late Jurassic specimens from a dated sedimentary layer change the classification of a fossil species. The paper explains material, dating and alternative phylogenetic interpretations." },
+  FOSSIL_SAMPLE: { domain:"biology", title:"标本改变化石分类解释", text:"Late Jurassic specimens from a dated sedimentary layer change the classification of a fossil species. The paper explains material, dating and alternative phylogenetic interpretations." },
   CARE_SAMPLE: { domain:"sociology", title:"家庭照护的田野访谈", text:"Fieldwork interviews examine household care and work routines in one region. The study describes its interview period, qualitative methods, context and limits of generalisation." },
 };
 const calls: string[]=[];
@@ -30,9 +33,9 @@ const provider=await stub((_hit,req)=>{
   const request=JSON.parse(req.body); const system=String(request.messages[0]?.content??""); const user=String(request.messages.at(-1)?.content??"");
   const marker=Object.keys(samples).find(k=>user.includes(k))!; const s=samples[marker]!;
   let content: unknown;
-  if(system.includes("宽召回")){calls.push("prefilter");content={label:"PASS",reason:"领域研究",primaryChannel:s.domain,relatedChannels:s.domain==="biology"?["play"]:[]};}
+  if(system.includes("四频道宽召回预筛")){calls.push("prefilter");content={label:"PASS",reason:"领域研究",primaryChannel:s.domain,relatedChannels:[]};}
   else if(system.includes("事件注意力评分器")){calls.push("score");assert.match(user,new RegExp(s.domain));content={attentionScore:82};}
-  else if(system.includes("资料结构化助手")){calls.push("structure");content={primaryChannel:s.domain,relatedChannels:s.domain==="biology"?["play"]:[],category:"research",tags:["论文/研究"],subjects:[],fact:{title:s.title,subject:marker,action:"研究",object:marker,occurredAt:null}};}
+  else if(system.includes("资料结构化助手")){calls.push("structure");content={primaryChannel:s.domain,relatedChannels:[],category:"research",tags:["论文/研究", ...(marker==="FOSSIL_SAMPLE"?["自然史"]:marker==="BEE_SAMPLE"?["游戏与角色"]:[])],subjects:[],fact:{title:s.title,subject:marker,action:"研究",object:marker,occurredAt:null}};}
   else {calls.push("writing");content={itemType:"research_paper",authorRole:"principal",tags:["论文/研究"],editorialJudgment:"合成测试说明",titleZh:s.title,summaryZh:`${s.title}。材料说明研究对象、方法与适用范围。`};}
   return {choices:[{message:{content:JSON.stringify(content)}}],usage:{prompt_tokens:10,completion_tokens:5}};
 });
@@ -60,15 +63,15 @@ test("channels are independent of paper filters and preserve one canonical artic
   const bee=ids.BEE_SAMPLE!;
   for(const d of ["biology","play"] as const){const data=await loadPool({...filters(d),tag:"论文/研究",q:"蜜蜂"});assert.deepEqual(data.items.map(i=>i.id),[bee]);}
   const all=await loadTimeline(filters("all"));assert.equal(all.cards.filter(c=>c.item.id===bee).length,1);
-  const biology=await loadTimeline({...filters("biology"),limit:1});assert.equal(biology.cards[0]!.item.id,bee);
+  const biology=await loadTimeline({...filters("biology"),limit:1});assert.equal(biology.cards.length,1);assert.equal(biology.cards[0]!.item.primaryChannel,"biology");assert.ok(biology.nextCursor);
   assert.equal((await sql`SELECT count(*)::int AS n FROM publications WHERE article_id=${bee}`)[0]!.n,1);
 });
 test("pagination, cursor bindings, source/time filters and count caches cannot leak a different domain",async()=>{
   const first=await loadTimeline({...filters("all"),limit:1});assert.ok(first.nextCursor);
   await assert.rejects(loadTimeline({...filters("biology"),cursor:first.nextCursor}),/cursor does not match/);
-  const bio=await loadPool({...filters("biology"),page:2});assert.equal(bio.items.length,0);assert.equal(bio.total,1);
+  const bio=await loadPool({...filters("biology"),page:2});assert.equal(bio.items.length,0);assert.equal(bio.total,2);
   const future=await loadPool({...filters("biology"),since:"2099-01-01"});assert.equal(future.total,0);
-  for(const domain of ["biology","sociology"] as const){const result=await loadPool({...filters(domain),now:undefined});assert.equal(result.total,1);assert.ok(result.items.every(i=>i.primaryChannel===domain));}
+  for(const domain of ["biology","sociology"] as const){const result=await loadPool({...filters(domain),now:undefined});assert.equal(result.total,domain === "biology" ? 2 : 1);assert.ok(result.items.every(i=>i.primaryChannel===domain));}
 });
 test("legacy RSS, API, selected sync and reports retain robotics scope; explicit comprehensive and channel feeds include new material",async()=>{
   const bee=ids.BEE_SAMPLE!;
@@ -138,4 +141,32 @@ test("historical classification dry-run, apply and rollback preserve dates, jobs
     const bad=run(['--sources',sourceId,'--apply','--out',file]);assert.notEqual(bad.status,0);assert.match(bad.stderr,/Timestamp projection differs/);
     assert.equal((await sql`SELECT primary_channel FROM publications WHERE article_id=${material.articleId}`)[0]!.primary_channel,null);
   } finally { rmSync(file,{force:true}); }
+});
+
+test("four active streams keep retained topics and legacy natural-history records readable without rewriting them", async () => {
+  assert.deepEqual(ACTIVE_DOMAIN_KEYS,["robotics","agents","biology","sociology"]);
+  assert.equal(DOMAINS.length,4);assert.equal(domainInfo("agents").label,"AI 与 Agent");
+  assert.equal(domainPath("natural-history"),"/topics/natural-history");
+  assert.equal(domainPath("interaction"),"/topics/human-interaction");
+  await seedTopics();
+  const {articleId}=await upsertMaterial({sourceId:source,url:`https://example.org/${T}/legacy-taxonomy`,title:'既有物种分类材料',bodyText:'历史标本与分类',bodyStatus:'ok',via:'fetch',publishedAt:now});
+  await sql`INSERT INTO analyses(article_id,input_revision,origin,relevance,primary_channel,tags,title_zh,summary_zh,score,selected) VALUES(${articleId},1,'rule','pass','natural-history',${['论文/研究']},'既有物种分类材料','既有标本研究摘要',40,false)`;
+  await publishArticle(articleId,{now});
+  const dates=await sql`SELECT published_at,discovered_at,timeline_at,score FROM publications WHERE article_id=${articleId}`;
+  const biology=await loadPool({...filters("biology"),q:'既有物种分类'});assert.equal(biology.items[0]!.primaryChannel,'biology');assert.ok(biology.items[0]!.tags.includes('自然史'));
+  const archive=await loadTopicArchive('natural-history',{now,q:'既有物种分类'});assert.equal(archive!.items[0]!.id,articleId);assert.equal(archive!.view,'all');
+  assert.ok((await loadTopicDirectory(now)).topics.find(t=>t.slug==='natural-history')!.total>0);
+  assert.deepEqual(await sql`SELECT published_at,discovered_at,timeline_at,score FROM publications WHERE article_id=${articleId}`,dates);
+  const oldGame=await upsertMaterial({sourceId:source,url:`https://example.org/${T}/legacy-game`,title:'既有游戏引擎更新',bodyText:'旧频道已收录的资料',bodyStatus:'ok',via:'fetch',publishedAt:now});
+  await sql`INSERT INTO analyses(article_id,input_revision,origin,relevance,primary_channel,tags,title_zh,summary_zh,selected) VALUES(${oldGame.articleId},1,'rule','pass','play',${['产品更新']},'既有游戏引擎更新','旧更新摘要',false)`;
+  await publishArticle(oldGame.articleId,{now});
+  assert.ok(!(await loadPool({...filters('all'),q:'既有游戏引擎'})).items.length);
+  const games=await loadTopicArchive('games-and-characters',{now,q:'既有游戏引擎'});assert.equal(games!.items[0]!.id,oldGame.articleId);
+  assert.ok(!(await loadTopicArchive('natural-history',{now,q:'既有游戏引擎'}))!.items.length);
+  assert.equal(await loadTopicArchive('natural-history',{now,page:51}),null);
+  assert.equal((await channelOverview()).channels.length,4);
+  const app=await buildApp();const read=await app.inject(`/api/site/topics/games-and-characters?q=${encodeURIComponent('既有游戏引擎')}`);assert.equal(read.statusCode,200);assert.equal(read.json().items[0].id,oldGame.articleId);
+  assert.equal((await app.inject('/api/site/topics/natural-history?page=-1')).statusCode,404);
+  await setVisibility(oldGame.articleId,{visibility:'withdrawn',reason:'测试撤回',version:0},'test');
+  assert.equal((await loadTopicArchive('games-and-characters',{now,q:'既有游戏引擎'}))!.items.length,0);await app.close();
 });

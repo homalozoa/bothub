@@ -1,4 +1,4 @@
-import { isDomainKey, type DomainKey } from "@aihot/industry/channels";
+import { ACTIVE_DOMAIN_KEYS, RETAINED_TOPICS, canonicalDomain, editorialTags, isDomainKey, retainedTopic, type DomainKey } from "@aihot/industry/channels";
 // Public read layer, item level. Every exit (site API, v1, RSS, MCP, sitemap) reads
 // items through these functions; visibility, release gate and body licences are applied here.
 import type { CategoryKey, ChannelKey } from "@aihot/contracts/taxonomy";
@@ -88,8 +88,10 @@ export function channelCondition(channel: ChannelKey | null | undefined) {
 
 /** Null old records stay in their original robotics scope until reviewed; this is not a backfill. */
 export function domainCondition(domain: DomainKey | "all" | null | undefined) {
-  if (!domain || domain === "all") return sql``;
-  return sql`AND (coalesce(p.primary_channel, 'robotics') = ${domain} OR p.related_channels @> ${[domain]}::text[])`;
+  if (!domain || domain === "all") return sql`AND (p.primary_channel IS NULL OR p.primary_channel IN ${sql([...ACTIVE_DOMAIN_KEYS, "natural-history"])} OR p.related_channels && ${[...ACTIVE_DOMAIN_KEYS, "natural-history"]}::text[])`;
+  if (domain === "biology") return sql`AND (p.primary_channel IN ('biology', 'natural-history') OR p.related_channels && ${['biology', 'natural-history']}::text[])`;
+  const theme = retainedTopic(domain);
+  return sql`AND (coalesce(p.primary_channel, 'robotics') = ${domain} OR p.related_channels @> ${[domain]}::text[] ${theme ? sql`OR p.tags && ${[...theme.tags]}::text[]` : sql``})`;
 }
 
 /** Pre-expansion subscriptions keep the original robotics stream, including unclassified old rows. */
@@ -108,12 +110,14 @@ export function categoryCondition(category: CategoryKey | null | undefined, _v1 
 
 export function tagCondition(tag: string | null | undefined) {
   if (!tag) return sql``;
-  return sql`AND p.tags @> ${[tag]}::text[]`;
+  return topicCondition([tag], true);
 }
 
-export function topicCondition(topicTags: string[] | null | undefined) {
-  if (!topicTags || topicTags.length === 0) return sql``;
-  return sql`AND p.tags && ${topicTags}::text[]`;
+export function topicCondition(topicTags: string[] | null | undefined, exact = false) {
+  if (!topicTags) return sql``;
+  if (topicTags.length === 0) return sql`AND FALSE`;
+  const legacy = RETAINED_TOPICS.filter(t => topicTags.includes(t.tag)).map(t => t.domain);
+  return sql`AND (p.tags ${exact ? sql`@>` : sql`&&`} ${topicTags}::text[] ${legacy.length ? sql`OR p.primary_channel IN ${sql(legacy)} OR p.related_channels && ${legacy}::text[]` : sql``})`;
 }
 
 function mediaView(m: Record<string, any>, mode: "card" | "thumb" | "full" = "thumb", responsive = false): MediaView | null {
@@ -178,10 +182,10 @@ export function toItemSummary(row: ItemRow, now = new Date()): ItemSummary {
     publishedAt: row.published_at?.toISOString() ?? null,
     discoveredAt: row.discovered_at.toISOString(),
     timelineAt: row.timeline_at.toISOString(),
-    primaryChannel: isDomainKey(row.primary_channel) ? row.primary_channel : null,
-    relatedChannels: row.related_channels ?? [],
+    primaryChannel: isDomainKey(row.primary_channel) ? canonicalDomain(row.primary_channel) : null,
+    relatedChannels: [...new Set((row.related_channels ?? []).map(canonicalDomain))].filter(d => d !== (row.primary_channel ? canonicalDomain(row.primary_channel) : null)),
     category: (row.category as CategoryKey | null) ?? null,
-    tags: displayTags(row.tags),
+    tags: displayTags(editorialTags(row.tags, row.primary_channel, row.related_channels)),
     score: row.score === null ? null : Math.round(Number(row.score)),
     selected: row.selected,
     historical: ["historical", "expired"].includes(newsTimeStatus(row, now)),

@@ -733,6 +733,54 @@
         "工作/休闲"
       ],
       "definition": "工作、休闲、社区与社会关系"
+    },
+    {
+      "slug": "natural-history",
+      "name": "自然史",
+      "group": "field",
+      "tags": [
+        "自然史",
+        "演化历史",
+        "系统分类",
+        "标本/田野"
+      ],
+      "definition": "生物学中的物种、标本、分类、演化历史与田野发现；保留原始日期和历史资料。",
+      "related": [
+        "evolution-history",
+        "taxonomy-fieldwork"
+      ]
+    },
+    {
+      "slug": "human-interaction",
+      "name": "人机交互",
+      "group": "field",
+      "tags": [
+        "人机交互",
+        "交互/信任",
+        "自主权"
+      ],
+      "definition": "机器人、AI与Agent、社会生活中的交互、理解、信任与使用体验；也保留此前独立频道的历史文章。",
+      "related": [
+        "interaction-trust",
+        "agent-memory"
+      ]
+    },
+    {
+      "slug": "games-and-characters",
+      "name": "游戏与角色",
+      "group": "field",
+      "tags": [
+        "游戏与角色",
+        "虚拟生命",
+        "游戏设计",
+        "玩家社群",
+        "角色关系"
+      ],
+      "definition": "智能角色、动物游戏、玩家社群和角色关系等相关内容；此前游戏频道的文章保留供查阅。",
+      "related": [
+        "virtual-life",
+        "animal-behavior"
+      ]
     }
   ]
 }

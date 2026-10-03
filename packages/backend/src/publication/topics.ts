@@ -1,3 +1,5 @@
+import { editorialTags, retainedTopic, type DomainKey } from "@aihot/industry/channels";
+import { loadPool, type PoolQuery } from "./pool.ts";
 import { selectedRecordCondition, pendingRecordCondition } from "./scope.ts";
 import type { FeedItemSummary } from "@aihot/contracts/site";
 import { readFileSync } from "node:fs";
@@ -5,7 +7,7 @@ import path from "node:path";
 import { REPO_ROOT } from "../config.ts";
 import { sql } from "../db.ts";
 import { cached } from "../lib/cache.ts";
-import { ITEM_COLUMNS, ITEM_FROM, toFeedItemSummary, type ItemRow } from "./items.ts";
+import { ITEM_COLUMNS, ITEM_FROM, toFeedItemSummary, topicCondition, domainCondition, type ItemRow } from "./items.ts";
 
 export interface TopicRow {
   slug: string;
@@ -91,7 +93,7 @@ export function topicCountSnapshot(now?: Date): Promise<TopicCountSnapshot> {
 async function queryTopicCounts(now: Date): Promise<TopicCountSnapshot> {
   const [topics, items, pending] = await Promise.all([
     sql<Array<Pick<TopicRow, "slug" | "entity_id" | "tags">>>`SELECT slug, entity_id, tags FROM topics ORDER BY position`,
-    sql<{ tags: string[]; timeline_at: Date }[]>`SELECT p.tags, p.timeline_at FROM publications p WHERE ${selectedRecordCondition(now)}`,
+    sql<{ tags: string[]; primary_channel: DomainKey | null; related_channels: DomainKey[]; timeline_at: Date }[]>`SELECT p.tags, p.primary_channel, p.related_channels, p.timeline_at FROM publications p WHERE ${selectedRecordCondition(now)}`,
     sql<{ t: Date | null }[]>`SELECT min(p.visible_after) AS t FROM publications p
       WHERE ${pendingRecordCondition(now)}`,
   ]);
@@ -107,13 +109,22 @@ async function queryTopicCounts(now: Date): Promise<TopicCountSnapshot> {
     let recent = 0;
     let latest: Date | null = null;
     for (const it of items) {
-      if (!it.tags.some((tag) => match.has(tag))) continue;
+      if (!editorialTags(it.tags, it.primary_channel, it.related_channels).some((tag) => match.has(tag))) continue;
       total += 1;
       if (it.timeline_at.getTime() > recentFrom) recent += 1;
       if (!latest || it.timeline_at > latest) latest = it.timeline_at;
     }
     return { slug: t.slug, total, recent, latest, pages: Math.max(1, Math.ceil(total / TOPIC_PAGE_SIZE)), indexable: total >= 50 || (total >= 20 && recent > 0) };
   });
+  for (const t of topics) {
+    const theme = retainedTopic(t.slug);
+    if (!theme) continue;
+    const archive = await loadPool({ domain: theme.domain, channel: "all", category: null, tag: null, topic: t.slug, topicTags: topicMatchTags(t), now });
+    const c = counts.find(c => c.slug === t.slug)!;
+    c.total = archive.total; c.pages = archive.pageCount; c.recent = (await loadPool({ domain: theme.domain, channel: "all", category: null, tag: null, topic: t.slug, topicTags: topicMatchTags(t), since: new Date(now.getTime() - 30 * 86400_000).toISOString().slice(0, 10), now })).total;
+    c.latest = archive.items[0] ? new Date(archive.items[0].publishedAt ?? archive.items[0].timelineAt) : null;
+    c.indexable = c.total >= 50;
+  }
   return { counts, refreshAt: Number.isFinite(deadline) ? new Date(deadline).toISOString() : null };
 }
 
@@ -133,7 +144,7 @@ async function queryTopicCount(slug: string, now: Date): Promise<{ count: TopicC
       (SELECT min(p.timeline_at) FROM publications p
         WHERE ${selectedRecordCondition(now)} AND p.timeline_at >= ${recentStart}) AS oldest_recent
     FROM publications p
-    WHERE ${selectedRecordCondition(now)} AND p.tags && ${topic ? topicMatchTags(topic) : []}::text[]`;
+    WHERE ${selectedRecordCondition(now)} ${topic && topicMatchTags(topic).length ? topicCondition(topicMatchTags(topic)) : sql`AND FALSE`}`;
   const { total, recent, latest } = row!;
   const deadline = Math.min(row!.pending?.getTime() ?? Infinity, row!.oldest_recent ? row!.oldest_recent.getTime() + recentMs : Infinity);
   return {
@@ -188,11 +199,26 @@ export async function loadTopicPage(slug: string, page: number, now = new Date()
   const rows = await sql<ItemRow[]>`
     WITH page AS (
       SELECT p.article_id FROM publications p
-      WHERE ${selectedRecordCondition(now)} AND p.tags && ${topicMatchTags(row)}::text[]
+      WHERE ${selectedRecordCondition(now)} ${topicMatchTags(row).length ? topicCondition(topicMatchTags(row)) : sql`AND FALSE`}
       ORDER BY p.timeline_at DESC, p.article_id DESC
       LIMIT ${TOPIC_PAGE_SIZE} OFFSET ${(page - 1) * TOPIC_PAGE_SIZE})
     SELECT ${ITEM_COLUMNS} ${ITEM_FROM} WHERE p.article_id IN (SELECT article_id FROM page)
     ORDER BY p.timeline_at DESC, p.article_id DESC`;
   const related = row.related.map((r) => topics.find((t) => t.slug === r)).filter((t): t is TopicRow => !!t).map((t) => ({ slug: t.slug, name: t.name }));
   return { topic: { ...topic, related }, items: rows.map(row => toFeedItemSummary(row, now)), page, pageCount, refreshAt };
+}
+
+/** Retained themes can show all readable archive material, including records without a selected score. */
+export async function loadTopicArchive(slug: string, query: Partial<PoolQuery> = {}): Promise<(TopicPage & { view: "all"; pageSize: number }) | null> {
+  const row = await loadTopic(slug);
+  if (!row) return null;
+  const theme = retainedTopic(slug);
+  const result = await loadPool({ ...query, domain: query.domain ?? theme?.domain ?? "all", channel: query.channel ?? "all", category: query.category ?? null, tag: query.tag ?? null, topic: slug, topicTags: topicMatchTags(row) });
+  if (result.page > result.pageCount || (query.page !== undefined && result.page !== query.page)) return null;
+  const directory = await listTopics();
+  const now = query.now ?? new Date(result.generatedAt);
+  const [pending] = await sql<{ at: Date | null }[]>`SELECT min(p.visible_after) AS at FROM publications p WHERE ${pendingRecordCondition(now)} ${domainCondition(query.domain ?? theme?.domain ?? "all")} ${topicCondition(topicMatchTags(row))}`;
+  return { topic: { slug, name: row.name, group: row.grp, definition: row.definition, total: result.total, recent: result.todayCount, indexable: result.total >= 50, latestAt: result.items[0]?.publishedAt ?? null,
+    related: row.related.flatMap(slug => { const t = directory.find(t => t.slug === slug); return t ? [{ slug, name: t.name }] : []; }) },
+    items: result.items, page: result.page, pageCount: result.pageCount, refreshAt: pending?.at?.toISOString() ?? null, view: "all", pageSize: 40 };
 }

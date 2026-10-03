@@ -1,4 +1,4 @@
-import { DOMAIN_LABELS, type DomainKey } from "@aihot/industry/channels";
+import { DOMAIN_LABELS, domainPath, type DomainKey } from "@aihot/industry/channels";
 import { listedCondition, selectedCondition, currentTimeCondition } from "./scope.ts";
 // RSS feeds. GUID = article id (isPermaLink=false), <link> = the site's page, pubDate = source
 // publication time. Summary feeds never carry content:encoded; full feeds inline bodies only for
@@ -154,7 +154,7 @@ export async function itemFeed(kind: ItemFeedKind, category: PublicApiCategoryKe
   if (domainFeed) {
     const label = domain === "all" ? "综合" : DOMAIN_LABELS[domain];
     meta = { title: `${SITE.name} — ${label}${kind === "all" ? "最新" : "精选"}`, description: `${label}频道的公开摘要与原文，保留原始发表日期。`,
-      homePath: domain === "all" ? "/" : `/channels/${domain}`, selfPath: `/feed/channels/${domain}${kind === "all" ? "/latest" : ""}.xml`, ttl: 60 };
+      homePath: domain === "all" ? "/" : domainPath(domain), selfPath: `/feed/channels/${domain}${kind === "all" ? "/latest" : ""}.xml`, ttl: 60 };
   }
   return channel(meta, rows.map((r) => itemXml(r, includeContent)));
 }

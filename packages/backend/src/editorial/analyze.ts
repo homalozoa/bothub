@@ -1,4 +1,4 @@
-import { DOMAIN_KEYS, relatedDomains, type DomainKey } from "@aihot/industry/channels";
+import { ACTIVE_DOMAIN_KEYS, RETAINED_TOPICS, relatedDomains, type DomainKey } from "@aihot/industry/channels";
 // analyzeArticle: the judging and writing steps, each with its own prompt from the industry pack
 // (industry/prompts/):
 //   1. prefilter: does the material belong to this industry at all (wide recall). Only BLOCK stops an
@@ -112,8 +112,8 @@ export function buildScoreInput(a: AnalyzeInputArticle): string {
 const PrefilterSchema = z.object({
   label: z.preprocess((v) => String(v ?? "").trim().toUpperCase(), z.enum(["PASS", "BLOCK", "UNKNOWN"])),
   reason: z.string().max(200).catch(""),
-  primaryChannel: z.enum(DOMAIN_KEYS).nullable().optional(),
-  relatedChannels: z.array(z.enum(DOMAIN_KEYS)).max(2).default([]),
+  primaryChannel: z.enum(ACTIVE_DOMAIN_KEYS).nullable().optional(),
+  relatedChannels: z.array(z.enum(ACTIVE_DOMAIN_KEYS)).max(2).default([]),
 });
 
 const FactSchema = z
@@ -128,8 +128,8 @@ const FactSchema = z
   .catch(null);
 
 const StructureSchema = z.object({
-  primaryChannel: z.enum(DOMAIN_KEYS).nullable().optional(),
-  relatedChannels: z.array(z.enum(DOMAIN_KEYS)).max(2).default([]),
+  primaryChannel: z.enum(ACTIVE_DOMAIN_KEYS).nullable().optional(),
+  relatedChannels: z.array(z.enum(ACTIVE_DOMAIN_KEYS)).max(2).default([]),
   category: z.enum(CATEGORY_KEYS).nullable().catch(null),
   tags: z.array(z.string()).max(12).catch([]),
   subjects: z.array(z.string()).max(6).catch([]),
@@ -431,7 +431,7 @@ export function normalizeAnalysis(run: AnalysisRun) {
   const threshold = run.scores?.threshold ?? null;
   const selected = relevance === "pass" && sum !== null && threshold !== null && sum >= threshold * SCORE_CALLS;
   const subjects = run.structure?.subjects ?? [];
-  const tags = [...(run.writing?.tags ?? run.structure?.tags ?? [])];
+  const tags = normalizeTags([...(run.writing?.tags ?? run.structure?.tags ?? []), ...(run.structure?.tags ?? []).filter(tag => RETAINED_TOPICS.some(topic => (topic.tags as readonly string[]).includes(tag)))]);
   for (const s of subjects) {
     const display = ENTITIES[s]?.displayTag;
     if (display && !tags.includes(display)) tags.push(display);

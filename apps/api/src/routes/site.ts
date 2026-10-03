@@ -1,3 +1,4 @@
+import { retainedTopic } from "@aihot/industry/channels";
 import { channelOverview } from "@aihot/backend/publication/channels";
 import { isDomainKey, type DomainKey } from "@aihot/industry/channels";
 // First-party site API (/api/site/*). Not public, not versioned, never called /api/v2.
@@ -17,7 +18,7 @@ import { loadChangelog, siteMeta } from "@aihot/backend/site/meta";
 import { loadContact, loadMakerAvatar } from "@aihot/backend/site/contact";
 import { loadSiteStats } from "@aihot/backend/site/stats";
 import { itemAvailability } from "@aihot/backend/publication/availability";
-import { loadTopicDirectory, loadTopicPage } from "@aihot/backend/publication/topics";
+import { loadTopicDirectory, loadTopicPage, loadTopicArchive } from "@aihot/backend/publication/topics";
 import { registerFeedback } from "./feedback.ts";
 
 import { loadHot, loadStoryDetail, resolveStory } from "@aihot/backend/publication/stories";
@@ -194,8 +195,11 @@ export function registerSite(app: FastifyInstance) {
 
   app.get("/api/site/topics/:slug", siteHandler(async (req, reply) => {
     const slug = (req.params as { slug: string }).slug;
-    const page = Number(looseQuery(req).page ?? 1);
-    const data = Number.isInteger(page) ? await loadTopicPage(slug, page) : null;
+    const q = looseQuery(req);
+    const page = Number(q.page ?? 1);
+    const archive = q.view === "all" || q.view === "latest" || !!q.q || (!!retainedTopic(slug) && q.view !== "selected");
+    const filters = archive ? await parseFilters({ ...q, domain: q.domain ?? retainedTopic(slug)?.domain ?? "all" }) : null;
+    const data = Number.isInteger(page) && page >= 1 ? archive ? await loadTopicArchive(slug, { ...filters!, page, q: q.q?.trim().slice(0, 200) || null, tab: q.tab === "relevance" ? "relevance" : "time" }) : await loadTopicPage(slug, page) : null;
     if (!data) return sendProblem(req, reply, { status: 404, code: "not_found", detail: "topic page not found", cacheControl: "no-store" });
     return sendJsonWithEtag(req, reply, data, { etagPrefix: "topic", cacheControl: cacheUntil(reply, 60, data.refreshAt) });
   }));
