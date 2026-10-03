@@ -97,3 +97,18 @@ test("a fresh first import is selectable but a queued publication and a warm tim
   const [p] = await sql`SELECT selected FROM publications WHERE article_id=${id}`;
   assert.equal(p!.selected, false, "publication also rechecks delayed processing");
 });
+
+test("a three-day-old late discovery is excluded even while inside the seven-day API and RSS window", async () => {
+  const now = new Date();
+  const id = await material(new Date(now.getTime() - 3 * 86400_000), now);
+  await publishArticle(id, { now, releasedAt: now });
+  const [p] = await sql`SELECT selected FROM publications WHERE article_id=${id}`;
+  assert.equal(p!.selected, false, "48 hour qualification is independent of the seven-day limit");
+  for (const url of ["/feed/all.xml", "/api/v1/items?mode=all&window=7d&limit=100"]) {
+    const res = await app.inject({ method: "GET", url });
+    assert.equal(res.statusCode, 200);
+    assert.ok(!res.body.includes(id), url);
+  }
+  const detail = await app.inject({ method: "GET", url: `/api/site/items/${id}` });
+  assert.equal(detail.json().historical, true);
+});
