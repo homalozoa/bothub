@@ -10,11 +10,11 @@
 | 运营主体 | Homalozoa（个人） |
 | 联系方式 | homalozoax@gmail.com 或站内反馈页 |
 
-个人运营者：[Homalozoa](https://github.com/homalozoa)。联系邮箱：[homalozoax@gmail.com](mailto:homalozoax@gmail.com)，也可通过[反馈页](/feedback)联系。
-
 > 机闻聚合公开来源，使用模型自动筛选并生成中文摘要。公开网站、RSS、API 与 MCP 无需注册。摘要是阅读索引，重要判断请查看原文及其条件。
 
 ## 1. 内容与证据
+
+个人运营者：[Homalozoa](https://github.com/homalozoa)。联系邮箱：[homalozoax@gmail.com](mailto:homalozoax@gmail.com)，也可通过[反馈页](/feedback)联系。
 
 标题、摘要、推荐理由与简报可能由模型生成，可能出现遗漏或错误；自动筛选不等于人工审核、独立事实验证或新闻真实性概率。两次模型评分用于编辑筛选，并不代表两个独立信源。厂商陈述、仿真、真机、演示与独立复现需按材料分别理解。产品性能、采购与商业判断应核对原始材料。
 

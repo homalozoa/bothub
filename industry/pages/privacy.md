@@ -10,11 +10,11 @@
 | 运营主体 | Homalozoa（个人） |
 | 隐私事务联系 | homalozoax@gmail.com 或站内反馈页 |
 
-个人运营者：[Homalozoa](https://github.com/homalozoa)。联系邮箱：[homalozoax@gmail.com](mailto:homalozoax@gmail.com)，也可通过[反馈页](/feedback)联系。
-
 > 公开阅读无需账号。收藏、已读和主题外观保存在当前浏览器；主动提交的反馈会发送到服务器。管理员登录另有会话 Cookie。
 
 ## 1. 浏览器本地数据
+
+个人运营者：[Homalozoa](https://github.com/homalozoa)。联系邮箱：[homalozoax@gmail.com](mailto:homalozoax@gmail.com)，也可通过[反馈页](/feedback)联系。
 
 收藏、已读记录、深浅主题偏好、更新日志已读状态和未提交的反馈草稿存放在当前浏览器本地存储，不作为阅读偏好上传到服务器。清除浏览器数据后它们会消失，设备之间不会自动同步；收藏页提供手动导出与导入。浏览器访问页面仍会向服务器发出通常的网络请求。
 
