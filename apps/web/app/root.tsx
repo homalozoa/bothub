@@ -17,9 +17,9 @@ import { apiGet } from "./lib/api.server";
 import { useHydratedFlag } from "./lib/hydration";
 
 export const links: Route.LinksFunction = () => [
-  { rel: "icon", href: "/favicon.ico", sizes: "any" },
-  { rel: "icon", type: "image/png", href: "/icon.png" },
-  { rel: "apple-touch-icon", href: "/apple-icon.png" },
+  { rel: "icon", href: "/favicon.ico?v=jiwen-z", sizes: "any" },
+  { rel: "icon", type: "image/png", href: "/icon.png?v=jiwen-z" },
+  { rel: "apple-touch-icon", href: "/apple-icon.png?v=jiwen-z" },
   { rel: "manifest", href: "/manifest.webmanifest" },
   { rel: "alternate", type: "application/rss+xml", title: `${SITE.name} — 精选`, href: "/feed.xml" },
 ];

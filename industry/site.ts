@@ -4,14 +4,15 @@
 
 export const SITE = {
   /** 站名：导航、页面标题、分享图、RSS、MCP、后台都用它。 */
-  name: "机器人热点",
+  name: "机闻",
+  englishName: "OpenZoo News",
   /**
    * 行业词：拼进默认说法里，比如“AI 日报”“AI 动态”。
    * 改成“法律”“HR”“黄金”之类，页面上就会变成“法律日报”“法律动态”。
    */
   subject: "机器人",
   /** 首页的完整标题（浏览器标签、搜索结果）。 */
-  homeTitle: "机器人热点 — 机器人与具身 AI · 精选、热点与日报",
+  homeTitle: "机闻｜OpenZoo News · 机器人与 AI 资讯",
   /** 一句话介绍：搜索引擎、分享卡片、RSS、llms.txt 会用。 */
   description: "面向机器人创业者、研发负责人和工程师，持续追踪硬件与系统、研究与开源、产品与商业化，提供有原文依据的中文摘要、事件归组、精选和每日简报。",
   /** 首页左上角和侧边栏下面的一行小字。 */
@@ -33,7 +34,7 @@ export const SITE = {
   icp: null as string | null,
   /** 结构化数据里的网站运营者（搜索引擎用）。 */
   organization: {
-    name: "机器人热点（开发占位名，运营主体待确认）",
+    name: "机闻（运营主体待确认）",
     /** 创始人（选填）：{ name, url, description }。 */
     founder: null as null | { name: string; url?: string; description?: string },
   },
@@ -80,4 +81,9 @@ export function withSubject(noun: string): string {
 export function subjectAfter(text: string, noun?: string): string {
   const gap = /^[A-Za-z0-9]/.test(SITE.subject) ? " " : "";
   return `${text}${gap}${noun ? withSubject(noun) : SITE.subject}`;
+}
+
+/** Branded publication names, separate from the subject used in content categories. */
+export function withBrand(noun: string): string {
+  return /[A-Za-z0-9]$/.test(SITE.name) ? `${SITE.name} ${noun}` : `${SITE.name}${noun}`;
 }

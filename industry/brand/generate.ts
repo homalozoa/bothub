@@ -1,32 +1,19 @@
-// Development text mark: one “机” glyph, with PNG and ICO exports from the same SVG.
-// Uses existing opentype.js / sharp dependencies; no font package is needed at runtime.
-// Usage: node industry/brand/generate.ts <@fontsource/noto-sans-sc package directory>
+// Export the approved folded-Z vector mark and site icons. No runtime font dependency.
+// Usage: node industry/brand/generate.ts
 import { readFileSync, writeFileSync } from "node:fs";
-import path from "node:path";
-import opentype from "opentype.js";
 import sharp from "sharp";
+import { SITE } from "../site.ts";
+import { brandSvg, BRAND_COLORS } from "../branding.ts";
 
-const pkg = process.argv[2];
-if (!pkg) throw new Error("usage: node industry/brand/generate.ts <noto-sans-sc package directory>");
-const character = "机";
-const cp = character.codePointAt(0)!;
-const css = readFileSync(path.join(pkg, "900.css"), "utf8");
-const faces = [...css.matchAll(/url\(\.\/files\/([\w-]+)\.woff2\)[^;]*;\s*unicode-range: ([^;]+);/g)];
-const face = faces.find((m) => m[2]!.split(",").some((range) => {
-  const [a, b] = range.trim().replace("U+", "").split("-").map((value) => parseInt(value, 16));
-  return cp >= a! && cp <= (b ?? a!);
-}));
-if (!face) throw new Error(`font package has no glyph for ${character}`);
-const buffer = readFileSync(path.join(pkg, "files", `${face[1]}.woff`));
-const font = opentype.parse(buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength));
-const box = font.getPath(character, 0, 0, 1000).getBoundingBox();
-const scale = Math.min(326 / (box.x2 - box.x1), 326 / (box.y2 - box.y1));
-const glyph = font.getPath(character, 256 - (box.x1 + box.x2) * scale / 2, 256 - (box.y1 + box.y2) * scale / 2, 1000 * scale).toPathData(1);
-const svg = `<!-- Development text mark. Noto Sans SC Black (SIL OFL 1.1). -->\n<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><title>机器人热点</title><rect width="512" height="512" rx="116" fill="#13191c"/><path d="${glyph}" fill="#2ce2e8"/></svg>\n`;
+const svg = brandSvg(SITE.name);
 const out = "industry/brand";
 writeFileSync(`${out}/logo.svg`, svg);
+writeFileSync(`${out}/logo-mono.svg`, brandSvg(SITE.name, BRAND_COLORS.violet));
+writeFileSync(`${out}/logo-reversed.svg`, brandSvg(SITE.name, "#ffffff"));
 for (const [name, size] of [["icon.png", 512], ["icon-192.png", 192], ["apple-icon.png", 180]] as const) {
-  writeFileSync(`${out}/${name}`, await sharp(Buffer.from(svg)).resize(size, size).png().toBuffer());
+  let image = sharp(Buffer.from(svg)).resize(size, size);
+  if (name === "apple-icon.png") image = image.flatten({ background: BRAND_COLORS.paper });
+  writeFileSync(`${out}/${name}`, await image.png().toBuffer());
 }
 const sizes = [16, 32, 48];
 const images = await Promise.all(sizes.map((size) => sharp(Buffer.from(svg)).resize(size, size).png().toBuffer()));
@@ -45,4 +32,8 @@ sizes.forEach((size, index) => {
   offset += images[index]!.length;
 });
 writeFileSync(`${out}/favicon.ico`, Buffer.concat([header, ...images]));
-console.log("Generated development text mark and icons in industry/brand");
+writeFileSync("deploy/home/public/favicon.svg", brandSvg("OpenZoo"));
+const homePath = "deploy/home/public/index.html";
+const homeMark = brandSvg("OpenZoo").replace("<svg ", '<svg class="brand-mark" aria-hidden="true" ');
+writeFileSync(homePath, readFileSync(homePath, "utf8").replace(/<svg class="brand-mark"[\s\S]*?<\/svg>/, homeMark.trim()));
+console.log("Generated Jiwen folded-Z vector mark and PNG/ICO icons");
