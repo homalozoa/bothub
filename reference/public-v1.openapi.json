@@ -26,6 +26,26 @@
             "$ref": "#/components/parameters/ActorUserAgent"
           },
           {
+            "name": "domain",
+            "in": "query",
+            "required": false,
+            "description": "Editorial domain. Omitted retains robotics; all explicitly includes all seven domains.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "robotics",
+                "agents",
+                "interaction",
+                "play",
+                "biology",
+                "natural-history",
+                "sociology"
+              ],
+              "default": "robotics"
+            }
+          },
+          {
             "$ref": "#/components/parameters/IfNoneMatch"
           },
           {

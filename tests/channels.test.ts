@@ -1,3 +1,5 @@
+import { spawnSync } from "node:child_process";
+import { rmSync } from "node:fs";
 // Synthetic responses test program routing and compatibility, never editorial accuracy.
 import { stub, tag } from "./setup.ts";
 import assert from "node:assert/strict";
@@ -102,4 +104,27 @@ test("new endpoints reject invalid channels/dates and administrative writes rema
   const app=await buildApp();assert.equal((await app.inject({url:"/feed/channels/biology.xml"})).statusCode,200);assert.equal((await app.inject({url:"/feed/channels/unknown.xml"})).statusCode,404);
   assert.equal((await app.inject({method:"POST",url:`/api/admin/content/${ids.CARE_SAMPLE}/override`,payload:{fields:{primaryChannel:"play"}}})).statusCode,401);await app.close();
   assert.equal(domainInfo("biology").label,"生物学");
+});
+
+test("historical classification dry-run, apply and rollback preserve dates, jobs and sync; inconsistent projections fail before mutation", async () => {
+  const sourceId = `backfill-${T}`;
+  await sql`INSERT INTO sources(id,name,kind,enabled,next_fetch_at) VALUES(${sourceId},'测试历史来源','rss',false,'2100-01-01')`;
+  const material = await upsertMaterial({sourceId,url:`https://example.org/${T}/backfill`,title:'历史资料',bodyText:'历史资料内容',bodyStatus:'ok',via:'import',publishedAt:new Date('2020-01-01')});
+  await sql`INSERT INTO analyses(article_id,input_revision,origin,relevance,title_zh,summary_zh,selected) VALUES(${material.articleId},1,'rule','pass','历史资料','历史资料摘要',false)`;
+  await publishArticle(material.articleId);
+  const before=await sql`SELECT published_at,discovered_at,timeline_at FROM publications WHERE article_id=${material.articleId}`;
+  const [jobs]=await sql`SELECT count(*)::int AS n FROM pgboss.job`;const [ledger]=await sql`SELECT count(*)::int AS n FROM selected_ledger`;
+  const file=`.data/backfill-test-${T}.json`;
+  const run=(args:string[])=>spawnSync(process.execPath,['scripts/backfill-channels.ts',...args],{env:{...process.env,MODEL_CALLS_ENABLED:'false',COLLECT_ENABLED:'false'},encoding:'utf8',timeout:15000});
+  try {
+    const dry=run(['--sources',sourceId]);assert.equal(dry.status,0,dry.stderr);assert.match(dry.stdout,/"mode": "dry-run"/);
+    const apply=run(['--sources',sourceId,'--apply','--out',file]);assert.equal(apply.status,0,apply.stderr);
+    assert.equal((await sql`SELECT primary_channel FROM publications WHERE article_id=${material.articleId}`)[0]!.primary_channel,'robotics');
+    const undo=run(['--rollback',file]);assert.equal(undo.status,0,undo.stderr);
+    assert.deepEqual(await sql`SELECT published_at,discovered_at,timeline_at FROM publications WHERE article_id=${material.articleId}`,before);
+    assert.equal((await sql`SELECT count(*)::int AS n FROM pgboss.job`)[0]!.n,jobs!.n);assert.equal((await sql`SELECT count(*)::int AS n FROM selected_ledger`)[0]!.n,ledger!.n);
+    await sql`UPDATE publications SET published_at=published_at-interval '1 day' WHERE article_id=${material.articleId}`;
+    const bad=run(['--sources',sourceId,'--apply','--out',file]);assert.notEqual(bad.status,0);assert.match(bad.stderr,/Timestamp projection differs/);
+    assert.equal((await sql`SELECT primary_channel FROM publications WHERE article_id=${material.articleId}`)[0]!.primary_channel,null);
+  } finally { rmSync(file,{force:true}); }
 });

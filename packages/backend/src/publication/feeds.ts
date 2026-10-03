@@ -1,4 +1,4 @@
-import { DOMAIN_LABELS, DOMAIN_WINDOWS, type DomainKey } from "@aihot/industry/channels";
+import { DOMAIN_LABELS, type DomainKey } from "@aihot/industry/channels";
 import { listedCondition, selectedCondition, currentTimeCondition } from "./scope.ts";
 // RSS feeds. GUID = article id (isPermaLink=false), <link> = the site's page, pubDate = source
 // publication time. Summary feeds never carry content:encoded; full feeds inline bodies only for
@@ -24,9 +24,9 @@ interface FeedMeta {
 }
 
 const FEEDS: Record<"selected" | "selectedFull" | "all" | "daily", FeedMeta> = {
-  selected: { id: "selected", path: "/feed.xml", title: `${SITE.name} — 精选`, description: `最新 50 条 ${SITE.name} 精选摘要，保留标题、站内阅读与原文入口；需要阅读器内全文可改订 /feed/full.xml。`, homePath: "/", pollHintMinutes: 30 },
-  selectedFull: { id: "selected-full", path: "/feed/full.xml", title: `${SITE.name} — 精选全文`, description: "与精选摘要相同的最新 50 条；仅对明确允许再分发的来源内联正文，其余仍提供摘要和阅读入口。", homePath: "/", pollHintMinutes: 30 },
-  all: { id: "all", path: "/feed/all.xml", title: `${SITE.name} — 全部动态`, description: "最近 7 天公开动态，按真实发布时间倒序；不含未审内容、低相关条目和已合并的重复条目。", homePath: "/all", pollHintMinutes: 30 },
+  selected: { id: "selected", path: "/feed.xml", title: `${SITE.name} — 机器人精选`, description: `最新 50 条 ${SITE.name} 精选摘要，保留标题、站内阅读与原文入口；需要阅读器内全文可改订 /feed/full.xml。`, homePath: "/", pollHintMinutes: 30 },
+  selectedFull: { id: "selected-full", path: "/feed/full.xml", title: `${SITE.name} — 机器人精选全文`, description: "与精选摘要相同的最新 50 条；仅对明确允许再分发的来源内联正文，其余仍提供摘要和阅读入口。", homePath: "/", pollHintMinutes: 30 },
+  all: { id: "all", path: "/feed/all.xml", title: `${SITE.name} — 机器人全部动态`, description: "最近 7 天公开动态，按真实发布时间倒序；不含未审内容、低相关条目和已合并的重复条目。", homePath: "/all", pollHintMinutes: 30 },
   daily: { id: "daily", path: "/feed/daily.xml", title: `${withBrand("日报")}`, description: `${SITE.name} 按刊期时区 ${config.reportTimeZone} 每天 ${config.reportDailyTime} 发布的${withBrand("日报")}，保留最近 30 期。`, homePath: "/daily", pollHintMinutes: 30 },
 };
 
@@ -116,7 +116,7 @@ export type ItemFeedKind = "selected" | "selected-full" | "all";
 export async function itemFeed(kind: ItemFeedKind, category: PublicApiCategoryKey | null, now = new Date(), domain: DomainKey | "all" = "robotics", domainFeed = false): Promise<string> {
   const includeContent = kind === "selected-full";
   const scope = kind === "all"
-    ? sql`${listedCondition(now)} AND ${currentTimeCondition(now)} AND coalesce(p.published_at, p.discovered_at) > ${now}::timestamptz - ${domainFeed && domain !== 'all' ? DOMAIN_WINDOWS[domain].newsDays : 7}::double precision * interval '1 day'
+    ? sql`${listedCondition(now)} AND ${currentTimeCondition(now)} ${domainFeed ? sql`` : sql`AND coalesce(p.published_at, p.discovered_at) > ${now}::timestamptz - interval '7 days'`}
         AND coalesce(p.published_at, p.discovered_at) <= ${now}`
     : sql`${selectedCondition(now)} ${categoryCondition(category, true)}
         ${category ? sql`AND coalesce(p.published_at, p.discovered_at) >= ${new Date(now.getTime() - 7 * 86400_000)}` : sql``}`;
