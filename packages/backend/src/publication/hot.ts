@@ -5,6 +5,7 @@ import { proxiedImage, proxiedImageSet } from "../media/imgproxy.ts";
 
 import { storedHotRanking, tierRank, type HotEntry, type HotRanking } from "../events/hot.ts";
 import { evidenceCondition, listedCondition } from "./scope.ts";
+import { domainCondition } from "./items.ts";
 const MAX_FACES = 6;
 
 export function latestHotRanking(): Promise<HotRanking | null> {
@@ -20,7 +21,7 @@ async function queryLatestHotRanking(): Promise<HotRanking | null> {
     LEFT JOIN LATERAL (
       SELECT p.article_id,p.url,s.name AS source_name FROM facts f JOIN fact_articles fa ON fa.fact_id=f.id
       JOIN publications p ON p.article_id=fa.article_id JOIN sources s ON s.id=p.source_id
-      WHERE f.story_id=st.id AND ${listedCondition(new Date())} AND ${evidenceCondition()} AND s.participation_mode='editorial'
+      WHERE f.story_id=st.id AND ${listedCondition(new Date())} AND ${evidenceCondition()} ${domainCondition("all")} AND s.participation_mode='editorial'
       ORDER BY p.first_party DESC,p.selected DESC,p.score DESC NULLS LAST,p.article_id LIMIT 1
     ) rep ON true WHERE st.id=ANY(${ids}::bigint[]) AND st.merged_into IS NULL` : [];
   const byId = new Map(current.map(s => [s.id, s]));

@@ -4,7 +4,7 @@
 
 {{> rules-channels}}
 
-先提取 primaryChannel（四个主频道 slug 之一，无法确定为 null）与 relatedChannels（零至两个，排除主频道）。不复制文章或制造新的事件身份。
+先提取 primaryChannel（三个内部分类 slug 之一，无法确定为 null）与 relatedChannels（零至两个，排除主频道）。不复制文章或制造新的事件身份。
 
 一、类别 category（{{categoryCount}}选一）
 {{categoryGuide}}

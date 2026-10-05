@@ -2,10 +2,10 @@
 export const DOMAINS = [
   { key: "robotics", label: "机器人", english: "Robotics", description: "从硬件、控制与学习，到走进现场的机器人。", guide: "机器人系统、研究、开源、控制导航、交付与使用。区分演示、真机实验和连续运行；不让融资或重复演示占满频道。" },
   { key: "agents", label: "AI 与 Agent", english: "AI & Agents", description: "模型、智能体与应用方法，关注能力、证据和真实变化。", guide: "基础与多模态模型、能力评测、训练与推理方法、开源模型和数据、AI工具与应用、Personal Agent、长任务、工具权限、记忆、编程测试和可靠性。重要模型与研究不要求机器人或Agent关联，排除没有实质增量的榜单和发布营销。工程作为主题。" },
-  { key: "biology", label: "生物学", english: "Biology", description: "从学习、行为与生态，到物种、标本与演化。", guide: "动物行为认知、学习、感觉、适应、植物、微生物、生态、古生物、演化史、分类、多样性、生物地理、标本、博物馆与田野。按发现本身评价；自然史作为主题，保留地层、测年、分类和争议，不要求AI或商业关联，排除泛临床、药物与保健。" },
-  { key: "sociology", label: "社会学", english: "Sociology", description: "家庭、工作、照护与人与人之间的日常生活。", guide: "家庭、独居、工作、休闲、照护、社区、消费、规范、仪式和生活实践，包括技术使用、玩家社群和角色关系的社会研究。说明地区、调查或田野时间、样本、方法和解释范围；定性研究不因小样本降质，排除刻板印象、无证据趋势和泛时政热搜。" },
+  { key: "biology", label: "生物学", english: "Biology", description: "动物、行为、人类与演化的研究和新闻。", guide: "以动物学、动物行为、学习感觉认知、生物与演化人类学、古生物学为核心，兼顾动物生态、演化、物种分类、标本与田野。人类学包括人类起源、古DNA、灵长类比较、物质文化与有实证田野的文化演化；不接收泛民调、时政、营销趋势。按研究问题、对象、方法和证据评价，不要求AI或商业关联；纯细胞分子、植物、微生物、临床和药物材料通常不收，只有直接解释上述核心问题时作为辅助。" },
 ] as const;
 export const RETIRED_DOMAINS = [
+  { key: "sociology", label: "社会学", english: "Sociology", description: "家庭、工作、照护与人与人之间的日常生活。", guide: "家庭、独居、工作、休闲、照护、社区、消费、规范、仪式和生活实践，包括技术使用、玩家社群和角色关系的社会研究。说明地区、调查或田野时间、样本、方法和解释范围；定性研究不因小样本降质，排除刻板印象、无证据趋势和泛时政热搜。" },
   { key: "interaction", label: "人机交互", english: "Human Interaction", description: "人与技术的交互、信任和使用体验。", guide: "历史主题范围" },
   { key: "play", label: "游戏与角色", english: "Play & Characters", description: "玩家社群、角色关系与互动机制。", guide: "历史主题范围" },
   { key: "natural-history", label: "自然史", english: "Natural History", description: "物种、标本、演化历史与田野发现。", guide: "并入生物学的主题范围" },
@@ -19,7 +19,7 @@ export const DOMAIN_KEYS = ALL_DOMAINS.map(d => d.key) as [DomainKey, ...DomainK
 export const DOMAIN_LABELS = Object.fromEntries(ALL_DOMAINS.map(d => [d.key, d.label])) as Record<DomainKey, string>;
 // Reading entrances can combine existing classifications without rewriting articles or subscriptions.
 export const MERGED_AI_ROBOTICS = { key: "ai-robotics", label: "AI 与机器人", english: "AI & Robotics", description: "AI 模型、Agent、具身智能与真实世界的机器人。", guide: "沿着模型、智能体、机器人学习、硬件、控制与应用继续阅读。同一事件只出现一次。" } as const;
-export const DISPLAY_DOMAINS = [MERGED_AI_ROBOTICS, DOMAINS[2], DOMAINS[3]] as const;
+export const DISPLAY_DOMAINS = [MERGED_AI_ROBOTICS, DOMAINS[2]] as const;
 export type SiteDomainKey = DomainKey | typeof MERGED_AI_ROBOTICS.key;
 export const SITE_DOMAIN_LABELS: Record<SiteDomainKey, string> = { ...DOMAIN_LABELS, "ai-robotics": MERGED_AI_ROBOTICS.label };
 export function isSiteDomainKey(value: unknown): value is SiteDomainKey { return value === "ai-robotics" || isDomainKey(value); }
@@ -27,7 +27,7 @@ export function readingDomain(key: SiteDomainKey): SiteDomainKey { return key ==
 export function siteDomainInfo(key: SiteDomainKey) { return key === "ai-robotics" ? MERGED_AI_ROBOTICS : domainInfo(key); }
 export const RETAINED_TOPICS = [
   { domain: "natural-history", slug: "natural-history", name: "自然史", tag: "自然史", tags: ["自然史", "演化历史", "系统分类", "标本/田野"], parents: ["biology"] },
-  { domain: "interaction", slug: "human-interaction", name: "人机交互", tag: "人机交互", tags: ["人机交互", "交互/信任", "自主权"], parents: ["robotics", "agents", "sociology"] },
+  { domain: "interaction", slug: "human-interaction", name: "人机交互", tag: "人机交互", tags: ["人机交互", "交互/信任", "自主权"], parents: ["robotics", "agents"] },
   { domain: "play", slug: "games-and-characters", name: "游戏与角色", tag: "游戏与角色", tags: ["游戏与角色", "虚拟生命", "游戏设计", "玩家社群", "角色关系"], parents: ["agents", "sociology"] },
 ] as const;
 export function isDomainKey(value: unknown): value is DomainKey { return typeof value === "string" && DOMAIN_KEYS.includes(value as DomainKey); }
@@ -48,5 +48,5 @@ export function editorialTags(tags: string[], primary?: DomainKey | null, relate
 export const DOMAIN_WINDOWS: Record<DomainKey, { discoveryDays: number; newsDays: number }> = {
   robotics: { discoveryDays: 2, newsDays: 7 }, agents: { discoveryDays: 2, newsDays: 7 },
   interaction: { discoveryDays: 7, newsDays: 30 }, play: { discoveryDays: 7, newsDays: 30 },
-  biology: { discoveryDays: 7, newsDays: 30 }, "natural-history": { discoveryDays: 14, newsDays: 60 }, sociology: { discoveryDays: 14, newsDays: 60 },
+  biology: { discoveryDays: 14, newsDays: 60 }, "natural-history": { discoveryDays: 14, newsDays: 60 }, sociology: { discoveryDays: 14, newsDays: 60 },
 };

@@ -88,9 +88,9 @@ export function channelCondition(channel: ChannelKey | null | undefined) {
 
 /** Null old records stay in their original robotics scope until reviewed; this is not a backfill. */
 export function domainCondition(domain: SiteDomainKey | "all" | null | undefined) {
-  if (!domain || domain === "all") return sql`AND (p.primary_channel IS NULL OR p.primary_channel IN ${sql([...ACTIVE_DOMAIN_KEYS, "natural-history"])} OR p.related_channels && ${[...ACTIVE_DOMAIN_KEYS, "natural-history"]}::text[])`;
-  if (domain === "ai-robotics") return sql`AND (coalesce(p.primary_channel, 'robotics') IN ('robotics', 'agents') OR p.related_channels && ${['robotics', 'agents']}::text[])`;
-  if (domain === "biology") return sql`AND (p.primary_channel IN ('biology', 'natural-history') OR p.related_channels && ${['biology', 'natural-history']}::text[])`;
+  if (!domain || domain === "all") return sql`AND coalesce(p.primary_channel, 'robotics') NOT IN ('sociology', 'play') AND (p.primary_channel IS NULL OR p.primary_channel IN ${sql([...ACTIVE_DOMAIN_KEYS, "natural-history"])} OR p.related_channels && ${[...ACTIVE_DOMAIN_KEYS, "natural-history"]}::text[])`;
+  if (domain === "ai-robotics") return sql`AND coalesce(p.primary_channel, 'robotics') NOT IN ('sociology', 'play') AND (coalesce(p.primary_channel, 'robotics') IN ('robotics', 'agents') OR p.related_channels && ${['robotics', 'agents']}::text[])`;
+  if (domain === "biology") return sql`AND coalesce(p.primary_channel, 'robotics') NOT IN ('sociology', 'play') AND (p.primary_channel IN ('biology', 'natural-history') OR p.related_channels && ${['biology', 'natural-history']}::text[])`;
   const theme = retainedTopic(domain);
   return sql`AND (coalesce(p.primary_channel, 'robotics') = ${domain} OR p.related_channels @> ${[domain]}::text[] ${theme ? sql`OR p.tags && ${[...theme.tags]}::text[]` : sql``})`;
 }

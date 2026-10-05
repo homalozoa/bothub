@@ -37,12 +37,14 @@
     },
     {
       "slug": "agent-tools",
-      "name": "Agent 工具与权限",
+      "name": "Agent",
       "group": "field",
       "tags": [
-        "工具/权限"
+        "Agent",
+        "工具/权限",
+        "长期记忆"
       ],
-      "definition": "Agent 的工具调用、任务执行、访问权限和干预边界。",
+      "definition": "智能体的工具调用、记忆、任务执行与权限边界。",
       "related": [
         "agent-memory",
         "engineering",
@@ -62,7 +64,8 @@
       "definition": "Agent 如何保留、更新和使用记忆，关注任务延续、检索质量与权限边界。",
       "domains": [
         "ai-robotics"
-      ]
+      ],
+      "related": []
     },
     {
       "slug": "vla",
@@ -141,15 +144,14 @@
         "交互/信任",
         "自主权"
       ],
-      "definition": "人与 AI、Agent、机器人及其他技术的交互、理解、信任、自主权与使用体验。",
+      "definition": "机器人与AI系统的人机交互、共同任务、信任、自主权和使用体验；普通网站界面教程不在本主题范围。",
       "related": [
-        "agent-memory",
-        "virtual-life",
-        "family-care"
+        "agent-tools",
+        "companion-entertainment",
+        "long-term-autonomy"
       ],
       "domains": [
-        "ai-robotics",
-        "sociology"
+        "ai-robotics"
       ]
     },
     {
@@ -406,8 +408,7 @@
         "engineering"
       ],
       "domains": [
-        "ai-robotics",
-        "sociology"
+        "ai-robotics"
       ]
     },
     {
@@ -422,15 +423,11 @@
         "角色关系"
       ],
       "definition": "智能角色、游戏机制、玩家社群和角色关系；动物游戏与学习在生物学的动物行为、学习与认知中阅读。",
-      "related": [
-        "virtual-life",
-        "community-culture",
-        "animal-behavior"
-      ],
+      "related": [],
       "domains": [
-        "ai-robotics",
-        "sociology"
-      ]
+        "ai-robotics"
+      ],
+      "hidden": true
     },
     {
       "slug": "virtual-life",
@@ -444,9 +441,9 @@
         "ai-robotics"
       ],
       "related": [
-        "games-and-characters",
         "human-interaction"
-      ]
+      ],
+      "hidden": true
     },
     {
       "slug": "animal-behavior",
@@ -461,7 +458,8 @@
       ],
       "related": [
         "learning-cognition",
-        "plant-ecology"
+        "animal-ecology",
+        "anthropology"
       ]
     },
     {
@@ -489,7 +487,9 @@
       "definition": "植物、微生物、种间关系与生态系统的实验和观察证据。",
       "domains": [
         "biology"
-      ]
+      ],
+      "hidden": true,
+      "related": []
     },
     {
       "slug": "natural-history",
@@ -503,8 +503,9 @@
       ],
       "definition": "物种、标本、演化历史与田野发现；保留原始日期和历史材料。",
       "related": [
-        "evolution-history",
-        "taxonomy-fieldwork"
+        "paleontology",
+        "zoology",
+        "evolution-history"
       ],
       "domains": [
         "biology"
@@ -520,7 +521,8 @@
       "definition": "物种、标本、地层与演化解释",
       "domains": [
         "biology"
-      ]
+      ],
+      "related": []
     },
     {
       "slug": "taxonomy-fieldwork",
@@ -532,7 +534,8 @@
       "definition": "物种分类依据、标本、分布与田野材料；与网站栏目分类区分。",
       "domains": [
         "biology"
-      ]
+      ],
+      "related": []
     },
     {
       "slug": "family-care",
@@ -542,9 +545,9 @@
         "家庭/照护"
       ],
       "definition": "家庭、独居、照护关系和生活实践",
-      "domains": [
-        "sociology"
-      ]
+      "domains": [],
+      "hidden": true,
+      "related": []
     },
     {
       "slug": "work-leisure",
@@ -554,9 +557,9 @@
         "工作/休闲"
       ],
       "definition": "工作、休闲、社区与社会关系",
-      "domains": [
-        "sociology"
-      ]
+      "domains": [],
+      "hidden": true,
+      "related": []
     },
     {
       "slug": "community-culture",
@@ -566,14 +569,9 @@
         "社区/文化"
       ],
       "definition": "社区、文化、规范和生活实践，说明地区、调查或田野时间与研究方法。",
-      "related": [
-        "family-care",
-        "work-leisure",
-        "games-and-characters"
-      ],
-      "domains": [
-        "sociology"
-      ]
+      "related": [],
+      "domains": [],
+      "hidden": true
     },
     {
       "slug": "interaction-trust",
@@ -584,10 +582,10 @@
       ],
       "definition": "人如何理解、依赖与使用技术",
       "domains": [
-        "ai-robotics",
-        "sociology"
+        "ai-robotics"
       ],
-      "aliasOf": "human-interaction"
+      "aliasOf": "human-interaction",
+      "related": []
     },
     {
       "slug": "open-source",
@@ -985,6 +983,169 @@
       "entityId": "robotis",
       "domains": [
         "ai-robotics"
+      ]
+    },
+    {
+      "slug": "ai-models",
+      "name": "AI 模型与方法",
+      "group": "field",
+      "tags": [
+        "模型发布",
+        "数据/训练",
+        "测试/评测"
+      ],
+      "definition": "基础、多模态模型与训练推理方法，保留能力证据与适用条件。",
+      "domains": [
+        "ai-robotics"
+      ],
+      "related": [
+        "data-training",
+        "model-releases",
+        "on-device"
+      ]
+    },
+    {
+      "slug": "embodied-learning",
+      "name": "具身智能",
+      "group": "field",
+      "tags": [
+        "VLA/世界模型",
+        "模仿/强化学习"
+      ],
+      "definition": "机器人学习、动作与世界模型；区分仿真、演示与物理任务验证。",
+      "domains": [
+        "ai-robotics"
+      ],
+      "related": [
+        "vla",
+        "learning",
+        "manipulation"
+      ]
+    },
+    {
+      "slug": "robot-systems",
+      "name": "硬件与系统",
+      "group": "field",
+      "tags": [
+        "计算/端侧",
+        "传感器/标定",
+        "执行器/机构",
+        "通信/控制"
+      ],
+      "definition": "计算、感知硬件、执行器、机构与系统集成。",
+      "domains": [
+        "ai-robotics"
+      ],
+      "related": [
+        "sensors",
+        "actuators",
+        "on-device"
+      ]
+    },
+    {
+      "slug": "motion-manipulation",
+      "name": "运动与操作",
+      "group": "field",
+      "tags": [
+        "腿足控制",
+        "操作/抓取"
+      ],
+      "definition": "腿足运动、机械臂操作与抓取，关注任务、控制和真机证据。",
+      "domains": [
+        "ai-robotics"
+      ],
+      "related": [
+        "legged",
+        "manipulation"
+      ]
+    },
+    {
+      "slug": "engineering-assets",
+      "name": "工程与开源",
+      "group": "field",
+      "tags": [
+        "部署/工程",
+        "ROS/仿真",
+        "开源生态",
+        "开源/仓库"
+      ],
+      "definition": "部署、仿真、开源工具和系统可靠性的实际进展。",
+      "domains": [
+        "ai-robotics"
+      ],
+      "related": [
+        "engineering",
+        "simulation",
+        "open-source"
+      ]
+    },
+    {
+      "slug": "zoology",
+      "name": "动物学",
+      "group": "field",
+      "tags": [
+        "动物学",
+        "系统分类",
+        "标本/田野"
+      ],
+      "definition": "动物的形态、感觉、生理、物种多样性、分类与田野研究。",
+      "domains": [
+        "biology"
+      ],
+      "related": [
+        "taxonomy-fieldwork",
+        "animal-behavior"
+      ]
+    },
+    {
+      "slug": "anthropology",
+      "name": "人类学",
+      "group": "field",
+      "tags": [
+        "人类学",
+        "人类演化"
+      ],
+      "definition": "人类起源、古DNA、灵长类比较、物质文化与有研究方法支持的文化演化。",
+      "domains": [
+        "biology"
+      ],
+      "related": [
+        "evolution-history",
+        "learning-cognition"
+      ]
+    },
+    {
+      "slug": "paleontology",
+      "name": "古生物学",
+      "group": "field",
+      "tags": [
+        "古生物学",
+        "化石/古生物"
+      ],
+      "definition": "化石、古动物、地层与演化重建；保留标本、测年与替代解释。",
+      "domains": [
+        "biology"
+      ],
+      "related": [
+        "natural-history",
+        "evolution-history",
+        "taxonomy-fieldwork"
+      ]
+    },
+    {
+      "slug": "animal-ecology",
+      "name": "动物生态",
+      "group": "field",
+      "tags": [
+        "动物生态"
+      ],
+      "definition": "动物的迁徙、种群、种间关系与栖息地，关注野外观察和生态机制。",
+      "domains": [
+        "biology"
+      ],
+      "related": [
+        "animal-behavior",
+        "learning-cognition"
       ]
     }
   ]

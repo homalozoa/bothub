@@ -10,7 +10,7 @@
 
 {{> rules-channels}}
 
-`itemType` 必须七选一；类型与频道正交，生物学论文仍为 research_paper，社会学访谈可为 opinion_analysis：
+`itemType` 必须七选一；类型与频道正交，生物学论文仍为 research_paper，人类学田野访谈可为 opinion_analysis：
 
 - `model_release`：本频道相关模型或大版本更新
 - `product_launch`：机器人产品、硬件、工程工具或重大功能更新

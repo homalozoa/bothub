@@ -26,14 +26,14 @@ const T=tag(), source=`channels-${T}`, now=new Date();
 const samples: Record<string, { domain: DomainKey; title: string; text: string }> = {
   BEE_SAMPLE: { domain:"biology", title:"蜜蜂的学习行为研究", text:"Bumblebees learn a foraging task. Researchers compare trained and untrained groups under controlled conditions and report observations and limitations." },
   FOSSIL_SAMPLE: { domain:"biology", title:"标本改变化石分类解释", text:"Late Jurassic specimens from a dated sedimentary layer change the classification of a fossil species. The paper explains material, dating and alternative phylogenetic interpretations." },
-  CARE_SAMPLE: { domain:"sociology", title:"家庭照护的田野访谈", text:"Fieldwork interviews examine household care and work routines in one region. The study describes its interview period, qualitative methods, context and limits of generalisation." },
+  ANTHRO_SAMPLE: { domain:"biology", title:"灵长类工具使用与文化演化田野研究", text:"Fieldwork interviews and observations examine primate tool use and cultural transmission across communities. The study describes its fieldwork period, qualitative methods, context and limits of generalisation." },
 };
 const calls: string[]=[];
 const provider=await stub((_hit,req)=>{
   const request=JSON.parse(req.body); const system=String(request.messages[0]?.content??""); const user=String(request.messages.at(-1)?.content??"");
   const marker=Object.keys(samples).find(k=>user.includes(k))!; const s=samples[marker]!;
   let content: unknown;
-  if(system.includes("四频道宽召回预筛")){calls.push("prefilter");content={label:"PASS",reason:"领域研究",primaryChannel:s.domain,relatedChannels:[]};}
+  if(system.includes("三分类宽召回预筛")){calls.push("prefilter");content={label:"PASS",reason:"领域研究",primaryChannel:s.domain,relatedChannels:[]};}
   else if(system.includes("事件注意力评分器")){calls.push("score");assert.match(user,new RegExp(s.domain));content={attentionScore:82};}
   else if(system.includes("资料结构化助手")){calls.push("structure");content={primaryChannel:s.domain,relatedChannels:[],category:"research",tags:["论文/研究", ...(marker==="FOSSIL_SAMPLE"?["自然史"]:marker==="BEE_SAMPLE"?["游戏与角色"]:[])],subjects:[],fact:{title:s.title,subject:marker,action:"研究",object:marker,occurredAt:null}};}
   else {calls.push("writing");content={itemType:"research_paper",authorRole:"principal",tags:["论文/研究"],editorialJudgment:"合成测试说明",titleZh:s.title,summaryZh:`${s.title}。材料说明研究对象、方法与适用范围。`};}
@@ -69,9 +69,9 @@ test("channels are independent of paper filters and preserve one canonical artic
 test("pagination, cursor bindings, source/time filters and count caches cannot leak a different domain",async()=>{
   const first=await loadTimeline({...filters("all"),limit:1});assert.ok(first.nextCursor);
   await assert.rejects(loadTimeline({...filters("biology"),cursor:first.nextCursor}),/cursor does not match/);
-  const bio=await loadPool({...filters("biology"),page:2});assert.equal(bio.items.length,0);assert.equal(bio.total,2);
+  const bio=await loadPool({...filters("biology"),page:2});assert.equal(bio.items.length,0);assert.equal(bio.total,3);
   const future=await loadPool({...filters("biology"),since:"2099-01-01"});assert.equal(future.total,0);
-  for(const domain of ["biology","sociology"] as const){const result=await loadPool({...filters(domain),now:undefined});assert.equal(result.total,domain === "biology" ? 2 : 1);assert.ok(result.items.every(i=>i.primaryChannel===domain));}
+  for(const domain of ["biology"] as const){const result=await loadPool({...filters(domain),now:undefined});assert.equal(result.total,3);assert.ok(result.items.every(i=>i.primaryChannel===domain));}
 });
 test("legacy RSS, API, selected sync and reports retain robotics scope; explicit comprehensive and channel feeds include new material",async()=>{
   const bee=ids.BEE_SAMPLE!;
@@ -92,7 +92,7 @@ test("old material remains dated archive content; domain windows do not turn old
   assert.ok(!(await itemFeed("all",null,now,"biology",true)).includes(articleId));
 });
 test("human channel corrections survive automatic republishing, avoid duplicate publication and are audited",async()=>{
-  const id=ids.CARE_SAMPLE!;
+  const id=ids.ANTHRO_SAMPLE!;
   await overrideFields(id,{fields:{primaryChannel:"interaction",relatedChannels:["sociology"]},reason:"测试主问题修正",version:0},"test");
   await publishArticle(id,{now});const again=await publishArticle(id,{now});assert.equal(again!.changed,false);
   assert.equal((await loadPool(filters("interaction"))).items.find(i=>i.id===id)!.primaryChannel,"interaction");
@@ -106,7 +106,7 @@ test("withdrawal disappears from domain pages, comprehensive search, feeds, API 
 test("new endpoints reject invalid channels/dates and administrative writes remain protected",async()=>{
   await assert.rejects(parseFilters({domain:"unknown"}),/invalid domain/);await assert.rejects(parseFilters({since:"2026-02-30"}),/invalid since/);
   const app=await buildApp();assert.equal((await app.inject({url:"/feed/channels/biology.xml"})).statusCode,200);assert.equal((await app.inject({url:"/feed/channels/unknown.xml"})).statusCode,404);
-  assert.equal((await app.inject({method:"POST",url:`/api/admin/content/${ids.CARE_SAMPLE}/override`,payload:{fields:{primaryChannel:"play"}}})).statusCode,401);await app.close();
+  assert.equal((await app.inject({method:"POST",url:`/api/admin/content/${ids.ANTHRO_SAMPLE}/override`,payload:{fields:{primaryChannel:"play"}}})).statusCode,401);await app.close();
   assert.equal(domainInfo("biology").label,"生物学");
   // An explicit associated-domain view may include a biology-first record; old subscriptions stay primary robotics.
   const id=ids.FOSSIL_SAMPLE!;
@@ -143,9 +143,9 @@ test("historical classification dry-run, apply and rollback preserve dates, jobs
   } finally { rmSync(file,{force:true}); }
 });
 
-test("four active streams keep retained topics and legacy natural-history records readable without rewriting them", async () => {
-  assert.deepEqual(ACTIVE_DOMAIN_KEYS,["robotics","agents","biology","sociology"]);
-  assert.equal(DOMAINS.length,4);assert.equal(domainInfo("agents").label,"AI 与 Agent");
+test("three active classifications keep legacy topics and legacy natural-history records readable without rewriting them", async () => {
+  assert.deepEqual(ACTIVE_DOMAIN_KEYS,["robotics","agents","biology"]);
+  assert.equal(DOMAINS.length,3);assert.equal(domainInfo("agents").label,"AI 与 Agent");
   assert.equal(domainPath("natural-history"),"/topics/natural-history");
   assert.equal(domainPath("interaction"),"/topics/human-interaction");
   await seedTopics();
@@ -164,7 +164,7 @@ test("four active streams keep retained topics and legacy natural-history record
   const games=await loadTopicArchive('games-and-characters',{now,q:'既有游戏引擎'});assert.equal(games!.items[0]!.id,oldGame.articleId);
   assert.ok(!(await loadTopicArchive('natural-history',{now,q:'既有游戏引擎'}))!.items.length);
   assert.equal(await loadTopicArchive('natural-history',{now,page:51}),null);
-  const overview=await channelOverview();assert.equal(overview.channels.length,3);
+  const overview=await channelOverview();assert.equal(overview.channels.length,2);
   assert.equal(overview.channels.find(c=>c.key==='biology')!.total,(await loadPool(filters('biology'))).total);
   assert.ok(overview.channels.every(c=>!c.featured || c.featured.item.id!==ids.BEE_SAMPLE));
   const app=await buildApp();const read=await app.inject(`/api/site/topics/games-and-characters?q=${encodeURIComponent('既有游戏引擎')}`);assert.equal(read.statusCode,200);assert.equal(read.json().items[0].id,oldGame.articleId);
@@ -174,7 +174,7 @@ test("four active streams keep retained topics and legacy natural-history record
 });
 
 test("the combined AI and robotics entrance is a deduplicated union with legacy classifications and feeds preserved", async () => {
-  assert.deepEqual(DISPLAY_DOMAINS.map(d => d.key), ['ai-robotics','biology','sociology']);
+  assert.deepEqual(DISPLAY_DOMAINS.map(d => d.key), ['ai-robotics','biology']);
   assert.equal(isSiteDomainKey('ai-robotics'), true);
   assert.equal(isDomainKey('ai-robotics'), false, 'a reading collection is not a new stored classification');
   assert.equal(domainPath('robotics'), '/channels/ai-robotics');
@@ -208,4 +208,18 @@ test("the combined AI and robotics entrance is a deduplicated union with legacy 
   assert.equal((await app.inject('/feed/channels/ai-robotics.xml')).statusCode,200);
   assert.equal((await app.inject('/api/v1/items?domain=ai-robotics')).statusCode,400, 'existing v1 domain semantics stay unchanged');
   await app.close();
+});
+
+test("retired sociology and play records stay archived without leaking through related active channels", async () => {
+  for (const domain of ['sociology','play'] as const) {
+    const { articleId } = await upsertMaterial({ sourceId: source, url:`https://example.org/${T}/retired-${domain}`, title:`retired-${T}-${domain}`, bodyText:'历史资料', bodyStatus:'ok', via:'fetch', publishedAt: now });
+    await sql`INSERT INTO analyses(article_id,input_revision,origin,relevance,primary_channel,related_channels,tags,title_zh,summary_zh,selected)
+      VALUES(${articleId},1,'rule','pass',${domain},${['agents','biology']},${['论文/研究']},${`retired-${T}-${domain}`},'历史摘要',false)`;
+    await publishArticle(articleId,{now});
+    for (const active of ['all','ai-robotics','biology'] as const) {
+      assert.ok(!(await loadPool({domain:active,channel:'all',category:null,tag:null,now})).items.some(i=>i.id===articleId));
+    }
+    assert.ok((await loadPool(filters(domain))).items.some(i=>i.id===articleId));
+    assert.equal((await sql`SELECT count(*)::int AS n FROM publications WHERE article_id=${articleId}`)[0]!.n,1);
+  }
 });

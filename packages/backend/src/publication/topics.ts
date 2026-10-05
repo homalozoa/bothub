@@ -93,7 +93,7 @@ export function topicCountSnapshot(now?: Date): Promise<TopicCountSnapshot> {
 async function queryTopicCounts(now: Date): Promise<TopicCountSnapshot> {
   const [topics, items, pending] = await Promise.all([
     sql<Array<Pick<TopicRow, "slug" | "entity_id" | "tags">>>`SELECT slug, entity_id, tags FROM topics ORDER BY position`,
-    sql<{ tags: string[]; primary_channel: DomainKey | null; related_channels: DomainKey[]; timeline_at: Date }[]>`SELECT p.tags, p.primary_channel, p.related_channels, p.timeline_at FROM publications p WHERE ${selectedRecordCondition(now)}`,
+    sql<{ tags: string[]; primary_channel: DomainKey | null; related_channels: DomainKey[]; timeline_at: Date }[]>`SELECT p.tags, p.primary_channel, p.related_channels, p.timeline_at FROM publications p WHERE ${selectedRecordCondition(now)} ${domainCondition("all")}`,
     sql<{ t: Date | null }[]>`SELECT min(p.visible_after) AS t FROM publications p
       WHERE ${pendingRecordCondition(now)}`,
   ]);
@@ -144,7 +144,7 @@ async function queryTopicCount(slug: string, now: Date): Promise<{ count: TopicC
       (SELECT min(p.timeline_at) FROM publications p
         WHERE ${selectedRecordCondition(now)} AND p.timeline_at >= ${recentStart}) AS oldest_recent
     FROM publications p
-    WHERE ${selectedRecordCondition(now)} ${topic && topicMatchTags(topic).length ? topicCondition(topicMatchTags(topic)) : sql`AND FALSE`}`;
+    WHERE ${selectedRecordCondition(now)} ${domainCondition("all")} ${topic && topicMatchTags(topic).length ? topicCondition(topicMatchTags(topic)) : sql`AND FALSE`}`;
   const { total, recent, latest } = row!;
   const deadline = Math.min(row!.pending?.getTime() ?? Infinity, row!.oldest_recent ? row!.oldest_recent.getTime() + recentMs : Infinity);
   return {
@@ -199,7 +199,7 @@ export async function loadTopicPage(slug: string, page: number, now = new Date()
   const rows = await sql<ItemRow[]>`
     WITH page AS (
       SELECT p.article_id FROM publications p
-      WHERE ${selectedRecordCondition(now)} ${topicMatchTags(row).length ? topicCondition(topicMatchTags(row)) : sql`AND FALSE`}
+      WHERE ${selectedRecordCondition(now)} ${domainCondition("all")} ${topicMatchTags(row).length ? topicCondition(topicMatchTags(row)) : sql`AND FALSE`}
       ORDER BY p.timeline_at DESC, p.article_id DESC
       LIMIT ${TOPIC_PAGE_SIZE} OFFSET ${(page - 1) * TOPIC_PAGE_SIZE})
     SELECT ${ITEM_COLUMNS} ${ITEM_FROM} WHERE p.article_id IN (SELECT article_id FROM page)
