@@ -1,4 +1,4 @@
-import { DOMAIN_LABELS, isDomainKey } from "@aihot/industry/channels";
+import { SITE_DOMAIN_LABELS as DOMAIN_LABELS, isSiteDomainKey, readingDomain } from "@aihot/industry/channels";
 import { ChannelGrid, DomainNav, TopicLinks, type ChannelOverview } from "../features/channels/Channels";
 import { Link } from "react-router";
 import { data as withHeaders, redirect, useLoaderData } from "react-router";
@@ -17,7 +17,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   // Search lives on /all; keep the parameters so old links still land on results.
   if (q && q.trim()) throw redirect(`/all${url.search}`);
   const domainParam = url.searchParams.get("domain");
-  const domain = isDomainKey(domainParam) ? domainParam : "all";
+  const domain = isSiteDomainKey(domainParam) ? readingDomain(domainParam) : "all";
   const channelParam = url.searchParams.get("channel") ?? "all";
   const categoryParam = url.searchParams.get("category");
   const channel = isChannelKey(channelParam) ? channelParam : "all";
@@ -52,7 +52,7 @@ export default function Home() {
       <DomainNav base="/" active={filters.domain ?? "all"} />
       {comprehensive && <>
       <SignalHero />
-      <div className="radar-section-heading"><div><p className="radar-eyebrow">FOLLOW A THREAD</p><h2>四个领域的精选</h2></div><Link to="/channels">频道精选 ↗</Link></div>
+      <div className="radar-section-heading"><div><p className="radar-eyebrow">FOLLOW A THREAD</p><h2>三个领域的精选</h2></div><Link to="/channels">频道精选 ↗</Link></div>
       <ChannelGrid channels={overview.channels} selectedOverview />
       <TopicLinks />
       </>}

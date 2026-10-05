@@ -1,4 +1,4 @@
-import { DOMAINS, ACTIVE_DOMAIN_KEYS, domainPath } from "@aihot/industry/channels";
+import { DOMAINS, DISPLAY_DOMAINS, ACTIVE_DOMAIN_KEYS, domainPath, isDomainKey, isSiteDomainKey } from "@aihot/industry/channels";
 import { seedTopics, loadTopicArchive, loadTopicDirectory } from "@aihot/backend/publication/topics";
 import { channelOverview } from "@aihot/backend/publication/channels";
 import { spawnSync } from "node:child_process";
@@ -164,11 +164,48 @@ test("four active streams keep retained topics and legacy natural-history record
   const games=await loadTopicArchive('games-and-characters',{now,q:'既有游戏引擎'});assert.equal(games!.items[0]!.id,oldGame.articleId);
   assert.ok(!(await loadTopicArchive('natural-history',{now,q:'既有游戏引擎'}))!.items.length);
   assert.equal(await loadTopicArchive('natural-history',{now,page:51}),null);
-  const overview=await channelOverview();assert.equal(overview.channels.length,4);
+  const overview=await channelOverview();assert.equal(overview.channels.length,3);
   assert.equal(overview.channels.find(c=>c.key==='biology')!.total,(await loadPool(filters('biology'))).total);
   assert.ok(overview.channels.every(c=>!c.featured || c.featured.item.id!==ids.BEE_SAMPLE));
   const app=await buildApp();const read=await app.inject(`/api/site/topics/games-and-characters?q=${encodeURIComponent('既有游戏引擎')}`);assert.equal(read.statusCode,200);assert.equal(read.json().items[0].id,oldGame.articleId);
   assert.equal((await app.inject('/api/site/topics/natural-history?page=-1')).statusCode,404);
   await setVisibility(oldGame.articleId,{visibility:'withdrawn',reason:'测试撤回',version:0},'test');
   assert.equal((await loadTopicArchive('games-and-characters',{now,q:'既有游戏引擎'}))!.items.length,0);await app.close();
+});
+
+test("the combined AI and robotics entrance is a deduplicated union with legacy classifications and feeds preserved", async () => {
+  assert.deepEqual(DISPLAY_DOMAINS.map(d => d.key), ['ai-robotics','biology','sociology']);
+  assert.equal(isSiteDomainKey('ai-robotics'), true);
+  assert.equal(isDomainKey('ai-robotics'), false, 'a reading collection is not a new stored classification');
+  assert.equal(domainPath('robotics'), '/channels/ai-robotics');
+  assert.equal(domainPath('agents'), '/channels/ai-robotics');
+  const articles: string[] = [];
+  for (const [i, primary, related] of [[0,'robotics',[]],[1,'agents',[]],[2,'robotics',['agents']]] as const) {
+    const {articleId}=await upsertMaterial({sourceId:source,url:`https://example.org/${T}/combined-${i}`,title:`合并验证-${i}`,bodyText:'具备方法与材料的研究说明',bodyStatus:'ok',via:'fetch',publishedAt:now});
+    await sql`INSERT INTO analyses(article_id,input_revision,origin,relevance,primary_channel,related_channels,category,title_zh,summary_zh,score,selected) VALUES(${articleId},1,'rule','pass',${primary},${[...related]},'research',${`合并验证-${i}`},'研究摘要',88,true)`;
+    await publishArticle(articleId,{now,releasedAt:new Date(now.getTime()-1000)});
+    articles.push(articleId);
+  }
+  const dates=await sql`SELECT article_id,primary_channel,related_channels,published_at,discovered_at,score FROM publications WHERE article_id IN ${sql(articles)} ORDER BY article_id`;
+  const robo=await loadPool(filters('robotics')),ai=await loadPool(filters('agents'));
+  const combined=await loadPool({...filters('all'),domain:'ai-robotics'});
+  assert.deepEqual(new Set(combined.items.map(i=>i.id)),new Set([...robo.items,...ai.items].map(i=>i.id)));
+  assert.equal(combined.items.filter(i=>i.id===articles[2]).length,1);
+  const timeline=await loadTimeline({...filters('all'),domain:'ai-robotics',limit:40});
+  assert.equal(new Set(timeline.cards.map(c=>c.key)).size,timeline.cards.length);
+  const first=await loadTimeline({...filters('all'),domain:'ai-robotics',limit:1});
+  assert.ok(first.nextCursor);
+  await assert.rejects(loadTimeline({...filters('robotics'),cursor:first.nextCursor}),/cursor does not match/);
+  const xml=await itemFeed('selected',null,now,'ai-robotics',true);
+  assert.match(xml,/AI 与机器人/);
+  for(const id of articles) assert.equal(xml.split(`<guid isPermaLink="false">${id}</guid>`).length-1,1);
+  assert.ok(!(await itemFeed('selected',null,now)).includes(articles[1]!));
+  assert.ok((await itemFeed('selected',null,now,'agents',true)).includes(articles[1]!));
+  const overview=await channelOverview();assert.equal(overview.channels[0]!.total,combined.total);
+  assert.deepEqual(await sql`SELECT article_id,primary_channel,related_channels,published_at,discovered_at,score FROM publications WHERE article_id IN ${sql(articles)} ORDER BY article_id`,dates);
+  const app=await buildApp();
+  assert.equal((await app.inject('/api/site/timeline?domain=ai-robotics')).statusCode,200);
+  assert.equal((await app.inject('/feed/channels/ai-robotics.xml')).statusCode,200);
+  assert.equal((await app.inject('/api/v1/items?domain=ai-robotics')).statusCode,400, 'existing v1 domain semantics stay unchanged');
+  await app.close();
 });

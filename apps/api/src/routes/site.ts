@@ -1,6 +1,6 @@
 import { retainedTopic } from "@aihot/industry/channels";
 import { channelOverview } from "@aihot/backend/publication/channels";
-import { isDomainKey, type DomainKey } from "@aihot/industry/channels";
+import { isSiteDomainKey, type SiteDomainKey } from "@aihot/industry/channels";
 // First-party site API (/api/site/*). Not public, not versioned, never called /api/v2.
 // Reads through the same public read layer as v1; no cookies are read or set.
 import { FEATURES } from "@aihot/industry/features";
@@ -60,7 +60,7 @@ export function siteHandler(fn: Handler): Handler {
 }
 
 export interface FilterParams {
-  domain: DomainKey | "all";
+  domain: SiteDomainKey | "all";
   since: string | null;
   channel: ChannelKey;
   category: CategoryKey | null;
@@ -71,7 +71,7 @@ export interface FilterParams {
 
 export async function parseFilters(q: Record<string, string>): Promise<FilterParams> {
   const domain = q.domain ?? "all";
-  if (domain !== "all" && !isDomainKey(domain)) throw new BadRequest("invalid domain");
+  if (domain !== "all" && !isSiteDomainKey(domain)) throw new BadRequest("invalid domain");
   const since = q.since || null;
   if (since && (!/^\d{4}-\d{2}-\d{2}$/.test(since) || !Number.isFinite(Date.parse(since)) || new Date(since).toISOString().slice(0, 10) !== since)) throw new BadRequest("invalid since date");
   const channel = q.channel ?? "all";

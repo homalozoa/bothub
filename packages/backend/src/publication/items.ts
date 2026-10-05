@@ -1,4 +1,4 @@
-import { ACTIVE_DOMAIN_KEYS, RETAINED_TOPICS, canonicalDomain, editorialTags, isDomainKey, retainedTopic, type DomainKey } from "@aihot/industry/channels";
+import { ACTIVE_DOMAIN_KEYS, RETAINED_TOPICS, canonicalDomain, editorialTags, isDomainKey, retainedTopic, type DomainKey, type SiteDomainKey } from "@aihot/industry/channels";
 // Public read layer, item level. Every exit (site API, v1, RSS, MCP, sitemap) reads
 // items through these functions; visibility, release gate and body licences are applied here.
 import type { CategoryKey, ChannelKey } from "@aihot/contracts/taxonomy";
@@ -87,8 +87,9 @@ export function channelCondition(channel: ChannelKey | null | undefined) {
 }
 
 /** Null old records stay in their original robotics scope until reviewed; this is not a backfill. */
-export function domainCondition(domain: DomainKey | "all" | null | undefined) {
+export function domainCondition(domain: SiteDomainKey | "all" | null | undefined) {
   if (!domain || domain === "all") return sql`AND (p.primary_channel IS NULL OR p.primary_channel IN ${sql([...ACTIVE_DOMAIN_KEYS, "natural-history"])} OR p.related_channels && ${[...ACTIVE_DOMAIN_KEYS, "natural-history"]}::text[])`;
+  if (domain === "ai-robotics") return sql`AND (coalesce(p.primary_channel, 'robotics') IN ('robotics', 'agents') OR p.related_channels && ${['robotics', 'agents']}::text[])`;
   if (domain === "biology") return sql`AND (p.primary_channel IN ('biology', 'natural-history') OR p.related_channels && ${['biology', 'natural-history']}::text[])`;
   const theme = retainedTopic(domain);
   return sql`AND (coalesce(p.primary_channel, 'robotics') = ${domain} OR p.related_channels @> ${[domain]}::text[] ${theme ? sql`OR p.tags && ${[...theme.tags]}::text[]` : sql``})`;

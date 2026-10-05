@@ -1,4 +1,4 @@
-import { DOMAINS } from "@aihot/industry/channels";
+import { DISPLAY_DOMAINS as DOMAINS } from "@aihot/industry/channels";
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useLoaderData, useNavigate, useSearchParams } from "react-router";
 import type { Route } from "./+types/agent";
@@ -137,7 +137,7 @@ function McpTab({ base }: { base: string }) {
 
 function RssTab({ base }: { base: string }) {
   const feeds = [
-    ["综合精选（四频道）", "四个频道的已发布精选摘要，独立于原机器人订阅。", "/feed/channels/all.xml"],
+    ["综合精选（三频道）", "三个阅读频道的已发布精选摘要，独立于原机器人订阅。", "/feed/channels/all.xml"],
     ...DOMAINS.map(d => [`${d.label}精选`, d.description, `/feed/channels/${d.key}.xml`]),
     ["机器人精选摘要（原订阅）", "最新 50 条精选摘要，保留标题、站内阅读与原文入口。", "/feed.xml"],
     ["机器人精选全文", "与精选摘要相同的最新 50 条；只对明确允许再分发的来源内联正文。", "/feed/full.xml"],
@@ -213,7 +213,7 @@ function ApiTab({ base }: { base: string }) {
       </div>
       <Section title="先知道这几件事">
         <Bullets items={[
-          "items 省略 domain 时继续查询机器人；domain=all 明确查询四频道，domain=biology 查询生物学。原 selected 同步范围保持机器人。",
+          "items 省略 domain 时继续查询机器人；domain=all 明确查询综合内容，domain=biology 查询生物学。原 selected 同步范围保持机器人。",
           "不传 mode 等同 selected（精选）；只有明确需要全部公开动态才用 all。",
           "完整精选不限 7 天：snapshot 首次拿全，changes 只取变化；items 只看最近 7 天。",
           "items 不带正文：返回摘要、推荐理由、站内阅读页与原文链接。",

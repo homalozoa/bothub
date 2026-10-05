@@ -1,4 +1,4 @@
-import { DOMAINS } from "@aihot/industry/channels";
+import { DISPLAY_DOMAINS as DOMAINS } from "@aihot/industry/channels";
 // Site navigation, one place for the desktop sidebar, the mobile tab bar and the mobile "更多" page.
 import { withSubject, withBrand } from "@aihot/industry/site";
 import { FEATURES } from "@aihot/industry/features";
@@ -29,7 +29,7 @@ export const SIDEBAR: Array<{ title: string; items: NavItem[] }> = [
       { to: "/starred", label: "收藏", icon: IconBookmark },
     ],
   },
-  { title: "四个频道", items: DOMAINS.map(d => ({ to: `/channels/${d.key}`, label: d.label, icon: IconGrid })) },
+  { title: "三个频道", items: DOMAINS.map(d => ({ to: `/channels/${d.key}`, label: d.label, icon: IconGrid })) },
   // The optional AI-only modules (industry/features.ts).
   ...(FEATURES.leaderboard || FEATURES.codexResetMonitor
     ? [

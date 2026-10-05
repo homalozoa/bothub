@@ -1,4 +1,4 @@
-import type { DomainKey } from "@aihot/industry/channels";
+import type { DomainKey, SiteDomainKey } from "@aihot/industry/channels";
 // First-party site API (/api/site/*). Not a public API: it may evolve with the website,
 // but it is served from the same public read layer as v1, RSS and MCP.
 import type { CategoryKey, ChannelKey } from "./taxonomy.ts";
@@ -108,7 +108,7 @@ export interface HotStripEntry {
 }
 
 export interface TimelineFilters {
-  domain?: DomainKey | "all";
+  domain?: SiteDomainKey | "all";
   since?: string | null;
   channel: ChannelKey;
   category: CategoryKey | null;

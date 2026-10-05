@@ -1,6 +1,6 @@
-import { DOMAIN_LABELS } from "@aihot/industry/channels";
+import { SITE_DOMAIN_LABELS as DOMAIN_LABELS } from "@aihot/industry/channels";
 import { DomainNav } from "../features/channels/Channels";
-import { isDomainKey } from "@aihot/industry/channels";
+import { isSiteDomainKey, readingDomain } from "@aihot/industry/channels";
 import { SITE, withSubject } from "@aihot/industry/site";
 import { Link, useLoaderData, useNavigation, useSearchParams } from "react-router";
 import type { Route } from "./+types/all";
@@ -17,7 +17,7 @@ import { RingMark } from "../components/Logo";
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const domainParam = url.searchParams.get("domain");
-  const domain = isDomainKey(domainParam) ? domainParam : "all";
+  const domain = isSiteDomainKey(domainParam) ? readingDomain(domainParam) : "all";
   const since = url.searchParams.get("since");
   const channelParam = url.searchParams.get("channel") ?? "all";
   const categoryParam = url.searchParams.get("category");

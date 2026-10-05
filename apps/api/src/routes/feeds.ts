@@ -1,4 +1,4 @@
-import { isDomainKey } from "@aihot/industry/channels";
+import { isSiteDomainKey } from "@aihot/industry/channels";
 // RSS routes. Unknown query parameters are accepted and never change content.
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { RSS_CACHE_CONTROL } from "@aihot/contracts/http-policy";
@@ -18,7 +18,7 @@ export function registerFeeds(app: FastifyInstance) {
   for (const latest of [false, true]) {
     app.get(latest ? "/feed/channels/:domain/latest.xml" : "/feed/channels/:domain.xml", async (req, reply) => {
       const domain = (req.params as { domain: string }).domain;
-      if (domain !== "all" && !isDomainKey(domain)) return reply.code(404).send("Unknown channel");
+      if (domain !== "all" && !isSiteDomainKey(domain)) return reply.code(404).send("Unknown channel");
       try { return await sendFeed(req, reply, await itemFeed(latest ? "all" : "selected", null, new Date(), domain, true)); }
       catch (error) { req.log.error({ err: error }, "channel feed error"); return feedError(reply); }
     });

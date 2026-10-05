@@ -1,4 +1,4 @@
-import type { DomainKey } from "@aihot/industry/channels";
+import type { SiteDomainKey } from "@aihot/industry/channels";
 import { selectedCondition, listedCondition } from "./scope.ts";
 // Reading-group expansions: the reports behind "另有 N 家信源报道" and the developments behind
 // "展开 N 条进展". Members must pass the same visibility, pool eligibility and parent-page filters.
@@ -13,7 +13,7 @@ import { pickRepresentative } from "./timeline.ts";
 
 export interface GroupReportsQuery {
   factPublicId: string;
-  domain?: DomainKey | "all";
+  domain?: SiteDomainKey | "all";
   since?: string | null;
   channel: ChannelKey;
   category: CategoryKey | null;
@@ -79,7 +79,7 @@ export async function loadGroupReports(q: GroupReportsQuery, now = new Date()): 
 
 export interface DevelopmentsQuery {
   storyPublicId: string;
-  domain?: DomainKey | "all";
+  domain?: SiteDomainKey | "all";
   since?: string | null;
   channel: ChannelKey;
   category: CategoryKey | null;

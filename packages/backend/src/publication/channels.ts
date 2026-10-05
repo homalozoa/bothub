@@ -2,12 +2,12 @@ import { sql } from "../db.ts";
 import { listedCondition } from "./scope.ts";
 import { domainCondition } from "./items.ts";
 // A small, bounded overview from the same published timeline as each channel page.
-import { DOMAINS } from "@aihot/industry/channels";
+import { DISPLAY_DOMAINS } from "@aihot/industry/channels";
 import { loadTimeline } from "./timeline.ts";
 
 export async function channelOverview() {
   const now = new Date();
-  const rows = await Promise.all(DOMAINS.map(async domain => {
+  const rows = await Promise.all(DISPLAY_DOMAINS.map(async domain => {
     const result = await loadTimeline({ domain: domain.key, channel: "all", category: null, tag: null, limit: 3 });
     const [count] = await sql<{ total: number }[]>`SELECT count(*)::int AS total FROM publications p WHERE ${listedCondition(now)} ${domainCondition(domain.key)}`;
     return { domain, total: count!.total, cards: result.cards, refreshAt: result.refreshAt };

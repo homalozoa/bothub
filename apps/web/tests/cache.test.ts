@@ -1,4 +1,4 @@
-import { DOMAINS } from "@aihot/industry/channels";
+import { DISPLAY_DOMAINS as DOMAINS } from "@aihot/industry/channels";
 // Run after `npm run build -w @aihot/web`. Real production server/router, synthetic HTTP API only.
 import assert from "node:assert/strict";
 import { spawn, type ChildProcess } from "node:child_process";
@@ -269,7 +269,7 @@ test("comprehensive picks show actual biology previews and honest empty-domain l
   try {
     const r=await fetch(origin+'/');assert.equal(r.status,200);const html=await r.text();
     assert.match(html,/公开生物学精选示例/);assert.match(html,/items\/bio-fixture/);
-    assert.match(html,/已收录 8 条，暂无当前精选/);assert.match(html,/channels\/agents\?view=latest/);
+    assert.match(html,/已收录 8 条，暂无当前精选/);assert.match(html,/channels\/ai-robotics\?view=latest/);
     assert.match(html,/论文\/研究/);assert.doesNotMatch(html,/产品与商业化/);
   } finally { showEditorialExample=false; }
 });
@@ -297,4 +297,16 @@ test("the rendered mobile navigation highlights one destination for channels and
     const active = [...navigation.matchAll(/<a\b[^>]*aria-current="page"[^>]*>/g)].map(match => match[0].match(/href="([^"]+)"/)?.[1]);
     assert.deepEqual(active, [expected], path);
   }
+});
+
+test("legacy robotics and AI website links redirect to one combined entrance and keep the query", async () => {
+  for (const old of ['robotics','agents']) {
+    const response=await fetch(`${origin}/channels/${old}?view=latest&q=world&tag=${encodeURIComponent('论文/研究')}`,{redirect:'manual'});
+    assert.equal(response.status,308);
+    assert.equal(response.headers.get('Location'),`/channels/ai-robotics?view=latest&q=world&tag=${encodeURIComponent('论文/研究')}`);
+  }
+  const response=await fetch(origin+'/channels/ai-robotics');
+  assert.equal(response.status,200);const html=await response.text();
+  assert.match(html,/AI 与机器人/);assert.match(html,/feed\/channels\/ai-robotics\.xml/);
+  assert.doesNotMatch(html,/href="\/channels\/robotics"/);assert.doesNotMatch(html,/href="\/channels\/agents"/);
 });

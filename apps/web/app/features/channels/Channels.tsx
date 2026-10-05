@@ -1,6 +1,6 @@
 import { monthDayTime } from "../../lib/format";
 import { Link, useLocation, useSearchParams } from "react-router";
-import { DOMAINS, RETAINED_TOPICS, type DomainKey } from "@aihot/industry/channels";
+import { DISPLAY_DOMAINS as DOMAINS, RETAINED_TOPICS, readingDomain, type DomainKey, type SiteDomainKey } from "@aihot/industry/channels";
 import type { TimelineCard } from "@aihot/contracts/site";
 import { useEffect, useRef } from "react";
 
@@ -15,10 +15,11 @@ const paths: Record<DomainKey, string> = {
   "natural-history": "M29 31C8 35 4 13 17 7c10-5 21 4 17 14-3 9-17 9-17 0 0-6 9-7 10-1M13 32l-3 4m11-5 1 5M8 21l-5 1",
   sociology: "M16 11a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM32 11a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM4 31v-6c0-9 16-9 16 0v6M20 31v-6c0-9 16-9 16 0v6",
 };
-export function ChannelIcon({ domain, className = "" }: { domain: DomainKey; className?: string }) {
-  return <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}><path d={paths[domain]} /></svg>;
+export function ChannelIcon({ domain, className = "" }: { domain: SiteDomainKey; className?: string }) {
+  return <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={className}><path d={paths[domain === "ai-robotics" ? "robotics" : domain]} /></svg>;
 }
-export function DomainNav({ active = "all", base }: { active?: DomainKey | "all"; base?: "/" | "/all" }) {
+export function DomainNav({ active = "all", base }: { active?: SiteDomainKey | "all"; base?: "/" | "/all" }) {
+  const selectedDomain = active === "all" ? "all" : readingDomain(active);
   const ref = useRef<HTMLElement>(null);
   useEffect(() => {
     const scroller = ref.current;
@@ -40,15 +41,15 @@ export function DomainNav({ active = "all", base }: { active?: DomainKey | "all"
   const keep = new URLSearchParams(search);
   keep.delete("page"); keep.delete("domain"); keep.delete("q"); keep.delete("since"); keep.delete("tag");
   const suffix = keep.toString() ? `?${keep}` : "";
-  const target = (key: DomainKey | "all") => {
+  const target = (key: SiteDomainKey | "all") => {
     if (!base) return key === "all" ? "/" : `/channels/${key}${suffix}`;
     const sp = new URLSearchParams(search); sp.delete("page"); sp.delete("cursor"); sp.delete("category"); sp.delete("topic");
     if (key === "all") sp.delete("domain"); else sp.set("domain", key);
     return base + (sp.toString() ? `?${sp}` : "");
   };
   return <nav ref={ref} className="domain-nav" aria-label="领域频道">
-    <Link to={target("all")} aria-current={active === "all" ? "page" : undefined} className={active === "all" ? "active" : ""}>综合</Link>
-    {DOMAINS.map(d => <Link key={d.key} to={target(d.key)} aria-current={active === d.key ? "page" : undefined} className={active === d.key ? "active" : ""}>{d.label}</Link>)}
+    <Link to={target("all")} aria-current={selectedDomain === "all" ? "page" : undefined} className={selectedDomain === "all" ? "active" : ""}>综合</Link>
+    {DOMAINS.map(d => <Link key={d.key} to={target(d.key)} aria-current={selectedDomain === d.key ? "page" : undefined} className={selectedDomain === d.key ? "active" : ""}>{d.label}</Link>)}
   </nav>;
 }
 export function ChannelGrid({ channels, compact = false, selectedOverview = false }: { channels: ChannelOverview["channels"]; compact?: boolean; selectedOverview?: boolean }) {
@@ -61,9 +62,9 @@ export function ChannelGrid({ channels, compact = false, selectedOverview = fals
   </div>;
 }
 
-export function TopicLinks({ domain }: { domain?: DomainKey }) {
+export function TopicLinks({ domain }: { domain?: SiteDomainKey }) {
   const [params] = useSearchParams();
-  const topics = RETAINED_TOPICS.filter(t => !domain || (t.parents as readonly string[]).includes(domain));
+  const topics = RETAINED_TOPICS.filter(t => !domain || (domain === "ai-robotics" ? t.parents.some(p => p === "robotics" || p === "agents") : (t.parents as readonly string[]).includes(domain)));
   return <div className="topic-shortcuts"><span>按主题看</span>{topics.map(t => {
     const sp = new URLSearchParams(params); sp.delete("page"); sp.delete("cursor"); sp.set("topic", t.slug);
     return <Link key={t.slug} to={domain ? `/channels/${domain}?${sp}` : `/topics/${t.slug}`}>{t.name} <span aria-hidden="true">↗</span></Link>;

@@ -1,5 +1,5 @@
 import { Form, Link, redirect, data as withHeaders, useLoaderData, useSearchParams } from "react-router";
-import { domainInfo, isDomainKey, domainPath, retainedTopic, RETAINED_TOPICS } from "@aihot/industry/channels";
+import { siteDomainInfo, isSiteDomainKey, readingDomain, domainPath, retainedTopic, RETAINED_TOPICS } from "@aihot/industry/channels";
 import { isCategoryKey, isChannelKey } from "@aihot/contracts/taxonomy";
 import type { PoolResponse, TimelineResponse } from "@aihot/contracts/site";
 import type { Route } from "./+types/channel";
@@ -12,10 +12,10 @@ import { DomainNav, ChannelIcon, TopicLinks } from "../features/channels/Channel
 import { SearchField, hrefWith } from "../features/feed/Filters";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
-  if (!isDomainKey(params.domain)) throw new Response("Unknown channel", { status: 404 });
+  if (!isSiteDomainKey(params.domain)) throw new Response("Unknown channel", { status: 404 });
   const legacy = retainedTopic(params.domain);
-  if (legacy) throw redirect(`${domainPath(params.domain)}${new URL(request.url).search}`, 308);
-  const domain = domainInfo(params.domain);
+  if (legacy || readingDomain(params.domain) !== params.domain) throw redirect(`${domainPath(params.domain)}${new URL(request.url).search}`, 308);
+  const domain = siteDomainInfo(params.domain);
   const url = new URL(request.url);
   const sp = url.searchParams;
   const q = sp.get("q")?.trim().slice(0, 200) || null;
@@ -39,7 +39,7 @@ export function meta({ loaderData, location }: Route.MetaArgs) {
   return [...pageMeta({ title: `${loaderData.domain.label}${loaderData.q ? ` · 搜索 ${loaderData.q}` : ""}`, description: loaderData.domain.description, path: `${location.pathname}${location.search}`, noindex: !!loaderData.q }),
     { tagName: "link", rel: "alternate", type: "application/rss+xml", title: `${loaderData.domain.label}精选`, href: `/feed/channels/${loaderData.domain.key}.xml` }];
 }
-const types = ["论文/研究", "开源/仓库", "观点/分析", "教程/实践", "产品更新"];
+const types = ["论文/研究", "模型发布", "开源/仓库", "观点/分析", "教程/实践", "产品更新"];
 export default function Channel() {
   const { domain, mode, result, q, since } = useLoaderData<typeof loader>();
   const [params] = useSearchParams();
@@ -65,7 +65,7 @@ export default function Channel() {
       <SearchField action={base} defaultValue={q ?? ""} keep={keep} variant="bar" />
       <Form method="get" action={base} className="channel-filter-form">
         <input type="hidden" name="view" value={mode} />{q && <input type="hidden" name="q" value={q} />}
-        <label>主题<select name="topic" defaultValue={f.topic ?? ""} key={`topic-${f.topic}`}><option value="">全部主题</option>{RETAINED_TOPICS.filter(t => (t.parents as readonly string[]).includes(domain.key)).map(t => <option key={t.slug} value={t.slug}>{t.name}</option>)}</select></label>
+        <label>主题<select name="topic" defaultValue={f.topic ?? ""} key={`topic-${f.topic}`}><option value="">全部主题</option>{RETAINED_TOPICS.filter(t => domain.key === "ai-robotics" ? t.parents.some(p => p === "robotics" || p === "agents") : (t.parents as readonly string[]).includes(domain.key)).map(t => <option key={t.slug} value={t.slug}>{t.name}</option>)}</select></label>
         <label>内容形态<select name="tag" defaultValue={f.tag ?? ""} key={`tag-${f.tag}`}><option value="">全部形态</option>{types.map(t => <option key={t}>{t}</option>)}</select></label>
         <label>来源<select name="channel" defaultValue={f.channel} key={`source-${f.channel}`}><option value="all">全部来源</option><option value="firstParty">一手来源</option><option value="news">资讯</option><option value="x">X</option></select></label>
         <label>起始日期<input type="date" name="since" defaultValue={since ?? ""} key={`since-${since}`} /></label>

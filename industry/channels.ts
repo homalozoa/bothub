@@ -17,6 +17,14 @@ export type DomainKey = (typeof ALL_DOMAINS)[number]["key"];
 export const ACTIVE_DOMAIN_KEYS = DOMAINS.map(d => d.key) as [ActiveDomainKey, ...ActiveDomainKey[]];
 export const DOMAIN_KEYS = ALL_DOMAINS.map(d => d.key) as [DomainKey, ...DomainKey[]];
 export const DOMAIN_LABELS = Object.fromEntries(ALL_DOMAINS.map(d => [d.key, d.label])) as Record<DomainKey, string>;
+// Reading entrances can combine existing classifications without rewriting articles or subscriptions.
+export const MERGED_AI_ROBOTICS = { key: "ai-robotics", label: "AI 与机器人", english: "AI & Robotics", description: "AI 模型、Agent、具身智能与真实世界的机器人。", guide: "沿着模型、智能体、机器人学习、硬件、控制与应用继续阅读。同一事件只出现一次。" } as const;
+export const DISPLAY_DOMAINS = [MERGED_AI_ROBOTICS, DOMAINS[2], DOMAINS[3]] as const;
+export type SiteDomainKey = DomainKey | typeof MERGED_AI_ROBOTICS.key;
+export const SITE_DOMAIN_LABELS: Record<SiteDomainKey, string> = { ...DOMAIN_LABELS, "ai-robotics": MERGED_AI_ROBOTICS.label };
+export function isSiteDomainKey(value: unknown): value is SiteDomainKey { return value === "ai-robotics" || isDomainKey(value); }
+export function readingDomain(key: SiteDomainKey): SiteDomainKey { return key === "robotics" || key === "agents" ? "ai-robotics" : key; }
+export function siteDomainInfo(key: SiteDomainKey) { return key === "ai-robotics" ? MERGED_AI_ROBOTICS : domainInfo(key); }
 export const RETAINED_TOPICS = [
   { domain: "natural-history", slug: "natural-history", name: "自然史", tag: "自然史", tags: ["自然史", "演化历史", "系统分类", "标本/田野"], parents: ["biology"] },
   { domain: "interaction", slug: "human-interaction", name: "人机交互", tag: "人机交互", tags: ["人机交互", "交互/信任", "自主权"], parents: ["robotics", "agents", "sociology"] },
@@ -26,7 +34,7 @@ export function isDomainKey(value: unknown): value is DomainKey { return typeof 
 export function isActiveDomain(value: unknown): value is ActiveDomainKey { return typeof value === "string" && ACTIVE_DOMAIN_KEYS.includes(value as ActiveDomainKey); }
 export function domainInfo(key: DomainKey) { return ALL_DOMAINS.find(d => d.key === key)!; }
 export function retainedTopic(key: string) { return RETAINED_TOPICS.find(t => t.domain === key || t.slug === key); }
-export function domainPath(key: DomainKey) { const topic = retainedTopic(key); return topic ? `/topics/${topic.slug}` : `/channels/${key}`; }
+export function domainPath(key: SiteDomainKey) { const topic = retainedTopic(key); return topic ? `/topics/${topic.slug}` : `/channels/${readingDomain(key)}`; }
 export function canonicalDomain(key: DomainKey): DomainKey { return key === "natural-history" ? "biology" : key; }
 export function relatedDomains(primary: DomainKey | null, values: unknown): DomainKey[] {
   return Array.isArray(values) ? [...new Set(values.filter(isDomainKey))].filter(d => d !== primary).slice(0, 2) : [];

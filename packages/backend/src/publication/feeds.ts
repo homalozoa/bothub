@@ -1,4 +1,4 @@
-import { DOMAIN_LABELS, domainPath, type DomainKey } from "@aihot/industry/channels";
+import { SITE_DOMAIN_LABELS as DOMAIN_LABELS, domainPath, type SiteDomainKey } from "@aihot/industry/channels";
 import { listedCondition, selectedCondition, currentTimeCondition } from "./scope.ts";
 // RSS feeds. GUID = article id (isPermaLink=false), <link> = the site's page, pubDate = source
 // publication time. Summary feeds never carry content:encoded; full feeds inline bodies only for
@@ -113,7 +113,7 @@ export type ItemFeedKind = "selected" | "selected-full" | "all";
 // Like the live feeds, items are the newest by their original publish time (the pubDate shown):
 // 50 per feed; a category feed holds only its last 7 days (by original publish time).
 
-export async function itemFeed(kind: ItemFeedKind, category: PublicApiCategoryKey | null, now = new Date(), domain: DomainKey | "all" = "robotics", domainFeed = false): Promise<string> {
+export async function itemFeed(kind: ItemFeedKind, category: PublicApiCategoryKey | null, now = new Date(), domain: SiteDomainKey | "all" = "robotics", domainFeed = false): Promise<string> {
   const includeContent = kind === "selected-full";
   const scope = kind === "all"
     ? sql`${listedCondition(now)} AND ${currentTimeCondition(now)} ${domainFeed ? sql`` : sql`AND coalesce(p.published_at, p.discovered_at) > ${now}::timestamptz - interval '7 days'`}
