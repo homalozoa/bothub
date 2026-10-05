@@ -1,12 +1,14 @@
 # 给 Agent 的说明
 
-这是基于 AIHOT 的 ZooRadar 四频道阅读站（内部 bothot）：采集信源、用模型筛选和写作、归组事件、出日报，并通过网站、RSS、公开 API 和 MCP 对外提供。先读 README 和 `docs/multichannel.md`，旧机器人运行说明保留在 `docs/robotics.md`，再按任务读对应文档。
+这是基于 AIHOT 的 ZooRadar 三个阅读频道网站（内部 bothot）：AI与机器人、生物学、社会学，加综合共四个入口。采集信源、用模型筛选和写作、归组事件、出日报，并通过网站、RSS、公开 API 和 MCP 对外提供。先读 README 和 `docs/multichannel.md`，旧机器人运行说明保留在 `docs/robotics.md`，再按任务读对应文档。
 
 ## 最常见的任务：改成另一个行业
 
 按 `docs/customize.md` 的顺序做。行业相关的一切都在 `industry/`：站名文案（`site.ts`）、分类标签（`taxonomy.ts`）、主题（`topics.json`）、示范信源（`sources.json`）、提示词（`prompts/`）、门槛（`selection.ts`）、模块开关（`features.ts`）、品牌（`brand/`）、条款页（`pages/`）。通常不需要改 `apps/` 和 `packages/`。
 
 当前授权的品牌为 ZooRadar，OpenZoo 保留品牌主页；四主频道与窗口见 industry/channels.ts。自然史并入生物学，人机交互、游戏与角色是保留的主题；历史key和订阅只用于兼容，模型输出限四个主频道。channel=news/x/firstParty 仍表示来源方式，不改成领域。科学与社会频道不要求机器人/AI 关联。既有机器人 RSS、API/MCP 默认查询和日报不能静默扩大范围；当前域名 news.openzoo.ai 沿用。
+
+2026-10-05，用户因机器人/AI内容高度重合，授权阅读入口合并为AI与机器人。DISPLAY_DOMAINS定义三个阅读入口，DOMAINS/ACTIVE_DOMAIN_KEYS保留四个内部分类，既有文章和订阅不重写。ai-robotics是只读并集（SiteDomainKey），不是新的模型输出/人工主分类；页面按事件归组去重。旧机器人和AI网页入口308至合并页，旧API/RSS语义保留，机器人日报不扩大。Agent、人机交互、游戏等继续按主题或内容形态阅读。
 
 改评分标准时保留原有结构（内容类型、五个维度加权、噪声压制、安全边界），替换的是“什么算重要”“什么算噪声”的例子。门槛要用使用者标注的样本重新校准（`docs/selection.md`），不要凭感觉改数字。
 
