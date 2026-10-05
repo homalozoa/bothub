@@ -6,7 +6,7 @@
 
 按 `docs/customize.md` 的顺序做。行业相关的一切都在 `industry/`：站名文案（`site.ts`）、分类标签（`taxonomy.ts`）、主题（`topics.json`）、示范信源（`sources.json`）、提示词（`prompts/`）、门槛（`selection.ts`）、模块开关（`features.ts`）、品牌（`brand/`）、条款页（`pages/`）。通常不需要改 `apps/` 和 `packages/`。
 
-当前授权的品牌为 ZooRadar，OpenZoo 保留品牌主页；四主频道与窗口见 industry/channels.ts。自然史并入生物学，人机交互、游戏与角色是保留的主题；历史key和订阅只用于兼容，模型输出限四个主频道。channel=news/x/firstParty 仍表示来源方式，不改成领域。科学与社会频道不要求机器人/AI 关联。既有机器人 RSS、API/MCP 默认查询和日报不能静默扩大范围；当前域名 news.openzoo.ai 沿用。
+当前授权的品牌为 ZooRadar，OpenZoo 保留品牌主页；三个阅读频道及四个内部分类与窗口见 industry/channels.ts。自然史并入生物学，人机交互、游戏与角色是保留的主题；历史key和订阅只用于兼容，模型输出限四个主频道。channel=news/x/firstParty 仍表示来源方式，不改成领域。科学与社会频道不要求机器人/AI 关联。既有机器人 RSS、API/MCP 默认查询和日报不能静默扩大范围；当前域名 news.openzoo.ai 沿用。
 
 2026-10-05，用户因机器人/AI内容高度重合，授权阅读入口合并为AI与机器人。DISPLAY_DOMAINS定义三个阅读入口，DOMAINS/ACTIVE_DOMAIN_KEYS保留四个内部分类，既有文章和订阅不重写。ai-robotics是只读并集（SiteDomainKey），不是新的模型输出/人工主分类；页面按事件归组去重。旧机器人和AI网页入口308至合并页，旧API/RSS语义保留，机器人日报不扩大。Agent、人机交互、游戏等继续按主题或内容形态阅读。
 
