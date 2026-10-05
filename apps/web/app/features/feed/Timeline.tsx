@@ -16,6 +16,7 @@ import { isHydrated, isReload, markHydrated, readSnapshot, restoreAnchor, saveSn
 const AUTO_BATCHES = 3;
 
 interface ListState {
+  filterKey: string;
   cards: TimelineCard[];
   nextCursor: string | null;
   dayCounts: Record<string, number>;
@@ -36,7 +37,12 @@ function filterQuery(f: TimelineFilters, extra: Record<string, string | number |
 }
 
 function fromResponse(r: TimelineResponse): ListState {
-  return { cards: r.cards, nextCursor: r.nextCursor, dayCounts: r.dayCounts, collapsed: [], batches: 1 };
+  return { filterKey: filterQuery(r.filters), cards: r.cards, nextCursor: r.nextCursor, dayCounts: r.dayCounts, collapsed: [], batches: 1 };
+}
+
+function listSnapshot(historyKey: string, filters: TimelineFilters) {
+  const snap = readSnapshot<ListState>(historyKey);
+  return snap?.data.filterKey === filterQuery(filters) ? snap : null;
 }
 
 const WEEKDAY_SHORT = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
@@ -120,7 +126,7 @@ export function Timeline({ initial, filters }: { initial: TimelineResponse; filt
   // after hydration so the first client render matches the server HTML.
   const [state, setState] = useState<ListState>(() => {
     if (isHydrated()) {
-      const snap = readSnapshot<ListState>(historyKey);
+      const snap = listSnapshot(historyKey, filters);
       if (snap && snap.data.cards.length > 0) return snap.data;
     }
     return fromResponse(initial);
@@ -146,7 +152,7 @@ export function Timeline({ initial, filters }: { initial: TimelineResponse; filt
       pageRequest.current = null;
       setLoadingMore(false);
       setLoadError(false);
-      const snap = readSnapshot<ListState>(historyKey);
+      const snap = listSnapshot(historyKey, filters);
       if (snap && snap.data.cards.length > 0) {
         setState(snap.data);
         restoreAnchor(snap.anchor, snap.scrollY);
@@ -159,7 +165,7 @@ export function Timeline({ initial, filters }: { initial: TimelineResponse; filt
   useLayoutEffect(() => {
     if (restoredRef.current) return;
     restoredRef.current = true;
-    const snap = readSnapshot<ListState>(historyKey);
+    const snap = listSnapshot(historyKey, filters);
     if (!isHydrated()) {
       markHydrated();
       // A full load keeps the server's fresh list when the reader reloaded; after a back/forward
