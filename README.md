@@ -4,6 +4,8 @@ ZooRadar 是 OpenZoo 的资讯阅读站：AI与机器人、生物学、社会学
 
 外观默认跟随系统亮暗模式，系统切换后即时更新；桌面侧栏和手机「更多 → 外观」可手动选择深色、浅色或跟随系统，偏好仅保存在浏览器。
 
+主题目录按三个领域组织研究方向，内容形态与来源独立筛选；主题页默认全部资料，可切到精选。分类边界、兼容与验证见 [分类整理](docs/taxonomy-audit.md)。
+
 线上入口：[OpenZoo](https://openzoo.ai/) · [资讯站](https://news.openzoo.ai/)。四个领域入口已正式上线，网页版本 `8b7152c`，API/worker与静态主页版本 `49dccb6`；合并依据、去重与兼容见 [AI与机器人合并记录](docs/ai-robotics-merge.md)。全站桌面/手机细节见 [排版复查](docs/layout-audit.md)，亮暗色模式见 [外观更新](docs/system-theme.md)。此前四分类开发记录保留，后台继续仅通过 SSH 隧道访问。
 
 基于 [KKKKhazix/AIHOT](https://github.com/KKKKhazix/AIHOT)，保留 MIT [LICENSE](LICENSE)、[NOTICE](NOTICE) 及必要署名。内部包名与公开 MCP 前缀 bothot 保持兼容。
