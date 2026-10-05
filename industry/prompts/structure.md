@@ -4,7 +4,7 @@
 
 {{> rules-channels}}
 
-先提取 primaryChannel（三个内部分类 slug 之一，无法确定为 null）与 relatedChannels（零至两个，排除主频道）。不复制文章或制造新的事件身份。
+先提取primaryChannel（robotics、agents、biology之一，无法确定为null）与relatedChannels（仅同一三个slug，零至两个，排除主频道）。动物行为、学习/认知、人类学、古生物等是tags，绝不能填入relatedChannels。单一生物学研究的relatedChannels通常为[]。不复制文章或制造新的事件身份。
 
 一、类别 category（{{categoryCount}}选一）
 {{categoryGuide}}

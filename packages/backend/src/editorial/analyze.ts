@@ -1,4 +1,4 @@
-import { ACTIVE_DOMAIN_KEYS, RETAINED_TOPICS, relatedDomains, type DomainKey } from "@aihot/industry/channels";
+import { ACTIVE_DOMAIN_KEYS, RETAINED_TOPICS, isActiveDomain, relatedDomains, type DomainKey } from "@aihot/industry/channels";
 // analyzeArticle: the judging and writing steps, each with its own prompt from the industry pack
 // (industry/prompts/):
 //   1. prefilter: does the material belong to this industry at all (wide recall). Only BLOCK stops an
@@ -113,7 +113,9 @@ const PrefilterSchema = z.object({
   label: z.preprocess((v) => String(v ?? "").trim().toUpperCase(), z.enum(["PASS", "BLOCK", "UNKNOWN"])),
   reason: z.string().max(200).catch(""),
   primaryChannel: z.enum(ACTIVE_DOMAIN_KEYS).nullable().optional(),
-  relatedChannels: z.array(z.enum(ACTIVE_DOMAIN_KEYS)).max(2).default([]),
+  // Optional associations must never turn topic names or retired channels into active domains.
+  // Keep the primary domain strict; the raw receipt retains any discarded associations.
+  relatedChannels: z.array(z.string()).max(2).transform(values => values.filter(isActiveDomain)).default([]),
 });
 
 const FactSchema = z
@@ -129,7 +131,7 @@ const FactSchema = z
 
 const StructureSchema = z.object({
   primaryChannel: z.enum(ACTIVE_DOMAIN_KEYS).nullable().optional(),
-  relatedChannels: z.array(z.enum(ACTIVE_DOMAIN_KEYS)).max(2).default([]),
+  relatedChannels: z.array(z.string()).max(2).transform(values => values.filter(isActiveDomain)).default([]),
   category: z.enum(CATEGORY_KEYS).nullable().catch(null),
   tags: z.array(z.string()).max(12).catch([]),
   subjects: z.array(z.string()).max(6).catch([]),

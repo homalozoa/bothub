@@ -33,9 +33,9 @@ const provider=await stub((_hit,req)=>{
   const request=JSON.parse(req.body); const system=String(request.messages[0]?.content??""); const user=String(request.messages.at(-1)?.content??"");
   const marker=Object.keys(samples).find(k=>user.includes(k))!; const s=samples[marker]!;
   let content: unknown;
-  if(system.includes("三分类宽召回预筛")){calls.push("prefilter");content={label:"PASS",reason:"领域研究",primaryChannel:s.domain,relatedChannels:[]};}
+  if(system.includes("三分类宽召回预筛")){calls.push("prefilter");content={label:"PASS",reason:"领域研究",primaryChannel:s.domain,relatedChannels:marker==='BEE_SAMPLE'?['学习/认知','动物行为']:marker==='FOSSIL_SAMPLE'?['natural-history','sociology']:[]};}
   else if(system.includes("事件注意力评分器")){calls.push("score");assert.match(user,new RegExp(s.domain));content={attentionScore:82};}
-  else if(system.includes("资料结构化助手")){calls.push("structure");content={primaryChannel:s.domain,relatedChannels:[],category:"research",tags:["论文/研究", ...(marker==="FOSSIL_SAMPLE"?["自然史"]:marker==="BEE_SAMPLE"?["游戏与角色"]:[])],subjects:[],fact:{title:s.title,subject:marker,action:"研究",object:marker,occurredAt:null}};}
+  else if(system.includes("资料结构化助手")){calls.push("structure");content={primaryChannel:s.domain,relatedChannels:marker==='BEE_SAMPLE'?['biology','动物行为']:[],category:"research",tags:["论文/研究", ...(marker==="FOSSIL_SAMPLE"?["自然史"]:marker==="BEE_SAMPLE"?["游戏与角色"]:[])],subjects:[],fact:{title:s.title,subject:marker,action:"研究",object:marker,occurredAt:null}};}
   else {calls.push("writing");content={itemType:"research_paper",authorRole:"principal",tags:["论文/研究"],editorialJudgment:"合成测试说明",titleZh:s.title,summaryZh:`${s.title}。材料说明研究对象、方法与适用范围。`};}
   return {choices:[{message:{content:JSON.stringify(content)}}],usage:{prompt_tokens:10,completion_tokens:5}};
 });
@@ -55,6 +55,7 @@ test("non-AI materials traverse shared prefilter, scoring, writing and publicati
     const {articleId}=await upsertMaterial({sourceId:source,url:`https://example.org/${T}/${marker}`,title:marker,bodyText:`${marker} ${s.text.repeat(3)}`,bodyStatus:"ok",via:"fetch",publishedAt:now});ids[marker]=articleId;
     const before=calls.length;const r=await analyzeArticle(articleId);
     assert.equal(r!.output!.primaryChannel,s.domain);assert.equal(r!.output!.selected,true);assert.equal(calls.length-before,5);
+    assert.deepEqual(r!.output!.relatedChannels,[]);
     await publishArticle(articleId,{now,releasedAt:new Date(now.getTime()-1000)});
     const data=await loadPool(filters(s.domain));assert.ok(data.items.some(i=>i.id===articleId));assert.equal(data.items.find(i=>i.id===articleId)!.primaryChannel,s.domain);
   }
