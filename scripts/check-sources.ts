@@ -52,8 +52,9 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
     process.env[name] = "false";
   }
   // A deliberately free path: no Jina, X, WeChat, models, publication, or database calls.
-  const [{ fetchRss }, { fetchJsonList }, { guardedFetch }, { readable }, { assertSupportedConfig }] = await Promise.all([
+  const [{ fetchRss }, { fetchJsonList }, { fetchWebList }, { guardedFetch }, { readable }, { assertSupportedConfig }] = await Promise.all([
     import("../packages/backend/src/sources/rss.ts"), import("../packages/backend/src/sources/json-list.ts"),
+    import("../packages/backend/src/sources/web-list.ts"),
     import("../packages/backend/src/lib/http-fetch.ts"), import("../packages/backend/src/content/extract.ts"),
     import("../packages/backend/src/sources/config-keys.ts"),
   ]);
@@ -70,15 +71,15 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
     const base = { sourceId: source.id, name: source.name, kind: source.kind, enabled: source.enabled, endpoint: source.config.feedUrl ?? source.config.url, ...source.robotics, ...source.editorial, channelHints: source.channel_hints ?? ["robotics"], checkedAt };
     try {
       assertSupportedConfig(source.kind, source.config);
-      if (!['rss', 'json_list'].includes(source.kind)) throw new Error("Unsupported by this free checker; candidate remains unverified.");
+      if (!['rss', 'json_list', 'web_list'].includes(source.kind)) throw new Error("Unsupported by this free checker; candidate remains unverified.");
       if (String(base.endpoint).includes("r.jina.ai")) throw new Error("Paid renderer is prohibited in this checker.");
       const row: SourceRow = { ...source, cursor: null, fail_count: 0 };
       collectorRuns += 1;
-      const candidates: Candidate[] = source.kind === "rss" ? (await fetchRss(row, { force: true })).candidates : await fetchJsonList(row);
+      const candidates: Candidate[] = source.kind === "rss" ? (await fetchRss(row, { force: true })).candidates : source.kind === "web_list" ? await fetchWebList(row) : await fetchJsonList(row);
       // Check no more than three feed entries and fetch one missing body per source.
       const projectCue = (c: Candidate) => /github\.com\/(?:ros2\/ros2|ros-navigation\/navigation2|moveit\/moveit2|ros-controls\/ros2_control)\/releases\//.test(c.url);
       const hasCue = (c: Candidate) => roboticsCue([c.title, c.excerpt ?? "", c.bodyText ?? ""].join(" ")) || projectCue(c);
-      const shortlist = [...candidates.filter(hasCue), ...candidates.filter((c) => !hasCue(c))].slice(0, 3);
+      const shortlist = source.editorial ? candidates.slice(0, 3) : [...candidates.filter(hasCue), ...candidates.filter((c) => !hasCue(c))].slice(0, 3);
       const samples: SampleCheck[] = [];
       let detailUsed = false;
       for (const candidate of shortlist) {
@@ -115,7 +116,7 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
     }
     await pause();
   }
-  const report = { checkedAt: new Date().toISOString(), method: "Production fetchRss/fetchJsonList, guardedFetch and readable; up to 3 candidates (legacy robotics checks prioritize robotics cues; editorial checks validate URL, source date and readable material), <=1 article fetch/source; no model or paid fallback", limits: { sources: sources.length, delayMs, feedTimeoutMs: 25000, bodyTimeoutMs: 20000, maxBodyBytes: 6 * 1024 * 1024 }, requests: { collectorRuns, bodyFetches, note: "Counts of parser runs and detail requests; SSRF-checked redirects can add HTTP requests." }, records: checks };
+  const report = { checkedAt: new Date().toISOString(), method: "Production fetchRss/fetchJsonList/fetchWebList, guardedFetch and readable; up to 3 candidates (legacy robotics checks prioritize robotics cues; editorial checks validate URL, source date and readable material), <=1 article fetch/source; no model or paid fallback", limits: { sources: sources.length, delayMs, feedTimeoutMs: 25000, bodyTimeoutMs: 20000, maxBodyBytes: 6 * 1024 * 1024 }, requests: { collectorRuns, bodyFetches, note: "Counts of parser runs and detail requests; SSRF-checked redirects can add HTTP requests." }, records: checks };
   const { mkdirSync } = await import("node:fs");
   mkdirSync(path.dirname(values.out!), { recursive: true });
   writeFileSync(values.out!, JSON.stringify(report, null, 2) + "\n");

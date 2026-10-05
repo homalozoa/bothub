@@ -1,5 +1,5 @@
 {
-  "comment": "ZooRadar四主频道来源配置；泛游戏开发与SocOpen运营博客停采，历史资料保留在主题中。seed只新增ID，不覆盖管理员修改；收拢提示与停采通过apply-four-channel-sources显式审计。",
+  "comment": "两个阅读频道：AI与机器人、生物学。社会学、游戏角色和一般网站UX来源停采；动物、行为、人类学、古生物定向来源验证后启用。seed只新增ID，停采和提示范围通过显式管理更新审计。",
   "sources": [
     {
       "id": "rss-robot-report",
@@ -1186,7 +1186,7 @@
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false,
-      "enabled": true,
+      "enabled": false,
       "editorial": {
         "language": "en",
         "coverage": [
@@ -1227,7 +1227,6 @@
       "participation_mode": "editorial",
       "interval_minutes": 360,
       "channel_hints": [
-        "sociology",
         "biology"
       ],
       "tags": [
@@ -1236,7 +1235,7 @@
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false,
-      "enabled": true,
+      "enabled": false,
       "editorial": {
         "language": "en",
         "coverage": [
@@ -1278,7 +1277,6 @@
       "participation_mode": "editorial",
       "interval_minutes": 360,
       "channel_hints": [
-        "sociology",
         "agents"
       ],
       "tags": [
@@ -1287,7 +1285,7 @@
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false,
-      "enabled": true,
+      "enabled": false,
       "editorial": {
         "language": "en",
         "coverage": [
@@ -1328,16 +1326,14 @@
       "first_party": true,
       "participation_mode": "editorial",
       "interval_minutes": 360,
-      "channel_hints": [
-        "sociology"
-      ],
+      "channel_hints": [],
       "tags": [
         "en",
         "journal"
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false,
-      "enabled": true,
+      "enabled": false,
       "editorial": {
         "language": "en",
         "coverage": [
@@ -1358,6 +1354,349 @@
           "publishedAt": "2026-08-11T16:00:51.000Z",
           "bodyStatus": "readability",
           "bodyChars": 3781,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      }
+    },
+    {
+      "id": "rss-life-sciencedaily-zoology",
+      "name": "ScienceDaily · Zoology",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.sciencedaily.com/rss/plants_animals/zoology.xml",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": false,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "en",
+        "research"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "channel_hints": [
+        "biology"
+      ],
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "动物学"
+        ],
+        "identity": "media",
+        "homepage": "https://www.sciencedaily.com",
+        "limitations": [
+          "仅公开摘要与原文入口，保持原始日期；新闻稿的研究结论仍须按原论文和方法评价。"
+        ],
+        "validation_status": "verified",
+        "verified_at": "2026-10-05T15:43:44.730Z",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": {
+          "title": "Scientists just named a new snake after Guns N’ Roses legend Slash",
+          "url": "https://www.sciencedaily.com/releases/2026/09/260918024816.htm",
+          "publishedAt": "2026-09-18T12:07:03.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 6275,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      }
+    },
+    {
+      "id": "rss-life-sciencedaily-behavior",
+      "name": "ScienceDaily · Animal Learning",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.sciencedaily.com/rss/plants_animals/animal_learning_and_intelligence.xml",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": false,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "en",
+        "research"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "channel_hints": [
+        "biology"
+      ],
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "动物行为/认知"
+        ],
+        "identity": "media",
+        "homepage": "https://www.sciencedaily.com",
+        "limitations": [
+          "仅公开摘要与原文入口，保持原始日期；新闻稿的研究结论仍须按原论文和方法评价。"
+        ],
+        "validation_status": "verified",
+        "verified_at": "2026-10-05T15:43:50.433Z",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": {
+          "title": "Scientists replayed evolution and found a surprise",
+          "url": "https://www.sciencedaily.com/releases/2025/12/251226045324.htm",
+          "publishedAt": "2025-12-30T20:57:09.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 6279,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      }
+    },
+    {
+      "id": "rss-life-sciencedaily-anthropology",
+      "name": "ScienceDaily · Anthropology",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.sciencedaily.com/rss/fossils_ruins/anthropology.xml",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": false,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "en",
+        "research"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "channel_hints": [
+        "biology"
+      ],
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "人类学"
+        ],
+        "identity": "media",
+        "homepage": "https://www.sciencedaily.com",
+        "limitations": [
+          "仅公开摘要与原文入口，保持原始日期；新闻稿的研究结论仍须按原论文和方法评价。"
+        ],
+        "validation_status": "verified",
+        "verified_at": "2026-10-05T15:43:53.466Z",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": {
+          "title": "UV light reveals possible camouflage on a 125-million-year-old crocodile",
+          "url": "https://www.sciencedaily.com/releases/2026/09/260914102436.htm",
+          "publishedAt": "2026-09-15T14:07:13.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 6869,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      }
+    },
+    {
+      "id": "rss-life-sciencedaily-paleontology",
+      "name": "ScienceDaily · Paleontology",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.sciencedaily.com/rss/fossils_ruins/paleontology.xml",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T2",
+      "first_party": false,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "en",
+        "research"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "channel_hints": [
+        "biology"
+      ],
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "古生物学"
+        ],
+        "identity": "media",
+        "homepage": "https://www.sciencedaily.com",
+        "limitations": [
+          "仅公开摘要与原文入口，保持原始日期；新闻稿的研究结论仍须按原论文和方法评价。"
+        ],
+        "validation_status": "verified",
+        "verified_at": "2026-10-05T15:43:56.393Z",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": {
+          "title": "UV light reveals possible camouflage on a 125-million-year-old crocodile",
+          "url": "https://www.sciencedaily.com/releases/2026/09/260914102436.htm",
+          "publishedAt": "2026-09-15T14:07:13.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 6869,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      }
+    },
+    {
+      "id": "rss-life-animal-behaviour",
+      "name": "Animal Behaviour",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://rss.sciencedirect.com/publication/science/00033472",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "en",
+        "research"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "channel_hints": [
+        "biology"
+      ],
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "动物行为学"
+        ],
+        "identity": "journal",
+        "homepage": "https://rss.sciencedirect.com/publication/science/00033472",
+        "limitations": [
+          "仅公开摘要与原文入口，保持原始日期；新闻稿的研究结论仍须按原论文和方法评价。"
+        ],
+        "validation_status": "body_or_date_unconfirmed",
+        "verified_at": "2026-10-05T15:44:00.896Z",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": null
+      }
+    },
+    {
+      "id": "rss-life-leakey",
+      "name": "The Leakey Foundation",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://leakeyfoundation.org/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "en",
+        "research"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "channel_hints": [
+        "biology"
+      ],
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "人类起源/灵长类"
+        ],
+        "identity": "research-institution",
+        "homepage": "https://leakeyfoundation.org/feed/",
+        "limitations": [
+          "仅公开摘要与原文入口，保持原始日期；新闻稿的研究结论仍须按原论文和方法评价。"
+        ],
+        "validation_status": "verified",
+        "verified_at": "2026-10-05T15:44:07.914Z",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": {
+          "title": "Announcing the 2026 Baldwin Fellows",
+          "url": "https://leakeyfoundation.org/announcing-the-2026-baldwin-fellows/",
+          "publishedAt": "2026-08-05T21:15:07.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 24119,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      }
+    },
+    {
+      "id": "web-life-mpi-behavior",
+      "name": "Max Planck Institute of Animal Behavior",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.ab.mpg.de/news",
+        "parseMode": "html",
+        "itemSelector": "#show-more-news > .teaser",
+        "linkSelector": "h3 a",
+        "titleSelector": "h3",
+        "publishedAtSelector": ".date",
+        "publishedAtUtcOffset": "+02:00",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T1",
+      "first_party": true,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "en",
+        "research"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "channel_hints": [
+        "biology"
+      ],
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "动物行为",
+          "动物认知",
+          "动物生态"
+        ],
+        "identity": "research-institution",
+        "homepage": "https://www.ab.mpg.de/",
+        "limitations": [
+          "机构研究新闻并不替代原论文的方法与独立复现；招聘、活动与奖励不作为研究成果收录。"
+        ],
+        "validation_status": "verified",
+        "verified_at": "2026-10-05T15:46:30.166Z",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": {
+          "title": "Pigeons navigate using magnetic sensors in their livers",
+          "url": "https://www.ab.mpg.de/944599/news_publication_26511515_transferred?c=3273",
+          "publishedAt": "2026-05-27T22:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 5439,
           "roboticsCue": true,
           "relevanceBasis": "material-text"
         }

@@ -1,0 +1,398 @@
+{
+  "checkedAt": "2026-10-05T15:44:10.518Z",
+  "method": "Production fetchRss/fetchJsonList, guardedFetch and readable; up to 3 candidates (legacy robotics checks prioritize robotics cues; editorial checks validate URL, source date and readable material), <=1 article fetch/source; no model or paid fallback",
+  "limits": {
+    "sources": 6,
+    "delayMs": 1000,
+    "feedTimeoutMs": 25000,
+    "bodyTimeoutMs": 20000,
+    "maxBodyBytes": 6291456
+  },
+  "requests": {
+    "collectorRuns": 6,
+    "bodyFetches": 5,
+    "note": "Counts of parser runs and detail requests; SSRF-checked redirects can add HTTP requests."
+  },
+  "records": [
+    {
+      "sourceId": "rss-life-sciencedaily-zoology",
+      "name": "ScienceDaily · Zoology",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://www.sciencedaily.com/rss/plants_animals/zoology.xml",
+      "language": "en",
+      "coverage": [
+        "动物学"
+      ],
+      "identity": "media",
+      "homepage": "https://www.sciencedaily.com",
+      "limitations": [
+        "仅公开摘要与原文入口，保持原始日期；新闻稿的研究结论仍须按原论文和方法评价。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "biology"
+      ],
+      "checkedAt": "2026-10-05T15:43:44.730Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 60,
+      "datedItems": 60,
+      "samples": [
+        {
+          "title": "Scientists just named a new snake after Guns N’ Roses legend Slash",
+          "url": "https://www.sciencedaily.com/releases/2026/09/260918024816.htm",
+          "publishedAt": "2026-09-18T12:07:03.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 6275,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "UV light reveals possible camouflage on a 125-million-year-old crocodile",
+          "url": "https://www.sciencedaily.com/releases/2026/09/260914102436.htm",
+          "publishedAt": "2026-09-15T14:07:13.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Scientists tracked 4,500 animals and found a surprising human effect",
+          "url": "https://www.sciencedaily.com/releases/2026/08/260827010517.htm",
+          "publishedAt": "2026-08-28T05:22:04.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-life-sciencedaily-behavior",
+      "name": "ScienceDaily · Animal Learning",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://www.sciencedaily.com/rss/plants_animals/animal_learning_and_intelligence.xml",
+      "language": "en",
+      "coverage": [
+        "动物行为/认知"
+      ],
+      "identity": "media",
+      "homepage": "https://www.sciencedaily.com",
+      "limitations": [
+        "仅公开摘要与原文入口，保持原始日期；新闻稿的研究结论仍须按原论文和方法评价。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "biology"
+      ],
+      "checkedAt": "2026-10-05T15:43:50.433Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 60,
+      "datedItems": 60,
+      "samples": [
+        {
+          "title": "Scientists replayed evolution and found a surprise",
+          "url": "https://www.sciencedaily.com/releases/2025/12/251226045324.htm",
+          "publishedAt": "2025-12-30T20:57:09.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 6279,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Why tiny bee brains could hold the key to smarter AI",
+          "url": "https://www.sciencedaily.com/releases/2025/08/250824031528.htm",
+          "publishedAt": "2025-08-24T07:15:28.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "These frozen wolf cubs ate a woolly rhino—and changed what we know about dogs",
+          "url": "https://www.sciencedaily.com/releases/2025/06/250624044319.htm",
+          "publishedAt": "2025-06-24T13:24:09.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-life-sciencedaily-anthropology",
+      "name": "ScienceDaily · Anthropology",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://www.sciencedaily.com/rss/fossils_ruins/anthropology.xml",
+      "language": "en",
+      "coverage": [
+        "人类学"
+      ],
+      "identity": "media",
+      "homepage": "https://www.sciencedaily.com",
+      "limitations": [
+        "仅公开摘要与原文入口，保持原始日期；新闻稿的研究结论仍须按原论文和方法评价。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "biology"
+      ],
+      "checkedAt": "2026-10-05T15:43:53.466Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 60,
+      "datedItems": 60,
+      "samples": [
+        {
+          "title": "UV light reveals possible camouflage on a 125-million-year-old crocodile",
+          "url": "https://www.sciencedaily.com/releases/2026/09/260914102436.htm",
+          "publishedAt": "2026-09-15T14:07:13.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 6869,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "The dodo bird had a secret sensory world scientists are only now discovering",
+          "url": "https://www.sciencedaily.com/releases/2026/08/260807035143.htm",
+          "publishedAt": "2026-08-09T00:19:12.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "80-million-year-old snake brain reveals a surprising evolutionary secret",
+          "url": "https://www.sciencedaily.com/releases/2026/08/260804034619.htm",
+          "publishedAt": "2026-08-05T11:42:51.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-life-sciencedaily-paleontology",
+      "name": "ScienceDaily · Paleontology",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://www.sciencedaily.com/rss/fossils_ruins/paleontology.xml",
+      "language": "en",
+      "coverage": [
+        "古生物学"
+      ],
+      "identity": "media",
+      "homepage": "https://www.sciencedaily.com",
+      "limitations": [
+        "仅公开摘要与原文入口，保持原始日期；新闻稿的研究结论仍须按原论文和方法评价。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "biology"
+      ],
+      "checkedAt": "2026-10-05T15:43:56.393Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 60,
+      "datedItems": 60,
+      "samples": [
+        {
+          "title": "UV light reveals possible camouflage on a 125-million-year-old crocodile",
+          "url": "https://www.sciencedaily.com/releases/2026/09/260914102436.htm",
+          "publishedAt": "2026-09-15T14:07:13.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 6869,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "The dodo bird had a secret sensory world scientists are only now discovering",
+          "url": "https://www.sciencedaily.com/releases/2026/08/260807035143.htm",
+          "publishedAt": "2026-08-09T00:19:12.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "80-million-year-old snake brain reveals a surprising evolutionary secret",
+          "url": "https://www.sciencedaily.com/releases/2026/08/260804034619.htm",
+          "publishedAt": "2026-08-05T11:42:51.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-life-animal-behaviour",
+      "name": "Animal Behaviour",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://rss.sciencedirect.com/publication/science/00033472",
+      "language": "en",
+      "coverage": [
+        "动物行为学"
+      ],
+      "identity": "journal",
+      "homepage": "https://rss.sciencedirect.com/publication/science/00033472",
+      "limitations": [
+        "仅公开摘要与原文入口，保持原始日期；新闻稿的研究结论仍须按原论文和方法评价。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "biology"
+      ],
+      "checkedAt": "2026-10-05T15:44:00.896Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "body_or_date_unconfirmed",
+      "itemCount": 35,
+      "datedItems": 0,
+      "samples": [
+        {
+          "title": "Behavioural correlates of Toxoplasma gondii : manipulation or ecological sorting?",
+          "url": "https://www.sciencedirect.com/science/article/pii/S0003347226002551?dgcid=rss_sd_all",
+          "publishedAt": null,
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Effects of simulated high-magnitude floods on first-feeding salmonids at high density in a seminatural environment",
+          "url": "https://www.sciencedirect.com/science/article/pii/S0003347226002095?dgcid=rss_sd_all",
+          "publishedAt": null,
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Old habits die hard: pigeons maintain route fidelity but reduce flight altitude when exposed to a raptor-like robot",
+          "url": "https://www.sciencedirect.com/science/article/pii/S0003347226002368?dgcid=rss_sd_all",
+          "publishedAt": null,
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-life-leakey",
+      "name": "The Leakey Foundation",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://leakeyfoundation.org/feed/",
+      "language": "en",
+      "coverage": [
+        "人类起源/灵长类"
+      ],
+      "identity": "research-institution",
+      "homepage": "https://leakeyfoundation.org/feed/",
+      "limitations": [
+        "仅公开摘要与原文入口，保持原始日期；新闻稿的研究结论仍须按原论文和方法评价。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "biology"
+      ],
+      "checkedAt": "2026-10-05T15:44:07.914Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 20,
+      "datedItems": 20,
+      "samples": [
+        {
+          "title": "Announcing the 2026 Baldwin Fellows",
+          "url": "https://leakeyfoundation.org/announcing-the-2026-baldwin-fellows/",
+          "publishedAt": "2026-08-05T21:15:07.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 24119,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Grantee Spotlight: Dominic Mayo",
+          "url": "https://leakeyfoundation.org/grantee-spotlight-dominic-mayo/",
+          "publishedAt": "2026-06-02T18:37:20.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 6791,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Jane’s Archive",
+          "url": "https://leakeyfoundation.org/janes-archive/",
+          "publishedAt": "2026-04-02T22:19:06.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 15419,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "web-life-mpi-behavior",
+      "name": "Max Planck Institute of Animal Behavior",
+      "kind": "web_list",
+      "enabled": true,
+      "endpoint": "https://www.ab.mpg.de/news",
+      "language": "en",
+      "coverage": [
+        "动物行为",
+        "动物认知",
+        "动物生态"
+      ],
+      "identity": "research-institution",
+      "homepage": "https://www.ab.mpg.de/",
+      "limitations": [
+        "机构研究新闻并不替代原论文的方法与独立复现；招聘、活动与奖励不作为研究成果收录。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "biology"
+      ],
+      "checkedAt": "2026-10-05T15:46:30.166Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 7,
+      "datedItems": 7,
+      "samples": [
+        {
+          "title": "Pigeons navigate using magnetic sensors in their livers",
+          "url": "https://www.ab.mpg.de/944599/news_publication_26511515_transferred?c=3273",
+          "publishedAt": "2026-05-27T22:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 5439,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Learning style predicts survival skills in young orangutans",
+          "url": "https://www.ab.mpg.de/1459695/news_publication_26983581_transferred?c=3273",
+          "publishedAt": "2026-09-23T22:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Young Golden Eagles leave their parents’ territory late",
+          "url": "https://www.ab.mpg.de/1454543/news_publication_26938584_transferred?c=3273",
+          "publishedAt": "2026-08-24T22:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    }
+  ]
+}
