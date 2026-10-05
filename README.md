@@ -1,10 +1,10 @@
 # ZooRadar · OpenZoo
 
-ZooRadar 是 OpenZoo 的四主频道资讯阅读站：机器人、AI 与 Agent、生物学、社会学。综合加四频道共五个领域入口；自然史、人机交互、游戏与角色通过主题聚合。真实来源共用采集、中文摘要、事件归组与发布链路，读者无需注册。
+ZooRadar 是 OpenZoo 的资讯阅读站：AI与机器人、生物学、社会学。综合加三个阅读频道共四个领域入口；模型、Agent、硬件与控制等按主题或内容形态阅读，自然史、人机交互、游戏与角色通过主题聚合。真实来源共用采集、中文摘要、事件归组与发布链路，读者无需注册。
 
 外观默认跟随系统亮暗模式，系统切换后即时更新；桌面侧栏和手机「更多 → 外观」可手动选择深色、浅色或跟随系统，偏好仅保存在浏览器。
 
-线上入口：[OpenZoo](https://openzoo.ai/) · [资讯站](https://news.openzoo.ai/)。五个领域入口已正式上线，网页与静态主页版本 `d94fc07`、API/worker版本 `d2803dd`；全站桌面/手机细节见 [排版复查](docs/layout-audit.md)，亮暗色模式见 [外观更新](docs/system-theme.md)，综合精选的展示修正见 [修复记录](docs/selected-feed-fix.md)，四频道组织见 [四频道记录](docs/four-domain-consolidation.md)。迁移、兼容、信源和开发验证见 [多频道说明](docs/multichannel.md)。后台继续仅通过 SSH 隧道访问。
+线上入口：[OpenZoo](https://openzoo.ai/) · [资讯站](https://news.openzoo.ai/)。四个领域入口已正式上线，网页版本 `8b7152c`，API/worker与静态主页版本 `49dccb6`；合并依据、去重与兼容见 [AI与机器人合并记录](docs/ai-robotics-merge.md)。全站桌面/手机细节见 [排版复查](docs/layout-audit.md)，亮暗色模式见 [外观更新](docs/system-theme.md)。此前四分类开发记录保留，后台继续仅通过 SSH 隧道访问。
 
 基于 [KKKKhazix/AIHOT](https://github.com/KKKKhazix/AIHOT)，保留 MIT [LICENSE](LICENSE)、[NOTICE](NOTICE) 及必要署名。内部包名与公开 MCP 前缀 bothot 保持兼容。
 
@@ -36,7 +36,7 @@ node --env-file=.env apps/web/server.ts
 
 ## 编辑与来源
 
-- 四个主频道与类别、内容形态、主题和来源方式独立。科学与社会材料不要求机器人或 AI 关联。类别 key、既有链接和机器人原订阅保留。
+- 三个阅读频道与类别、内容形态、主题和来源方式独立。内部robotics/agents分类保持兼容，科学与社会材料不要求机器人或AI关联。类别key、既有链接和机器人原订阅保留。
 - 精选看信息增量与决策价值，热点看事件传播讨论。模型分数是编辑排序依据，双次评分不等于两个独立来源核验。
 - [20 个启用来源、9 个未接入候选与1个按偏好停用来源](docs/sources-robotics.md)，配置在 `industry/sources.json`；公开短摘要和原文链接，默认不展示全文或抓取图片。
 - 日报默认 Asia/Shanghai 08:00，通常最多 3 条、配置上限 5 条；允许空刊，核对近 14 天已刊事实。数据库时间使用 UTC，刊期时区可配置。
