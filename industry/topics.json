@@ -2,261 +2,101 @@
   "exportedAt": "2026-10-02",
   "groups": [
     {
-      "key": "company",
-      "name": "公司与机构",
-      "blurb": "追踪公司、研究机构、博物馆与开源组织的进展"
-    },
-    {
       "key": "field",
-      "name": "问题与方向",
-      "blurb": "沿着技术、生命、自然和日常生活的问题继续阅读"
+      "name": "研究主题",
+      "blurb": "按 AI 与机器人、生物学、社会学组织，跨领域主题可在多个方向阅读"
     },
     {
       "key": "genre",
       "name": "内容形态",
-      "blurb": "论文、发布、实践与商业动态各自浏览"
+      "blurb": "论文、模型、产品、开源、评测、实践与分析"
+    },
+    {
+      "key": "company",
+      "name": "公司与机构",
+      "blurb": "追踪已有机构主题；只匹配以该机构为主体的资料"
     }
   ],
   "topics": [
     {
-      "slug": "nvidia",
-      "name": "NVIDIA",
-      "group": "company",
+      "slug": "data-training",
+      "name": "数据与训练",
+      "group": "field",
       "tags": [
-        "NVIDIA",
-        "entity:nvidia"
+        "数据/训练"
       ],
-      "definition": "机器人计算平台、Jetson、Isaac 与机器人相关模型。普通 GPU 或模型新闻只有原文给出具体机器人关联时收录。",
+      "definition": "AI 与机器人数据采集、数据集、训练与评测，关注可访问性、许可证和任务条件。",
       "related": [
-        "on-device",
-        "simulation",
-        "engineering"
+        "learning",
+        "vla",
+        "open-source"
       ],
-      "entityId": "nvidia"
+      "domains": [
+        "ai-robotics"
+      ]
     },
     {
-      "slug": "google",
-      "name": "Google DeepMind",
-      "group": "company",
+      "slug": "agent-tools",
+      "name": "Agent 工具与权限",
+      "group": "field",
       "tags": [
-        "Google DeepMind",
-        "entity:google"
+        "工具/权限"
       ],
-      "definition": "机器人模型、操作学习和具身研究；保留实验环境、任务与验证条件。",
+      "definition": "Agent 的工具调用、任务执行、访问权限和干预边界。",
       "related": [
-        "vla",
+        "agent-memory",
+        "engineering",
+        "human-interaction"
+      ],
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "agent-memory",
+      "name": "Agent 长期记忆",
+      "group": "field",
+      "tags": [
+        "长期记忆"
+      ],
+      "definition": "Agent 如何保留、更新和使用记忆，关注任务延续、检索质量与权限边界。",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "vla",
+      "name": "VLA 与世界模型",
+      "group": "field",
+      "tags": [
+        "VLA/世界模型"
+      ],
+      "definition": "视觉语言动作模型、动作生成与世界模型；区分预测、仿真和真实任务验证，分别检查代码、权重和数据开放。",
+      "related": [
         "manipulation",
-        "papers"
-      ],
-      "entityId": "google"
-    },
-    {
-      "slug": "hugging-face",
-      "name": "Hugging Face / LeRobot",
-      "group": "company",
-      "tags": [
-        "Hugging Face",
-        "entity:hugging-face"
-      ],
-      "definition": "LeRobot 等机器人开源代码、模型、数据与复现进展，逐项说明开放范围。",
-      "related": [
-        "open-source",
         "data-training",
-        "manipulation"
+        "model-releases"
       ],
-      "entityId": "hugging-face"
+      "domains": [
+        "ai-robotics"
+      ]
     },
     {
-      "slug": "open-robotics",
-      "name": "Open Robotics",
-      "group": "company",
+      "slug": "learning",
+      "name": "模仿与强化学习",
+      "group": "field",
       "tags": [
-        "Open Robotics",
-        "entity:open-robotics"
+        "模仿/强化学习"
       ],
-      "definition": "ROS、Gazebo 与机器人软件生态的可复用资产和工程变化。",
+      "definition": "策略学习、训练成本、评测和部署边界；保留任务、样本与干预条件。",
       "related": [
-        "simulation",
-        "engineering",
-        "open-source"
-      ],
-      "entityId": "open-robotics"
-    },
-    {
-      "slug": "unitree",
-      "name": "宇树",
-      "group": "company",
-      "tags": [
-        "宇树",
-        "entity:unitree"
-      ],
-      "definition": "腿足与人形机器人的产品、硬件、软件、交付与实际使用信息。",
-      "related": [
+        "manipulation",
         "legged",
-        "humanoid",
-        "product-updates"
+        "data-training"
       ],
-      "entityId": "unitree"
-    },
-    {
-      "slug": "boston-dynamics",
-      "name": "Boston Dynamics",
-      "group": "company",
-      "tags": [
-        "Boston Dynamics",
-        "entity:boston-dynamics"
-      ],
-      "definition": "腿足、移动与操作机器人的研发、实际部署与产品变化。",
-      "related": [
-        "legged",
-        "long-term-autonomy",
-        "product-updates"
-      ],
-      "entityId": "boston-dynamics"
-    },
-    {
-      "slug": "agility",
-      "name": "Agility Robotics",
-      "group": "company",
-      "tags": [
-        "Agility Robotics",
-        "entity:agility"
-      ],
-      "definition": "机器人部署、交付、客户任务与运行可靠性的信息。",
-      "related": [
-        "humanoid",
-        "long-term-autonomy",
-        "delivery"
-      ],
-      "entityId": "agility"
-    },
-    {
-      "slug": "figure",
-      "name": "Figure",
-      "group": "company",
-      "tags": [
-        "Figure",
-        "entity:figure"
-      ],
-      "definition": "人形机器人与操作模型的发布、评测和交付信息，区分演示与真实部署。",
-      "related": [
-        "humanoid",
-        "vla",
-        "delivery"
-      ],
-      "entityId": "figure"
-    },
-    {
-      "slug": "apptronik",
-      "name": "Apptronik",
-      "group": "company",
-      "tags": [
-        "Apptronik",
-        "entity:apptronik"
-      ],
-      "definition": "机器人产品、执行器、合作与交付进展；合作声明不等于已交付。",
-      "related": [
-        "humanoid",
-        "actuators",
-        "delivery"
-      ],
-      "entityId": "apptronik"
-    },
-    {
-      "slug": "ubtech",
-      "name": "优必选",
-      "group": "company",
-      "tags": [
-        "优必选",
-        "entity:ubtech"
-      ],
-      "definition": "机器人产品、部署、供应链与商业化，区分订单、出货和收入口径。",
-      "related": [
-        "humanoid",
-        "delivery",
-        "industry"
-      ],
-      "entityId": "ubtech"
-    },
-    {
-      "slug": "sony",
-      "name": "Sony / aibo",
-      "group": "company",
-      "tags": [
-        "Sony",
-        "entity:sony"
-      ],
-      "definition": "aibo 等机器人产品的用户体验、功能变化与长期使用证据。",
-      "related": [
-        "companion-entertainment",
-        "delivery",
-        "product-updates"
-      ],
-      "entityId": "sony"
-    },
-    {
-      "slug": "groove-x",
-      "name": "GROOVE X / LOVOT",
-      "group": "company",
-      "tags": [
-        "GROOVE X",
-        "entity:groove-x"
-      ],
-      "definition": "LOVOT 等伙伴机器人的产品、售后、使用体验与商业化动态。",
-      "related": [
-        "companion-entertainment",
-        "delivery",
-        "industry"
-      ],
-      "entityId": "groove-x"
-    },
-    {
-      "slug": "luxonis",
-      "name": "Luxonis",
-      "group": "company",
-      "tags": [
-        "Luxonis",
-        "entity:luxonis"
-      ],
-      "definition": "机器人感知硬件、DepthAI 与部署实践；记录型号、同步和验证条件。",
-      "related": [
-        "sensors",
-        "on-device",
-        "engineering"
-      ],
-      "entityId": "luxonis"
-    },
-    {
-      "slug": "orbbec",
-      "name": "Orbbec / 奥比中光",
-      "group": "company",
-      "tags": [
-        "Orbbec",
-        "entity:orbbec"
-      ],
-      "definition": "机器人深度感知、传感器与驱动变化，保留量程、条件与采购信息。",
-      "related": [
-        "sensors",
-        "engineering",
-        "product-updates"
-      ],
-      "entityId": "orbbec"
-    },
-    {
-      "slug": "robotis",
-      "name": "ROBOTIS",
-      "group": "company",
-      "tags": [
-        "ROBOTIS",
-        "entity:robotis"
-      ],
-      "definition": "机器人执行器、控制与可复用硬件软件资产。",
-      "related": [
-        "actuators",
-        "engineering",
-        "open-source"
-      ],
-      "entityId": "robotis"
+      "domains": [
+        "ai-robotics"
+      ]
     },
     {
       "slug": "on-device",
@@ -265,11 +105,102 @@
       "tags": [
         "计算/端侧"
       ],
-      "definition": "机器人计算平台、端侧部署、功耗、时延与可采购性；不推断普通 AI 硬件的机器人用途。",
+      "definition": "AI 与机器人计算平台、端侧部署、功耗、时延与可采购性；区分模型推理表现和机器人现场验证。",
       "related": [
         "engineering",
         "sensors",
         "nvidia"
+      ],
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "engineering",
+      "name": "部署与系统工程",
+      "group": "field",
+      "tags": [
+        "部署/工程"
+      ],
+      "definition": "AI、Agent 与机器人系统的集成、调试、可靠性、运行成本和可复现实践。",
+      "related": [
+        "long-term-autonomy",
+        "on-device",
+        "tutorials"
+      ],
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "human-interaction",
+      "name": "人机交互",
+      "group": "field",
+      "tags": [
+        "人机交互",
+        "交互/信任",
+        "自主权"
+      ],
+      "definition": "人与 AI、Agent、机器人及其他技术的交互、理解、信任、自主权与使用体验。",
+      "related": [
+        "agent-memory",
+        "virtual-life",
+        "family-care"
+      ],
+      "domains": [
+        "ai-robotics",
+        "sociology"
+      ]
+    },
+    {
+      "slug": "perception-navigation",
+      "name": "感知与定位导航",
+      "group": "field",
+      "tags": [
+        "感知/导航"
+      ],
+      "definition": "机器人感知、SLAM、定位、规划与导航的研究和可复用实现。",
+      "related": [
+        "sensors",
+        "long-term-autonomy",
+        "papers"
+      ],
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "manipulation",
+      "name": "操作与抓取",
+      "group": "field",
+      "tags": [
+        "操作/抓取"
+      ],
+      "definition": "机械臂与机器人操作的任务、数据、策略、泛化和独立复现。",
+      "related": [
+        "vla",
+        "learning",
+        "data-training"
+      ],
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "legged",
+      "name": "腿足控制",
+      "group": "field",
+      "tags": [
+        "腿足控制"
+      ],
+      "definition": "腿足运动、控制、模仿学习和强化学习；区分演示、仿真与物理运行条件。",
+      "related": [
+        "actuators",
+        "learning",
+        "unitree"
+      ],
+      "domains": [
+        "ai-robotics"
       ]
     },
     {
@@ -284,6 +215,9 @@
         "perception-navigation",
         "engineering",
         "luxonis"
+      ],
+      "domains": [
+        "ai-robotics"
       ]
     },
     {
@@ -299,6 +233,9 @@
         "legged",
         "manipulation",
         "engineering"
+      ],
+      "domains": [
+        "ai-robotics"
       ]
     },
     {
@@ -313,119 +250,9 @@
         "open-robotics",
         "engineering",
         "open-source"
-      ]
-    },
-    {
-      "slug": "engineering",
-      "name": "部署与系统工程",
-      "group": "field",
-      "tags": [
-        "部署/工程"
       ],
-      "definition": "把机器人持续运行起来的集成、可靠性、功耗、成本、调试与可复现实践。",
-      "related": [
-        "long-term-autonomy",
-        "on-device",
-        "tutorials"
-      ]
-    },
-    {
-      "slug": "perception-navigation",
-      "name": "感知与定位导航",
-      "group": "field",
-      "tags": [
-        "感知/导航"
-      ],
-      "definition": "机器人感知、SLAM、定位、规划与导航的研究和可复用实现。",
-      "related": [
-        "sensors",
-        "long-term-autonomy",
-        "papers"
-      ]
-    },
-    {
-      "slug": "legged",
-      "name": "腿足控制",
-      "group": "field",
-      "tags": [
-        "腿足控制"
-      ],
-      "definition": "腿足运动、控制、模仿学习和强化学习；区分演示、仿真与物理运行条件。",
-      "related": [
-        "actuators",
-        "learning",
-        "unitree"
-      ]
-    },
-    {
-      "slug": "manipulation",
-      "name": "操作与抓取",
-      "group": "field",
-      "tags": [
-        "操作/抓取"
-      ],
-      "definition": "机械臂与机器人操作的任务、数据、策略、泛化和独立复现。",
-      "related": [
-        "vla",
-        "learning",
-        "data-training"
-      ]
-    },
-    {
-      "slug": "learning",
-      "name": "模仿与强化学习",
-      "group": "field",
-      "tags": [
-        "模仿/强化学习"
-      ],
-      "definition": "机器人策略学习、训练成本、评测和部署边界；保留样本与干预条件。",
-      "related": [
-        "manipulation",
-        "legged",
-        "data-training"
-      ]
-    },
-    {
-      "slug": "vla",
-      "name": "VLA 与世界模型",
-      "group": "field",
-      "tags": [
-        "VLA/世界模型"
-      ],
-      "definition": "以机器人任务为依据的 VLA、动作模型与世界模型；代码、权重与数据的开放分别检查。",
-      "related": [
-        "manipulation",
-        "data-training",
-        "model-releases"
-      ]
-    },
-    {
-      "slug": "data-training",
-      "name": "数据与训练",
-      "group": "field",
-      "tags": [
-        "数据/训练"
-      ],
-      "definition": "机器人采集、遥操作、数据集、训练与评测，关注可访问性、许可证和任务条件。",
-      "related": [
-        "learning",
-        "vla",
-        "open-source"
-      ]
-    },
-    {
-      "slug": "open-source",
-      "name": "开源与可复用资产",
-      "group": "field",
-      "tags": [
-        "开源生态",
-        "开源/仓库"
-      ],
-      "definition": "代码、模型权重、数据和硬件设计分别追踪，项目页或演示不代表可复现。",
-      "related": [
-        "hugging-face",
-        "simulation",
-        "engineering"
+      "domains": [
+        "ai-robotics"
       ]
     },
     {
@@ -441,48 +268,9 @@
         "engineering",
         "perception-navigation",
         "delivery"
-      ]
-    },
-    {
-      "slug": "companion-entertainment",
-      "name": "伙伴与娱乐机器人",
-      "group": "field",
-      "tags": [
-        "伙伴/娱乐机器人"
       ],
-      "definition": "伙伴、娱乐与消费机器人，关注可观察的用户体验、长期使用、售后和真实付费。",
-      "related": [
-        "sony",
-        "groove-x",
-        "delivery"
-      ]
-    },
-    {
-      "slug": "mobile",
-      "name": "移动机器人",
-      "group": "field",
-      "tags": [
-        "移动机器人"
-      ],
-      "definition": "移动机器人的产品、导航与部署，兼顾仓储、服务和消费场景。",
-      "related": [
-        "perception-navigation",
-        "long-term-autonomy",
-        "delivery"
-      ]
-    },
-    {
-      "slug": "arms",
-      "name": "机械臂",
-      "group": "field",
-      "tags": [
-        "机械臂"
-      ],
-      "definition": "机械臂、末端执行器与操作软件的工程、研究和产品进展。",
-      "related": [
-        "manipulation",
-        "actuators",
-        "open-source"
+      "domains": [
+        "ai-robotics"
       ]
     },
     {
@@ -497,6 +285,60 @@
         "legged",
         "manipulation",
         "delivery"
+      ],
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "mobile",
+      "name": "移动机器人",
+      "group": "field",
+      "tags": [
+        "移动机器人"
+      ],
+      "definition": "移动机器人的产品、导航与部署，兼顾仓储、服务和消费场景。",
+      "related": [
+        "perception-navigation",
+        "long-term-autonomy",
+        "delivery"
+      ],
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "arms",
+      "name": "机械臂",
+      "group": "field",
+      "tags": [
+        "机械臂"
+      ],
+      "definition": "机械臂、末端执行器与操作软件的工程、研究和产品进展。",
+      "related": [
+        "manipulation",
+        "actuators",
+        "open-source"
+      ],
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "companion-entertainment",
+      "name": "伙伴与娱乐机器人",
+      "group": "field",
+      "tags": [
+        "伙伴/娱乐机器人"
+      ],
+      "definition": "伙伴、娱乐与消费机器人，关注可观察的用户体验、长期使用、售后和真实付费。",
+      "related": [
+        "sony",
+        "groove-x",
+        "delivery"
+      ],
+      "domains": [
+        "ai-robotics"
       ]
     },
     {
@@ -506,11 +348,14 @@
       "tags": [
         "交付/用户体验"
       ],
-      "definition": "机器人订单、出货、交付、活跃使用、渠道和售后；各数字口径分别表达。",
+      "definition": "AI 与机器人产品的可用性、交付、活跃使用、渠道和售后；订单、出货、用户数和收入口径分别表达。",
       "related": [
         "companion-entertainment",
         "industry",
         "long-term-autonomy"
+      ],
+      "domains": [
+        "ai-robotics"
       ]
     },
     {
@@ -525,244 +370,44 @@
         "actuators",
         "on-device",
         "industry"
-      ]
-    },
-    {
-      "slug": "model-releases",
-      "name": "机器人模型发布",
-      "group": "genre",
-      "tags": [
-        "模型发布"
       ],
-      "definition": "与机器人任务直接相关的模型、权重和版本变化，保留开放范围和验证条件。",
-      "related": [
-        "vla",
-        "learning",
-        "open-source"
-      ]
-    },
-    {
-      "slug": "product-updates",
-      "name": "产品与硬件更新",
-      "group": "genre",
-      "tags": [
-        "产品更新"
-      ],
-      "definition": "机器人产品、硬件和工程工具的发布、可用性与价格变化。",
-      "related": [
-        "delivery",
-        "engineering",
-        "supply-chain"
-      ]
-    },
-    {
-      "slug": "papers",
-      "name": "论文与研究",
-      "group": "genre",
-      "tags": [
-        "论文/研究"
-      ],
-      "definition": "机器人研究的新证据、反证和方法；发表、机构声望或 SOTA 宣称本身不够。",
-      "related": [
-        "perception-navigation",
-        "learning",
-        "benchmarks"
-      ]
-    },
-    {
-      "slug": "benchmarks",
-      "name": "评测与独立复现",
-      "group": "genre",
-      "tags": [
-        "评测/基准"
-      ],
-      "definition": "任务、实验环境、失败和独立复现；厂商自报与独立证据分别表达。",
-      "related": [
-        "papers",
-        "long-term-autonomy",
-        "tutorials"
-      ]
-    },
-    {
-      "slug": "tutorials",
-      "name": "教程与工程实践",
-      "group": "genre",
-      "tags": [
-        "教程/实践"
-      ],
-      "definition": "可复用的机器人代码、标定、部署和制造方法，明确版本与依赖。",
-      "related": [
-        "engineering",
-        "simulation",
-        "open-source"
-      ]
-    },
-    {
-      "slug": "opinions",
-      "name": "观点与分析",
-      "group": "genre",
-      "tags": [
-        "观点/分析"
-      ],
-      "definition": "机器人行业的原创分析、复盘和访谈；编辑推断与来源陈述区分。",
-      "related": [
-        "industry",
-        "delivery",
-        "trends"
-      ]
-    },
-    {
-      "slug": "trends",
-      "name": "现象与趋势",
-      "group": "genre",
-      "tags": [
-        "现象/趋势"
-      ],
-      "definition": "基于具体材料观察机器人技术、使用与市场变化，保留反例和限制。",
-      "related": [
-        "delivery",
-        "opinions",
-        "industry"
+      "domains": [
+        "ai-robotics"
       ]
     },
     {
       "slug": "industry",
-      "name": "行业与商业化",
-      "group": "genre",
+      "name": "产业与商业化",
+      "group": "field",
       "tags": [
         "行业动态"
       ],
-      "definition": "机器人融资、并购、合作、渠道与产业变化，关注已发生的交付或市场结构变化。",
+      "definition": "AI 与机器人产业的融资、并购、合作、渠道和市场变化；合作与融资不等于已交付或已获用户验证。",
       "related": [
         "delivery",
         "supply-chain",
         "policy"
+      ],
+      "domains": [
+        "ai-robotics"
       ]
     },
     {
       "slug": "policy",
       "name": "政策与监管",
-      "group": "genre",
+      "group": "field",
       "tags": [
         "政策/监管"
       ],
-      "definition": "机器人部署、产品安全与产业相关政策，注明地区、阶段和原始文件。",
+      "definition": "AI 与机器人应用、数据、产品安全和技术使用相关政策，注明地区、阶段和原始文件。",
       "related": [
         "industry",
         "long-term-autonomy",
         "engineering"
-      ]
-    },
-    {
-      "slug": "agent-memory",
-      "name": "长期记忆",
-      "group": "field",
-      "tags": [
-        "长期记忆"
       ],
-      "definition": "Agent 的记忆、任务延续和权限边界"
-    },
-    {
-      "slug": "interaction-trust",
-      "name": "交互与信任",
-      "group": "field",
-      "tags": [
-        "交互/信任"
-      ],
-      "definition": "人如何理解、依赖与使用技术"
-    },
-    {
-      "slug": "virtual-life",
-      "name": "虚拟生命",
-      "group": "field",
-      "tags": [
-        "虚拟生命"
-      ],
-      "definition": "角色、养成系统、游戏机制与长期体验"
-    },
-    {
-      "slug": "animal-behavior",
-      "name": "动物行为",
-      "group": "field",
-      "tags": [
-        "动物行为"
-      ],
-      "definition": "学习、感觉、认知与行为机制"
-    },
-    {
-      "slug": "plant-ecology",
-      "name": "植物与生态",
-      "group": "field",
-      "tags": [
-        "植物/生态"
-      ],
-      "definition": "植物、微生物与生态系统"
-    },
-    {
-      "slug": "evolution-history",
-      "name": "演化历史",
-      "group": "field",
-      "tags": [
-        "演化历史"
-      ],
-      "definition": "物种、标本、地层与演化解释"
-    },
-    {
-      "slug": "taxonomy-fieldwork",
-      "name": "分类与田野",
-      "group": "field",
-      "tags": [
-        "标本/田野"
-      ],
-      "definition": "分类依据、物种分布与田野材料"
-    },
-    {
-      "slug": "family-care",
-      "name": "家庭与照护",
-      "group": "field",
-      "tags": [
-        "家庭/照护"
-      ],
-      "definition": "家庭、独居、照护关系和生活实践"
-    },
-    {
-      "slug": "work-leisure",
-      "name": "工作与休闲",
-      "group": "field",
-      "tags": [
-        "工作/休闲"
-      ],
-      "definition": "工作、休闲、社区与社会关系"
-    },
-    {
-      "slug": "natural-history",
-      "name": "自然史",
-      "group": "field",
-      "tags": [
-        "自然史",
-        "演化历史",
-        "系统分类",
-        "标本/田野"
-      ],
-      "definition": "生物学中的物种、标本、分类、演化历史与田野发现；保留原始日期和历史资料。",
-      "related": [
-        "evolution-history",
-        "taxonomy-fieldwork"
-      ]
-    },
-    {
-      "slug": "human-interaction",
-      "name": "人机交互",
-      "group": "field",
-      "tags": [
-        "人机交互",
-        "交互/信任",
-        "自主权"
-      ],
-      "definition": "机器人、AI与Agent、社会生活中的交互、理解、信任与使用体验；也保留此前独立频道的历史文章。",
-      "related": [
-        "interaction-trust",
-        "agent-memory"
+      "domains": [
+        "ai-robotics",
+        "sociology"
       ]
     },
     {
@@ -776,10 +421,570 @@
         "玩家社群",
         "角色关系"
       ],
-      "definition": "智能角色、动物游戏、玩家社群和角色关系等相关内容；此前游戏频道的文章保留供查阅。",
+      "definition": "智能角色、游戏机制、玩家社群和角色关系；动物游戏与学习在生物学的动物行为、学习与认知中阅读。",
       "related": [
         "virtual-life",
+        "community-culture",
         "animal-behavior"
+      ],
+      "domains": [
+        "ai-robotics",
+        "sociology"
+      ]
+    },
+    {
+      "slug": "virtual-life",
+      "name": "虚拟角色与养成",
+      "group": "field",
+      "tags": [
+        "虚拟生命"
+      ],
+      "definition": "智能角色、养成机制与持续互动体验；技术实现与用户关系分别表达。",
+      "domains": [
+        "ai-robotics"
+      ],
+      "related": [
+        "games-and-characters",
+        "human-interaction"
+      ]
+    },
+    {
+      "slug": "animal-behavior",
+      "name": "动物行为",
+      "group": "field",
+      "tags": [
+        "动物行为"
+      ],
+      "definition": "动物的行为、交流、社会互动与适应机制；认知和学习证据见相关主题。",
+      "domains": [
+        "biology"
+      ],
+      "related": [
+        "learning-cognition",
+        "plant-ecology"
+      ]
+    },
+    {
+      "slug": "learning-cognition",
+      "name": "学习与认知",
+      "group": "field",
+      "tags": [
+        "学习/认知"
+      ],
+      "definition": "动物的学习、感觉和认知机制，保留实验条件与解释边界。",
+      "related": [
+        "animal-behavior"
+      ],
+      "domains": [
+        "biology"
+      ]
+    },
+    {
+      "slug": "plant-ecology",
+      "name": "植物、微生物与生态",
+      "group": "field",
+      "tags": [
+        "植物/生态"
+      ],
+      "definition": "植物、微生物、种间关系与生态系统的实验和观察证据。",
+      "domains": [
+        "biology"
+      ]
+    },
+    {
+      "slug": "natural-history",
+      "name": "自然史",
+      "group": "field",
+      "tags": [
+        "自然史",
+        "演化历史",
+        "系统分类",
+        "标本/田野"
+      ],
+      "definition": "物种、标本、演化历史与田野发现；保留原始日期和历史材料。",
+      "related": [
+        "evolution-history",
+        "taxonomy-fieldwork"
+      ],
+      "domains": [
+        "biology"
+      ]
+    },
+    {
+      "slug": "evolution-history",
+      "name": "演化历史",
+      "group": "field",
+      "tags": [
+        "演化历史"
+      ],
+      "definition": "物种、标本、地层与演化解释",
+      "domains": [
+        "biology"
+      ]
+    },
+    {
+      "slug": "taxonomy-fieldwork",
+      "name": "物种分类与田野",
+      "group": "field",
+      "tags": [
+        "标本/田野"
+      ],
+      "definition": "物种分类依据、标本、分布与田野材料；与网站栏目分类区分。",
+      "domains": [
+        "biology"
+      ]
+    },
+    {
+      "slug": "family-care",
+      "name": "家庭与照护",
+      "group": "field",
+      "tags": [
+        "家庭/照护"
+      ],
+      "definition": "家庭、独居、照护关系和生活实践",
+      "domains": [
+        "sociology"
+      ]
+    },
+    {
+      "slug": "work-leisure",
+      "name": "工作与休闲",
+      "group": "field",
+      "tags": [
+        "工作/休闲"
+      ],
+      "definition": "工作、休闲、社区与社会关系",
+      "domains": [
+        "sociology"
+      ]
+    },
+    {
+      "slug": "community-culture",
+      "name": "社区与文化",
+      "group": "field",
+      "tags": [
+        "社区/文化"
+      ],
+      "definition": "社区、文化、规范和生活实践，说明地区、调查或田野时间与研究方法。",
+      "related": [
+        "family-care",
+        "work-leisure",
+        "games-and-characters"
+      ],
+      "domains": [
+        "sociology"
+      ]
+    },
+    {
+      "slug": "interaction-trust",
+      "name": "交互与信任",
+      "group": "field",
+      "tags": [
+        "交互/信任"
+      ],
+      "definition": "人如何理解、依赖与使用技术",
+      "domains": [
+        "ai-robotics",
+        "sociology"
+      ],
+      "aliasOf": "human-interaction"
+    },
+    {
+      "slug": "open-source",
+      "name": "开源与可复用资产",
+      "group": "genre",
+      "tags": [
+        "开源生态",
+        "开源/仓库"
+      ],
+      "definition": "代码、模型权重、数据和硬件设计分别追踪，项目页或演示不代表可复现。",
+      "related": [
+        "hugging-face",
+        "simulation",
+        "engineering"
+      ]
+    },
+    {
+      "slug": "model-releases",
+      "name": "模型发布",
+      "group": "genre",
+      "tags": [
+        "模型发布"
+      ],
+      "definition": "AI 与机器人模型、权重和版本变化，保留开放范围、能力证据和验证条件。",
+      "related": [
+        "vla",
+        "learning",
+        "open-source"
+      ]
+    },
+    {
+      "slug": "product-updates",
+      "name": "产品与工具更新",
+      "group": "genre",
+      "tags": [
+        "产品更新"
+      ],
+      "definition": "AI 应用、Agent 工具、机器人产品、硬件和开发工具的发布、可用性与价格变化。",
+      "related": [
+        "delivery",
+        "engineering",
+        "supply-chain"
+      ]
+    },
+    {
+      "slug": "papers",
+      "name": "论文与研究",
+      "group": "genre",
+      "tags": [
+        "论文/研究"
+      ],
+      "definition": "AI、机器人、生物学与社会学研究的新证据、反证和方法；说明研究对象与适用范围，发表和机构声望本身不够。",
+      "related": [
+        "perception-navigation",
+        "learning",
+        "benchmarks"
+      ]
+    },
+    {
+      "slug": "benchmarks",
+      "name": "评测与复现",
+      "group": "genre",
+      "tags": [
+        "评测/基准"
+      ],
+      "definition": "能力评测、任务基准、实验环境、失败和独立复现；厂商自报与独立证据分别表达。",
+      "related": [
+        "papers",
+        "long-term-autonomy",
+        "tutorials"
+      ]
+    },
+    {
+      "slug": "tutorials",
+      "name": "教程与实践",
+      "group": "genre",
+      "tags": [
+        "教程/实践"
+      ],
+      "definition": "可复用的代码、部署、实验和研究方法，明确步骤、版本、依赖与适用条件。",
+      "related": [
+        "engineering",
+        "simulation",
+        "open-source"
+      ]
+    },
+    {
+      "slug": "opinions",
+      "name": "观点与分析",
+      "group": "genre",
+      "tags": [
+        "观点/分析"
+      ],
+      "definition": "原创分析、复盘和访谈；区分来源陈述、作者观点与编辑推断，保留证据与限制。",
+      "related": [
+        "industry",
+        "delivery",
+        "trends"
+      ]
+    },
+    {
+      "slug": "trends",
+      "name": "现象与趋势",
+      "group": "genre",
+      "tags": [
+        "现象/趋势"
+      ],
+      "definition": "基于具体材料观察技术、生命与社会生活的现象和变化，保留反例和解释范围。",
+      "related": [
+        "delivery",
+        "opinions",
+        "industry"
+      ]
+    },
+    {
+      "slug": "nvidia",
+      "name": "NVIDIA",
+      "group": "company",
+      "tags": [
+        "NVIDIA",
+        "entity:nvidia"
+      ],
+      "definition": "AI 计算、端侧推理、Jetson、Isaac 与机器人平台；保留实际用途、性能条件和可用范围。",
+      "related": [
+        "on-device",
+        "simulation",
+        "engineering"
+      ],
+      "entityId": "nvidia",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "google",
+      "name": "Google DeepMind",
+      "group": "company",
+      "tags": [
+        "Google DeepMind",
+        "entity:google"
+      ],
+      "definition": "AI 模型、能力评测、机器人操作学习与具身研究；保留任务和验证条件。",
+      "related": [
+        "vla",
+        "manipulation",
+        "papers"
+      ],
+      "entityId": "google",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "hugging-face",
+      "name": "Hugging Face / LeRobot",
+      "group": "company",
+      "tags": [
+        "Hugging Face",
+        "entity:hugging-face"
+      ],
+      "definition": "AI 与机器人开源代码、模型、数据及复现进展，逐项说明开放范围。",
+      "related": [
+        "open-source",
+        "data-training",
+        "manipulation"
+      ],
+      "entityId": "hugging-face",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "open-robotics",
+      "name": "Open Robotics",
+      "group": "company",
+      "tags": [
+        "Open Robotics",
+        "entity:open-robotics"
+      ],
+      "definition": "ROS、Gazebo 与机器人软件生态的可复用资产和工程变化。",
+      "related": [
+        "simulation",
+        "engineering",
+        "open-source"
+      ],
+      "entityId": "open-robotics",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "unitree",
+      "name": "宇树",
+      "group": "company",
+      "tags": [
+        "宇树",
+        "entity:unitree"
+      ],
+      "definition": "腿足与人形机器人的产品、硬件、软件、交付与实际使用信息。",
+      "related": [
+        "legged",
+        "humanoid",
+        "product-updates"
+      ],
+      "entityId": "unitree",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "boston-dynamics",
+      "name": "Boston Dynamics",
+      "group": "company",
+      "tags": [
+        "Boston Dynamics",
+        "entity:boston-dynamics"
+      ],
+      "definition": "腿足、移动与操作机器人的研发、实际部署与产品变化。",
+      "related": [
+        "legged",
+        "long-term-autonomy",
+        "product-updates"
+      ],
+      "entityId": "boston-dynamics",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "agility",
+      "name": "Agility Robotics",
+      "group": "company",
+      "tags": [
+        "Agility Robotics",
+        "entity:agility"
+      ],
+      "definition": "机器人部署、交付、客户任务与运行可靠性的信息。",
+      "related": [
+        "humanoid",
+        "long-term-autonomy",
+        "delivery"
+      ],
+      "entityId": "agility",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "figure",
+      "name": "Figure",
+      "group": "company",
+      "tags": [
+        "Figure",
+        "entity:figure"
+      ],
+      "definition": "人形机器人与操作模型的发布、评测和交付信息，区分演示与真实部署。",
+      "related": [
+        "humanoid",
+        "vla",
+        "delivery"
+      ],
+      "entityId": "figure",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "apptronik",
+      "name": "Apptronik",
+      "group": "company",
+      "tags": [
+        "Apptronik",
+        "entity:apptronik"
+      ],
+      "definition": "机器人产品、执行器、合作与交付进展；合作声明不等于已交付。",
+      "related": [
+        "humanoid",
+        "actuators",
+        "delivery"
+      ],
+      "entityId": "apptronik",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "ubtech",
+      "name": "优必选",
+      "group": "company",
+      "tags": [
+        "优必选",
+        "entity:ubtech"
+      ],
+      "definition": "机器人产品、部署、供应链与商业化，区分订单、出货和收入口径。",
+      "related": [
+        "humanoid",
+        "delivery",
+        "industry"
+      ],
+      "entityId": "ubtech",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "sony",
+      "name": "Sony / aibo",
+      "group": "company",
+      "tags": [
+        "Sony",
+        "entity:sony"
+      ],
+      "definition": "aibo 等机器人产品的用户体验、功能变化与长期使用证据。",
+      "related": [
+        "companion-entertainment",
+        "delivery",
+        "product-updates"
+      ],
+      "entityId": "sony",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "groove-x",
+      "name": "GROOVE X / LOVOT",
+      "group": "company",
+      "tags": [
+        "GROOVE X",
+        "entity:groove-x"
+      ],
+      "definition": "LOVOT 等伙伴机器人的产品、售后、使用体验与商业化动态。",
+      "related": [
+        "companion-entertainment",
+        "delivery",
+        "industry"
+      ],
+      "entityId": "groove-x",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "luxonis",
+      "name": "Luxonis",
+      "group": "company",
+      "tags": [
+        "Luxonis",
+        "entity:luxonis"
+      ],
+      "definition": "机器人感知硬件、DepthAI 与部署实践；记录型号、同步和验证条件。",
+      "related": [
+        "sensors",
+        "on-device",
+        "engineering"
+      ],
+      "entityId": "luxonis",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "orbbec",
+      "name": "Orbbec / 奥比中光",
+      "group": "company",
+      "tags": [
+        "Orbbec",
+        "entity:orbbec"
+      ],
+      "definition": "机器人深度感知、传感器与驱动变化，保留量程、条件与采购信息。",
+      "related": [
+        "sensors",
+        "engineering",
+        "product-updates"
+      ],
+      "entityId": "orbbec",
+      "domains": [
+        "ai-robotics"
+      ]
+    },
+    {
+      "slug": "robotis",
+      "name": "ROBOTIS",
+      "group": "company",
+      "tags": [
+        "ROBOTIS",
+        "entity:robotis"
+      ],
+      "definition": "机器人执行器、控制与可复用硬件软件资产。",
+      "related": [
+        "actuators",
+        "engineering",
+        "open-source"
+      ],
+      "entityId": "robotis",
+      "domains": [
+        "ai-robotics"
       ]
     }
   ]

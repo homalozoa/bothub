@@ -28,7 +28,7 @@ export function siteDomainInfo(key: SiteDomainKey) { return key === "ai-robotics
 export const RETAINED_TOPICS = [
   { domain: "natural-history", slug: "natural-history", name: "自然史", tag: "自然史", tags: ["自然史", "演化历史", "系统分类", "标本/田野"], parents: ["biology"] },
   { domain: "interaction", slug: "human-interaction", name: "人机交互", tag: "人机交互", tags: ["人机交互", "交互/信任", "自主权"], parents: ["robotics", "agents", "sociology"] },
-  { domain: "play", slug: "games-and-characters", name: "游戏与角色", tag: "游戏与角色", tags: ["游戏与角色", "虚拟生命", "游戏设计", "玩家社群", "角色关系"], parents: ["agents", "biology", "sociology"] },
+  { domain: "play", slug: "games-and-characters", name: "游戏与角色", tag: "游戏与角色", tags: ["游戏与角色", "虚拟生命", "游戏设计", "玩家社群", "角色关系"], parents: ["agents", "sociology"] },
 ] as const;
 export function isDomainKey(value: unknown): value is DomainKey { return typeof value === "string" && DOMAIN_KEYS.includes(value as DomainKey); }
 export function isActiveDomain(value: unknown): value is ActiveDomainKey { return typeof value === "string" && ACTIVE_DOMAIN_KEYS.includes(value as ActiveDomainKey); }

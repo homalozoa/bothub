@@ -3,7 +3,7 @@
 export const CATEGORIES = [
   { key: "hardware", label: "硬件与系统", section: "硬件与系统工程", guide: "机器人与AI计算平台、端侧推理、传感器与同步标定、通信总线、电机与执行器、机构、功耗、BSP、ROS、仿真、可靠性、成本和可采购性；以工程资产与系统变化为核心" },
   { key: "research", label: "研究与开源", section: "研究与开源", guide: "机器人与AI研究、模型与能力评测、生物学实验与观察、演化分类、社会调查与田野、论文、技术报告、数据与开源资产；分别说明方法、证据、代码、权重、数据和许可" },
-  { key: "industry", label: "产品与商业化", section: "产品与商业化", guide: "消费、伙伴与娱乐、移动、机械臂和人形机器人的发布、交付、定价、体验、销量口径、售后、渠道、供应链和产业变化；融资不等于商业验证" },
+  { key: "industry", label: "产品与商业化", section: "产品与商业化", guide: "AI应用、Agent工具与消费、伙伴、移动、机械臂和人形机器人的发布、交付、定价、体验、销量口径、售后、渠道、供应链和产业变化；融资不等于商业验证" },
 ] as const;
 
 // 保留上游七种输出类型及其评分权重。机器人硬件发布也使用 product_launch。
@@ -75,7 +75,7 @@ export const IDENTITY_LEXICON: ReadonlyArray<{ id: string; name: string; pattern
   { id: "orbbec", name: "Orbbec", patterns: [/orbbec|奥比中光/i] },
   { id: "robotis", name: "ROBOTIS", patterns: [/robotis|dynamixel/i] },
   { id: "arduino", name: "Arduino", patterns: [/arduino/i] },
-  // 普通 AI 消息不收录；原有身份安全词典仍保留，防止模型在机器人材料里补写其他公司。
+  // 身份安全词典防止模型在材料里补写未经来源支持的公司。
   { id: "deepseek", name: "DeepSeek", patterns: [/deepseek|深度求索/i] },
   { id: "xai", name: "xAI / Grok", patterns: [/\bxai\b|\bgrok\b/i] },
   { id: "microsoft", name: "Microsoft / Copilot", patterns: [/microsoft|copilot|微软/i] },
