@@ -40,11 +40,12 @@ const api = createServer((req, res) => {
     return res.end(JSON.stringify({filters:{domain:url.searchParams.get("domain") ?? "all",channel:"all",category:null,tag:url.searchParams.get("tag"),topic:null,q:url.searchParams.get("q"),tab:"time"},items:[],page:1,pageCount:1,total:0,todayCount:0,freshness:"2026-09-28T00:00:00Z",generatedAt:"2026-09-28T00:00:00Z"}));
   }
   if (url.pathname === "/api/site/topics" || url.pathname === "/api/site/topics/test-topic") {
+    siteQueries.push(url.pathname+url.search);
     res.setHeader("X-Accel-Expires", `@${deadline}`);
     res.setHeader("Cache-Control", "public, max-age=30, s-maxage=30");
     const topic = { slug: "test-topic", name: "测试主题", group: "field", definition: "测试说明", total: 0, recent: 0, indexable: false, latestAt: null, related: [] };
     return res.end(JSON.stringify(url.pathname.endsWith("test-topic")
-      ? { topic, items: [], page: 1, pageCount: 1, refreshAt } : { topics: [topic], refreshAt }));
+      ? { topic, items: [], page: 1, pageCount: 1, refreshAt, ...(url.searchParams.get("view") === "all" ? { view: "all" } : {}) } : { topics: [topic], refreshAt }));
   }
   if (url.pathname === "/api/site/hot") return res.end(JSON.stringify({ entries: [] }));
   if (url.pathname === "/api/site/echo-client") return res.end(JSON.stringify({ forwarded: req.headers["x-forwarded-for"], real: req.headers["x-real-ip"] }));
@@ -309,4 +310,41 @@ test("legacy robotics and AI website links redirect to one combined entrance and
   assert.equal(response.status,200);const html=await response.text();
   assert.match(html,/AI 与机器人/);assert.match(html,/feed\/channels\/ai-robotics\.xml/);
   assert.doesNotMatch(html,/href="\/channels\/robotics"/);assert.doesNotMatch(html,/href="\/channels\/agents"/);
+});
+
+test("channel topics match their subject and incompatible topic filters do not follow domain navigation", async () => {
+  const response = await fetch(origin + '/channels/ai-robotics?topic=human-interaction');
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  const nav = html.match(/<nav[^>]*aria-label="领域频道"[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(nav);
+  assert.match(nav, /href="\/channels\/biology"/);
+  assert.doesNotMatch(nav, /biology\?topic=human-interaction/);
+  assert.match(nav, /sociology\?topic=human-interaction/);
+  assert.match(html, /<option value="agent-tools">Agent 工具与权限<\/option>/);
+  const biology = await (await fetch(origin + '/channels/biology')).text();
+  assert.match(biology, /<option value="learning-cognition">学习与认知<\/option>/);
+  assert.doesNotMatch(biology, /<option value="games-and-characters"/);
+});
+
+test("content shape and source can combine without clearing the other filter", async () => {
+  const html = await (await fetch(origin + '/?tag=' + encodeURIComponent('论文/研究') + '&channel=firstParty')).text();
+  const forms = html.match(/<nav[^>]*aria-label="内容形态"[\s\S]*?<\/nav>/)?.[0];
+  const sources = html.match(/<nav[^>]*aria-label="来源"[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(forms); assert.ok(sources);
+  assert.match(forms, /tag=[^"\s]+(?:&amp;|&)channel=firstParty/);
+  assert.doesNotMatch(forms, />一手来源</);
+  assert.match(sources, /tag=[^"\s]+(?:&amp;|&)channel=news/);
+});
+
+test("topic HTML defaults to all readable material and still supports explicit selected records", async () => {
+  for (const [query, expected] of [['', 'all'], ['?view=selected', 'selected']]) {
+    const offset = siteQueries.length;
+    const response = await fetch(origin + '/topics/test-topic' + query);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.ok(siteQueries.slice(offset).some(q => q.startsWith('/api/site/topics/test-topic?') && new URL(q, origin).searchParams.get('view') === expected));
+    assert.match(html, /aria-label="主题阅读方式"/);
+    assert.match(html, /全部资料/);
+  }
 });

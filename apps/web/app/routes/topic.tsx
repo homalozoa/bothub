@@ -31,6 +31,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   if (params.page === "1") throw redirect(`/topics/${params.slug}`, 308);
   const upstream = new Headers();
   const query = new URL(request.url).searchParams; query.set("page", String(page));
+  if (!query.has("view")) query.set("view", "all");
   const data = await loadOr404<TopicPageData>(`/api/site/topics/${encodeURIComponent(params.slug)}?${query}`, { signal: request.signal, responseHeaders: upstream });
   return withHeaders({ data }, { headers: releaseBoundCache(data.refreshAt, 60, Date.now(), upstream) });
 }
@@ -77,7 +78,7 @@ export default function TopicPage() {
             <span className="flex flex-wrap items-center gap-1.5 text-[12.5px]">
               <span className="text-ink-4">相关主题</span>
               {topic.related.map((r) => (
-                <Link key={r.slug} to={`/topics/${r.slug}`} className="chip">
+                <Link key={r.slug} to={`/topics/${r.slug}?view=all`} className="chip">
                   {r.name}
                 </Link>
               ))}
@@ -86,9 +87,9 @@ export default function TopicPage() {
         </div>
       </header>
 
-      {theme && <div className="mb-5"><div className="reader-toolbar"><nav className="reading-switch" aria-label="主题阅读方式"><Link aria-current={archive ? "page" : undefined} to={`/topics/${topic.slug}?view=all`}>全部资料</Link><Link aria-current={!archive ? "page" : undefined} to={`/topics/${topic.slug}?view=selected`}>精选</Link></nav><a className="rss-link" href={`/feed/channels/${theme.domain}.xml`}>主题精选 RSS ↗</a></div><SearchField action={`/topics/${topic.slug}`} variant="bar" defaultValue={params.get("q") ?? ""} keep={{ view: "all" }} /></div>}
+      <div className="mb-5"><div className="reader-toolbar"><nav className="reading-switch" aria-label="主题阅读方式"><Link aria-current={archive ? "page" : undefined} to={`/topics/${topic.slug}?view=all`}>全部资料</Link><Link aria-current={!archive ? "page" : undefined} to={`/topics/${topic.slug}?view=selected`}>精选</Link></nav>{theme && <a className="rss-link" href={`/feed/channels/${theme.domain}.xml`}>主题精选 RSS ↗</a>}</div><SearchField action={`/topics/${topic.slug}`} variant="bar" defaultValue={params.get("q") ?? ""} keep={{ view: "all" }} /></div>
       <div className="mb-1 mt-2 flex items-baseline justify-between">
-        <h2 className="text-[18px] font-bold text-ink">{archive ? "已收录资料" : "最新精选"}</h2>
+        <h2 className="text-[18px] font-bold text-ink">{archive ? "已收录资料" : "入选记录"}</h2>
         {items.length > 0 && (
           <span className="num text-[12px] text-ink-4">
             第 {first}–{last} 条 · 共 {topic.total.toLocaleString("zh-CN")} 条

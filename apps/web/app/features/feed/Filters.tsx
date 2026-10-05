@@ -4,6 +4,7 @@ import { Form, Link, useNavigation, useSearchParams } from "react-router";
 import { CATEGORY_LABELS, type CategoryKey, type ChannelKey } from "@aihot/contracts/taxonomy";
 import { IconClose, IconSearch } from "../../components/icons";
 import { PillTabs } from "../../components/ui/Tabs";
+import { CONTENT_FORMS } from "@aihot/industry/topic-navigation";
 
 /** Same page with some query parameters changed (paging state dropped). */
 export function hrefWith(base: string, params: URLSearchParams, patch: Record<string, string | null>) {
@@ -21,16 +22,17 @@ export function hrefWith(base: string, params: URLSearchParams, patch: Record<st
 /** Content shape and source are independent of the editorial domain. Legacy category URLs remain readable. */
 export function ContentTabs({ base, tag, category, channel = "all", layoutId, size = "md", className = "" }: { base: string; tag: string | null; category?: CategoryKey | null; channel?: ChannelKey; layoutId: string; size?: "md" | "sm"; className?: string }) {
   const [params] = useSearchParams();
-  const forms = ["论文/研究", "模型发布", "产品更新", "开源/仓库", "观点/分析", "教程/实践"];
+  const forms = CONTENT_FORMS;
   const items = [
-    { key: "all", label: "全部形态", to: hrefWith(base, params, { tag: null, category: null, channel: null }) },
-    { key: "firstParty", label: "一手来源", to: hrefWith(base, params, { tag: null, category: null, channel: "firstParty" }) },
-    ...forms.map(key => ({ key, label: key, to: hrefWith(base, params, { tag: key, category: null, channel: null }) })),
+    { key: "all", label: "全部形态", to: hrefWith(base, params, { tag: null, category: null }) },
+    ...forms.map(key => ({ key, label: key, to: hrefWith(base, params, { tag: key, category: null }) })),
     ...(tag && !forms.includes(tag) ? [{ key: tag, label: `#${tag}`, to: hrefWith(base, params, { tag }) }] : []),
     ...(category ? [{ key: category, label: `原方向：${CATEGORY_LABELS[category]}`, to: hrefWith(base, params, { category }) }] : []),
   ];
-  const active = channel === "firstParty" ? "firstParty" : (tag ?? category ?? "all");
-  return <PillTabs items={items} active={active} layoutId={layoutId} label="内容形态与来源" size={size} className={className} />;
+  return <div className={`flex min-w-0 flex-col gap-2 ${className}`}>
+    <PillTabs items={items} active={tag ?? category ?? "all"} layoutId={layoutId} label="内容形态" size={size} />
+    <PillTabs items={[["all", "全部来源"], ["firstParty", "一手来源"], ["news", "资讯"], ["x", "X"]].map(([key, label]) => ({ key: key!, label: label!, to: hrefWith(base, params, { channel: key === "all" ? null : key! }) }))} active={channel} layoutId={`${layoutId}-source`} label="来源" size="xs" />
+  </div>;
 }
 
 function useSlashFocus(ref: React.RefObject<HTMLInputElement | null>) {

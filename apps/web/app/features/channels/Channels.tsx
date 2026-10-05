@@ -1,6 +1,7 @@
 import { monthDayTime } from "../../lib/format";
 import { Link, useLocation, useSearchParams } from "react-router";
-import { DISPLAY_DOMAINS as DOMAINS, RETAINED_TOPICS, readingDomain, type DomainKey, type SiteDomainKey } from "@aihot/industry/channels";
+import { DISPLAY_DOMAINS as DOMAINS, readingDomain, type DomainKey, type SiteDomainKey } from "@aihot/industry/channels";
+import { topicShortcuts, topicsForDomain } from "@aihot/industry/topic-navigation";
 import type { TimelineCard } from "@aihot/contracts/site";
 import { useEffect, useRef } from "react";
 
@@ -40,9 +41,12 @@ export function DomainNav({ active = "all", base }: { active?: SiteDomainKey | "
   const { search } = useLocation();
   const keep = new URLSearchParams(search);
   keep.delete("page"); keep.delete("domain"); keep.delete("q"); keep.delete("since"); keep.delete("tag");
-  const suffix = keep.toString() ? `?${keep}` : "";
   const target = (key: SiteDomainKey | "all") => {
-    if (!base) return key === "all" ? "/" : `/channels/${key}${suffix}`;
+    if (!base) {
+      const sp = new URLSearchParams(keep);
+      if (key === "all" || !topicsForDomain(key).some(t => t.slug === sp.get("topic"))) sp.delete("topic");
+      return key === "all" ? "/" : `/channels/${key}${sp.toString() ? `?${sp}` : ""}`;
+    }
     const sp = new URLSearchParams(search); sp.delete("page"); sp.delete("cursor"); sp.delete("category"); sp.delete("topic");
     if (key === "all") sp.delete("domain"); else sp.set("domain", key);
     return base + (sp.toString() ? `?${sp}` : "");
@@ -64,9 +68,9 @@ export function ChannelGrid({ channels, compact = false, selectedOverview = fals
 
 export function TopicLinks({ domain }: { domain?: SiteDomainKey }) {
   const [params] = useSearchParams();
-  const topics = RETAINED_TOPICS.filter(t => !domain || (domain === "ai-robotics" ? t.parents.some(p => p === "robotics" || p === "agents") : (t.parents as readonly string[]).includes(domain)));
+  const topics = topicShortcuts(domain);
   return <div className="topic-shortcuts"><span>按主题看</span>{topics.map(t => {
     const sp = new URLSearchParams(params); sp.delete("page"); sp.delete("cursor"); sp.set("topic", t.slug);
-    return <Link key={t.slug} to={domain ? `/channels/${domain}?${sp}` : `/topics/${t.slug}`}>{t.name} <span aria-hidden="true">↗</span></Link>;
-  })}<Link to="/topics">全部主题 ↗</Link></div>;
+    return <Link key={t.slug} aria-current={domain && params.get("topic") === t.slug ? "page" : undefined} to={domain ? `/channels/${domain}?${sp}` : `/topics/${t.slug}?view=all`}>{t.name} <span aria-hidden="true">↗</span></Link>;
+  })}<Link to={domain ? `/topics#topics-${readingDomain(domain)}` : "/topics"}>全部主题 ↗</Link></div>;
 }

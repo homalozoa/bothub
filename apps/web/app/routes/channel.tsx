@@ -1,5 +1,7 @@
 import { Form, Link, redirect, data as withHeaders, useLoaderData, useSearchParams } from "react-router";
-import { siteDomainInfo, isSiteDomainKey, readingDomain, domainPath, retainedTopic, RETAINED_TOPICS } from "@aihot/industry/channels";
+import { siteDomainInfo, isSiteDomainKey, readingDomain, domainPath, retainedTopic } from "@aihot/industry/channels";
+import { CONTENT_FORMS, topicsForDomain } from "@aihot/industry/topic-navigation";
+import catalog from "@aihot/industry/topics.json";
 import { isCategoryKey, isChannelKey } from "@aihot/contracts/taxonomy";
 import type { PoolResponse, TimelineResponse } from "@aihot/contracts/site";
 import type { Route } from "./+types/channel";
@@ -39,12 +41,12 @@ export function meta({ loaderData, location }: Route.MetaArgs) {
   return [...pageMeta({ title: `${loaderData.domain.label}${loaderData.q ? ` · 搜索 ${loaderData.q}` : ""}`, description: loaderData.domain.description, path: `${location.pathname}${location.search}`, noindex: !!loaderData.q }),
     { tagName: "link", rel: "alternate", type: "application/rss+xml", title: `${loaderData.domain.label}精选`, href: `/feed/channels/${loaderData.domain.key}.xml` }];
 }
-const types = ["论文/研究", "模型发布", "开源/仓库", "观点/分析", "教程/实践", "产品更新"];
 export default function Channel() {
   const { domain, mode, result, q, since } = useLoaderData<typeof loader>();
   const [params] = useSearchParams();
   const base = `/channels/${domain.key}`;
   const f = result.filters;
+  const topics = topicsForDomain(domain.key);
   const empty = "cards" in result ? result.cards.length === 0 && !result.nextCursor : result.items.length === 0;
   const keep = { view: "latest", topic: f.topic ?? null, tag: f.tag, category: f.category, channel: f.channel === "all" ? null : f.channel, since };
   return <div className="radar-page">
@@ -65,8 +67,8 @@ export default function Channel() {
       <SearchField action={base} defaultValue={q ?? ""} keep={keep} variant="bar" />
       <Form method="get" action={base} className="channel-filter-form">
         <input type="hidden" name="view" value={mode} />{q && <input type="hidden" name="q" value={q} />}
-        <label>主题<select name="topic" defaultValue={f.topic ?? ""} key={`topic-${f.topic}`}><option value="">全部主题</option>{RETAINED_TOPICS.filter(t => domain.key === "ai-robotics" ? t.parents.some(p => p === "robotics" || p === "agents") : (t.parents as readonly string[]).includes(domain.key)).map(t => <option key={t.slug} value={t.slug}>{t.name}</option>)}</select></label>
-        <label>内容形态<select name="tag" defaultValue={f.tag ?? ""} key={`tag-${f.tag}`}><option value="">全部形态</option>{types.map(t => <option key={t}>{t}</option>)}</select></label>
+        <label>主题<select name="topic" defaultValue={f.topic ?? ""} key={`topic-${f.topic}`}><option value="">全部主题</option>{f.topic && !topics.some(t => t.slug === f.topic) && <option value={f.topic}>当前主题：{catalog.topics.find(t => t.slug === f.topic)?.name ?? f.topic}</option>}{topics.map(t => <option key={t.slug} value={t.slug}>{t.name}</option>)}</select></label>
+        <label>内容形态<select name="tag" defaultValue={f.tag ?? ""} key={`tag-${f.tag}`}><option value="">全部形态</option>{f.tag && !CONTENT_FORMS.includes(f.tag) && <option value={f.tag}>当前标签：{f.tag}</option>}{CONTENT_FORMS.map(t => <option key={t}>{t}</option>)}</select></label>
         <label>来源<select name="channel" defaultValue={f.channel} key={`source-${f.channel}`}><option value="all">全部来源</option><option value="firstParty">一手来源</option><option value="news">资讯</option><option value="x">X</option></select></label>
         <label>起始日期<input type="date" name="since" defaultValue={since ?? ""} key={`since-${since}`} /></label>
         <button type="submit">筛选</button>

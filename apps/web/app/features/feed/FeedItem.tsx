@@ -1,4 +1,4 @@
-import { DOMAIN_LABELS, domainPath } from "@aihot/industry/channels";
+import { SITE_DOMAIN_LABELS, domainPath, readingDomain } from "@aihot/industry/channels";
 // One report in a feed. Desktop (≥ 961px): a white card beside the time rail. Mobile: a compact row
 // with a divider, the reason in a grey box. One markup, two presentations, as on the original site.
 import { memo } from "react";
@@ -30,11 +30,12 @@ export const FeedItem = memo(function FeedItem({ item, mobileTime, group, filter
   const showSources = !!group && (group.additionalSourceCount > 0 || (group.developmentCount <= 1 && group.reportCount > 1));
   const showDevelopments = !!group?.story && group.developmentCount > 1;
   const tags = showTags ? item.tags.slice(0, 3) : [];
+  const showCategory = showTags && item.category && (!item.primaryChannel || ["robotics", "agents"].includes(item.primaryChannel));
 
   return (
     <article className="relative min-w-0 lg:card lg:card-hover lg:px-[18px] lg:pb-[14px] lg:pt-[15px]" data-item-id={item.id}>
       <header className="flex min-h-[18px] items-center gap-2 text-[12.5px] leading-[18px] text-ink-4">
-        {item.primaryChannel && (!filters?.domain || filters.domain === "all") && <span className="relative z-10 hidden sm:inline"><Link to={domainPath(item.primaryChannel)} className="text-accent">{DOMAIN_LABELS[item.primaryChannel]}</Link><span className="ml-2">·</span></span>}
+        {item.primaryChannel && (!filters?.domain || filters.domain === "all") && <span className="relative z-10 hidden sm:inline"><Link to={domainPath(item.primaryChannel)} className="text-accent">{SITE_DOMAIN_LABELS[readingDomain(item.primaryChannel)]}</Link><span className="ml-2">·</span></span>}
         <SourceLine item={item} className="flex-1 text-ink-4" />
         {item.historical && <Badge title="历史资料，保留原始日期；不属于当前资讯">历史资料</Badge>}
         {item.selected && (
@@ -76,9 +77,9 @@ export const FeedItem = memo(function FeedItem({ item, mobileTime, group, filter
       {isX && item.x!.media.length > 0 && <MediaThumbs media={item.x!.media} className="mt-2.5" />}
       {isX && item.x!.quoted?.text && <QuotedLine quoted={item.x!.quoted} />}
 
-      {(tags.length > 0 || (showTags && item.category)) && (
+      {(tags.length > 0 || showCategory) && (
         <div className="relative z-10 mt-2 hidden flex-wrap gap-x-2.5 gap-y-1 text-[12px] text-ink-4 lg:flex">
-          {showTags && item.category && (
+          {showCategory && item.category && (
             <Link to={`/all?${item.primaryChannel ? `domain=${item.primaryChannel}&` : ""}category=${item.category}`} className="hover:text-accent">
               {CATEGORY_LABELS[item.category]}
             </Link>
