@@ -1,6 +1,6 @@
 import { Form, Link, redirect, data as withHeaders, useLoaderData, useSearchParams } from "react-router";
 import { siteDomainInfo, isSiteDomainKey, readingDomain, domainPath, retainedTopic } from "@aihot/industry/channels";
-import { CONTENT_FORMS, topicsForDomain } from "@aihot/industry/topic-navigation";
+import { contentFormsForDomain, subtopicsForDomain } from "@aihot/industry/topic-navigation";
 import catalog from "@aihot/industry/topics.json";
 import { isCategoryKey, isChannelKey } from "@aihot/contracts/taxonomy";
 import type { PoolResponse, TimelineResponse } from "@aihot/contracts/site";
@@ -15,6 +15,7 @@ import { SearchField, hrefWith } from "../features/feed/Filters";
 
 export async function loader({ request, params }: Route.LoaderArgs) {
   if (!isSiteDomainKey(params.domain)) throw new Response("Unknown channel", { status: 404 });
+  if (params.domain === "sociology" || params.domain === "play") throw redirect("/channels", 308);
   const legacy = retainedTopic(params.domain);
   if (legacy || readingDomain(params.domain) !== params.domain) throw redirect(`${domainPath(params.domain)}${new URL(request.url).search}`, 308);
   const domain = siteDomainInfo(params.domain);
@@ -46,7 +47,8 @@ export default function Channel() {
   const [params] = useSearchParams();
   const base = `/channels/${domain.key}`;
   const f = result.filters;
-  const topics = topicsForDomain(domain.key);
+  const topics = subtopicsForDomain(domain.key);
+  const forms = contentFormsForDomain(domain.key);
   const empty = "cards" in result ? result.cards.length === 0 && !result.nextCursor : result.items.length === 0;
   const keep = { view: "latest", topic: f.topic ?? null, tag: f.tag, category: f.category, channel: f.channel === "all" ? null : f.channel, since };
   return <div className="radar-page">
@@ -68,7 +70,7 @@ export default function Channel() {
       <Form method="get" action={base} className="channel-filter-form">
         <input type="hidden" name="view" value={mode} />{q && <input type="hidden" name="q" value={q} />}
         <label>主题<select name="topic" defaultValue={f.topic ?? ""} key={`topic-${f.topic}`}><option value="">全部主题</option>{f.topic && !topics.some(t => t.slug === f.topic) && <option value={f.topic}>当前主题：{catalog.topics.find(t => t.slug === f.topic)?.name ?? f.topic}</option>}{topics.map(t => <option key={t.slug} value={t.slug}>{t.name}</option>)}</select></label>
-        <label>内容形态<select name="tag" defaultValue={f.tag ?? ""} key={`tag-${f.tag}`}><option value="">全部形态</option>{f.tag && !CONTENT_FORMS.includes(f.tag) && <option value={f.tag}>当前标签：{f.tag}</option>}{CONTENT_FORMS.map(t => <option key={t}>{t}</option>)}</select></label>
+        <label>内容形态<select name="tag" defaultValue={f.tag ?? ""} key={`tag-${f.tag}`}><option value="">全部形态</option>{f.tag && !forms.includes(f.tag) && <option value={f.tag}>当前标签：{f.tag}</option>}{forms.map(t => <option key={t}>{t}</option>)}</select></label>
         <label>来源<select name="channel" defaultValue={f.channel} key={`source-${f.channel}`}><option value="all">全部来源</option><option value="firstParty">一手来源</option><option value="news">资讯</option><option value="x">X</option></select></label>
         <label>起始日期<input type="date" name="since" defaultValue={since ?? ""} key={`since-${since}`} /></label>
         <button type="submit">筛选</button>

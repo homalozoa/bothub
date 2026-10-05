@@ -701,8 +701,11 @@ nav[aria-label="底部导航"] a[aria-current="page"]::after {
 .object-people { width:71px; height:71px; left:18%; bottom:7%; background:#cfebff; color:#5879a0; border-radius:20px; transform:rotate(9deg); }
 .art-spark { position:absolute; color:var(--accent); }.spark-one { right:6%; top:49%; font-size:40px; }.spark-two { left:14%; top:14%; font-size:29px; }
 .radar-section-heading { display:flex; justify-content:space-between; align-items:flex-end; gap:14px; margin:24px 0 16px; }.radar-section-heading h2 { font-size:21px; font-weight:700; letter-spacing:-.035em; margin-top:4px; }.radar-section-heading>a { font-size:12px; color:var(--accent); white-space:nowrap; }
-.channel-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
-.channel-grid.compact { grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; margin-bottom:28px; }
+.channel-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.channel-grid.compact { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin-bottom:28px; }
+.feed-filter-bar { display:grid; grid-template-columns:minmax(0,1fr) 260px; align-items:start; gap:16px; margin-bottom:20px; }
+.feed-filter-bar>form { width:100%; min-width:0; height:42px; }
+@media(max-width:960px) { .feed-filter-bar { grid-template-columns:minmax(0,1fr); gap:12px; } }
 .channel-tile { display:flex; flex-direction:column; border:1px solid var(--line); background:var(--surface); border-radius:20px; padding:20px; min-width:0; transition:border-color .2s, transform .2s; }
 .channel-tile:hover { border-color:var(--accent); transform:translateY(-2px); }
 .channel-tile-heading { display:grid; grid-template-columns:1fr auto; align-items:center; position:relative; }.channel-tile-heading svg { width:40px; height:40px; color:var(--accent); margin-bottom:18px; }

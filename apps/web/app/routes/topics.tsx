@@ -1,5 +1,5 @@
 import { DISPLAY_DOMAINS, retainedTopic } from "@aihot/industry/channels";
-import { topicsForDomain } from "@aihot/industry/topic-navigation";
+import { subtopicsForDomain } from "@aihot/industry/topic-navigation";
 import { data as withHeaders, Link, useLoaderData } from "react-router";
 import { subjectAfter, withSubject } from "@aihot/industry/site";
 import catalog from "@aihot/industry/topics.json";
@@ -22,7 +22,7 @@ export async function loader({ request }: { request: Request }) {
   const upstream = new Headers();
   const data = await apiGet<{ topics: TopicSummary[]; refreshAt: string | null }>("/api/site/topics", { signal: request.signal, responseHeaders: upstream });
   const sections = [
-    ...DISPLAY_DOMAINS.map(d => ({ key: d.key, name: d.label, blurb: d.description, slugs: topicsForDomain(d.key).map(t => t.slug) })),
+    ...DISPLAY_DOMAINS.map(d => ({ key: d.key, name: d.label, blurb: d.description, slugs: subtopicsForDomain(d.key).map(t => t.slug) })),
     ...catalog.groups.filter(g => g.key !== "field").map(g => ({ ...g, slugs: catalog.topics.filter(t => t.group === g.key).map(t => t.slug) })),
   ];
   return withHeaders({ ...data, sections }, { headers: releaseBoundCache(data.refreshAt, 300, Date.now(), upstream) });
@@ -30,7 +30,7 @@ export async function loader({ request }: { request: Request }) {
 
 export function meta({ loaderData }: Route.MetaArgs) {
   const description = loaderData
-    ? `${subjectAfter("按 AI 与机器人、生物学、社会学组织的", "主题页")}，也可按内容形态、公司与机构阅读。`
+    ? `${subjectAfter("按 AI 与机器人、动物与人类研究组织的", "主题页")}，也可按内容形态、公司与机构阅读。`
     : withSubject("主题页");
   return pageMeta({ title: "主题", description, path: "/topics", image: "/og/pages/topics.png" });
 }

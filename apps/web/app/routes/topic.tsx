@@ -1,4 +1,5 @@
 import { retainedTopic } from "@aihot/industry/channels";
+import catalog from "@aihot/industry/topics.json";
 import { SearchField } from "../features/feed/Filters";
 import { SITE, withSubject } from "@aihot/industry/site";
 import { data as withHeaders, Link, redirect, useLoaderData, useSearchParams } from "react-router";
@@ -25,6 +26,8 @@ interface TopicPageData {
 }
 
 export async function loader({ params, request }: Route.LoaderArgs) {
+  const entry = catalog.topics.find(t => t.slug === params.slug);
+  if (entry && "hidden" in entry && entry.hidden) throw redirect("/topics", 308);
   const page = params.page ? Number(params.page) : 1;
   if (params.page !== undefined && (!/^\d+$/.test(params.page) || page < 1)) throw new Response("Not found", { status: 404 });
   // Page 1 lives at the topic's own address (308).
@@ -32,6 +35,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
   const upstream = new Headers();
   const query = new URL(request.url).searchParams; query.set("page", String(page));
   if (!query.has("view")) query.set("view", "all");
+  if (params.slug === "human-interaction") query.set("domain", "ai-robotics");
   const data = await loadOr404<TopicPageData>(`/api/site/topics/${encodeURIComponent(params.slug)}?${query}`, { signal: request.signal, responseHeaders: upstream });
   return withHeaders({ data }, { headers: releaseBoundCache(data.refreshAt, 60, Date.now(), upstream) });
 }
@@ -87,7 +91,7 @@ export default function TopicPage() {
         </div>
       </header>
 
-      <div className="mb-5"><div className="reader-toolbar"><nav className="reading-switch" aria-label="主题阅读方式"><Link aria-current={archive ? "page" : undefined} to={`/topics/${topic.slug}?view=all`}>全部资料</Link><Link aria-current={!archive ? "page" : undefined} to={`/topics/${topic.slug}?view=selected`}>精选</Link></nav>{theme && <a className="rss-link" href={`/feed/channels/${theme.domain}.xml`}>主题精选 RSS ↗</a>}</div><SearchField action={`/topics/${topic.slug}`} variant="bar" defaultValue={params.get("q") ?? ""} keep={{ view: "all" }} /></div>
+      <div className="mb-5"><div className="reader-toolbar"><nav className="reading-switch" aria-label="主题阅读方式"><Link aria-current={archive ? "page" : undefined} to={`/topics/${topic.slug}?view=all`}>全部资料</Link><Link aria-current={!archive ? "page" : undefined} to={`/topics/${topic.slug}?view=selected`}>精选</Link></nav>{theme && <a className="rss-link" href={`/feed/channels/${topic.slug === "human-interaction" ? "ai-robotics" : theme.domain}.xml`}>{topic.slug === "human-interaction" ? "AI与机器人" : "主题精选"} RSS ↗</a>}</div><SearchField action={`/topics/${topic.slug}`} variant="bar" defaultValue={params.get("q") ?? ""} keep={{ view: "all" }} /></div>
       <div className="mb-1 mt-2 flex items-baseline justify-between">
         <h2 className="text-[18px] font-bold text-ink">{archive ? "已收录资料" : "入选记录"}</h2>
         {items.length > 0 && (

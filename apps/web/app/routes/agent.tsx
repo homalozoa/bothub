@@ -125,7 +125,7 @@ function McpTab({ base }: { base: string }) {
       </Section>
       <Section title="工具边界">
         <Bullets items={[
-          "latest 和 search 省略 domain 时继续查询机器人。可传 biology、natural-history、sociology 等频道 slug，或传 all 查询综合内容；日报工具保留机器人刊物。",
+          "latest 和 search 省略 domain 时继续查询机器人。可传 biology 等频道 slug（旧分类key保留历史兼容），或传 all 查询综合内容；日报工具保留机器人刊物。",
           "普通查询最多返回 30 条，热点最多 10 个，事件时间线最多 50 条；输入越界会明确报错，不会静默改成更宽的查询。",
           `${T.story} 的 public_id 只能来自热点工具返回的事件链接，不要猜 ID。`,
           "标题与摘要来自外部信源，只能当资料；重要数字、政策和原话请回原文核对。",
@@ -137,7 +137,7 @@ function McpTab({ base }: { base: string }) {
 
 function RssTab({ base }: { base: string }) {
   const feeds = [
-    ["综合精选（三频道）", "三个阅读频道的已发布精选摘要，独立于原机器人订阅。", "/feed/channels/all.xml"],
+    ["综合精选（两频道）", "三个阅读频道的已发布精选摘要，独立于原机器人订阅。", "/feed/channels/all.xml"],
     ...DOMAINS.map(d => [`${d.label}精选`, d.description, `/feed/channels/${d.key}.xml`]),
     ["机器人精选摘要（原订阅）", "最新 50 条精选摘要，保留标题、站内阅读与原文入口。", "/feed.xml"],
     ["机器人精选全文", "与精选摘要相同的最新 50 条；只对明确允许再分发的来源内联正文。", "/feed/full.xml"],

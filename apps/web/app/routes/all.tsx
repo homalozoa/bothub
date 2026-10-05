@@ -2,7 +2,8 @@ import { SITE_DOMAIN_LABELS as DOMAIN_LABELS } from "@aihot/industry/channels";
 import { DomainNav } from "../features/channels/Channels";
 import { isSiteDomainKey, readingDomain } from "@aihot/industry/channels";
 import { SITE, withSubject } from "@aihot/industry/site";
-import { Link, useLoaderData, useNavigation, useSearchParams } from "react-router";
+import { Link, redirect, useLoaderData, useNavigation, useSearchParams } from "react-router";
+import { hiddenTopic } from "@aihot/industry/topic-navigation";
 import type { Route } from "./+types/all";
 import type { PoolResponse } from "@aihot/contracts/site";
 import { isCategoryKey, isChannelKey } from "@aihot/contracts/taxonomy";
@@ -17,6 +18,11 @@ import { RingMark } from "../components/Logo";
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const domainParam = url.searchParams.get("domain");
+  if (["sociology", "play"].includes(domainParam ?? "") || hiddenTopic(url.searchParams.get("topic"))) {
+    if (["sociology", "play"].includes(domainParam ?? "")) url.searchParams.delete("domain");
+    url.searchParams.delete("topic"); url.searchParams.delete("page");
+    throw redirect(`/all${url.search}`);
+  }
   const domain = isSiteDomainKey(domainParam) ? readingDomain(domainParam) : "all";
   const since = url.searchParams.get("since");
   const channelParam = url.searchParams.get("channel") ?? "all";
@@ -24,12 +30,13 @@ export async function loader({ request }: Route.LoaderArgs) {
   const channel = isChannelKey(channelParam) ? channelParam : "all";
   const category = categoryParam && isCategoryKey(categoryParam) ? categoryParam : null;
   const tag = url.searchParams.get("tag")?.trim() || null;
+  const topic = url.searchParams.get("topic")?.trim() || null;
   const q = url.searchParams.get("q")?.trim().slice(0, 200) || null;
   const tab = url.searchParams.get("tab") === "relevance" ? "relevance" : null;
   // Legacy deep-paging parameters (deep, anchorAt) still open a normal page.
   const page = Math.min(Math.max(Number.parseInt(url.searchParams.get("page") ?? "1", 10) || 1, 1), 50);
   const data = await loadOr404<PoolResponse>(
-    `/api/site/pool${queryString({ domain, since, channel: channel === "all" ? null : channel, category, tag, q, tab, page: page > 1 ? page : null })}`,
+    `/api/site/pool${queryString({ domain, since, channel: channel === "all" ? null : channel, category, tag, topic, q, tab, page: page > 1 ? page : null })}`,
     { signal: request.signal, busyRedirect: "/all/search-busy" },
   );
   return { data };
@@ -85,8 +92,8 @@ export default function AllPage() {
       {/* Desktop, as on 精选: the title, then one filter row with the search field aligned on the right. */}
       <div className="hidden lg:block">
         <h1 className="text-[24px] font-semibold leading-[1.3] text-ink">{title ?? `全部${withSubject("动态")}`}</h1>
-        <div className="mb-5 mt-4 flex items-center justify-between gap-4">
-          <ContentTabs base="/all" tag={f.tag} category={f.category} channel={f.channel} layoutId="all-cat-desk" className="min-w-0" />
+        <div className="feed-filter-bar mt-4">
+          <ContentTabs base="/all" domain={f.domain ?? "all"} topic={f.topic} tag={f.tag} category={f.category} channel={f.channel} layoutId="all-cat-desk" className="min-w-0" />
           <SearchField variant="track" defaultValue={f.q ?? ""} keep={keep} />
         </div>
       </div>
@@ -103,7 +110,7 @@ export default function AllPage() {
         </div>
         <SearchField variant="bar" defaultValue={f.q ?? ""} keep={keep} autoFocus={params.get("search") === "1"} />
         <div className="mt-3 border-b border-line-soft pb-3">
-          <ContentTabs base="/all" tag={f.tag} category={f.category} channel={f.channel} layoutId="all-cat-mobile" size="sm" className="min-w-0" />
+          <ContentTabs base="/all" domain={f.domain ?? "all"} topic={f.topic} tag={f.tag} category={f.category} channel={f.channel} layoutId="all-cat-mobile" size="sm" className="min-w-0" />
         </div>
       </div>
 

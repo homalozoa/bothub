@@ -4,7 +4,8 @@ import { Form, Link, useNavigation, useSearchParams } from "react-router";
 import { CATEGORY_LABELS, type CategoryKey, type ChannelKey } from "@aihot/contracts/taxonomy";
 import { IconClose, IconSearch } from "../../components/icons";
 import { PillTabs } from "../../components/ui/Tabs";
-import { CONTENT_FORMS } from "@aihot/industry/topic-navigation";
+import { contentFormsForDomain, subtopicsForDomain } from "@aihot/industry/topic-navigation";
+import { type SiteDomainKey } from "@aihot/industry/channels";
 
 /** Same page with some query parameters changed (paging state dropped). */
 export function hrefWith(base: string, params: URLSearchParams, patch: Record<string, string | null>) {
@@ -20,18 +21,26 @@ export function hrefWith(base: string, params: URLSearchParams, patch: Record<st
 }
 
 /** Content shape and source are independent of the editorial domain. Legacy category URLs remain readable. */
-export function ContentTabs({ base, tag, category, channel = "all", layoutId, size = "md", className = "" }: { base: string; tag: string | null; category?: CategoryKey | null; channel?: ChannelKey; layoutId: string; size?: "md" | "sm"; className?: string }) {
+export function ContentTabs({ base, tag, topic = null, domain = "all", category, channel = "all", layoutId, size = "md", className = "" }: { base: string; tag: string | null; topic?: string | null; domain?: SiteDomainKey | "all"; category?: CategoryKey | null; channel?: ChannelKey; layoutId: string; size?: "md" | "sm"; className?: string }) {
   const [params] = useSearchParams();
-  const forms = CONTENT_FORMS;
+  const forms = contentFormsForDomain(domain);
+  const topics = subtopicsForDomain(domain);
   const items = [
     { key: "all", label: "全部形态", to: hrefWith(base, params, { tag: null, category: null }) },
     ...forms.map(key => ({ key, label: key, to: hrefWith(base, params, { tag: key, category: null }) })),
     ...(tag && !forms.includes(tag) ? [{ key: tag, label: `#${tag}`, to: hrefWith(base, params, { tag }) }] : []),
     ...(category ? [{ key: category, label: `原方向：${CATEGORY_LABELS[category]}`, to: hrefWith(base, params, { category }) }] : []),
   ];
+  const subjects = [{ key: "all", label: "全部分类", to: hrefWith(base, params, { topic: null, category: null }) },
+    ...topics.map(t => ({ key: t.slug, label: t.name, to: hrefWith(base, params, { topic: t.slug, category: null }) })),
+    ...(topic && !topics.some(t => t.slug === topic) ? [{ key: topic, label: "当前主题", to: hrefWith(base, params, { topic }) }] : [])];
+  const sources = domain === "biology" ? [["all", "全部来源"], ["firstParty", "一手来源"], ["news", "资讯"]] : [["all", "全部来源"], ["firstParty", "一手来源"], ["news", "资讯"], ["x", "X"]];
   return <div className={`flex min-w-0 flex-col gap-2 ${className}`}>
-    <PillTabs items={items} active={tag ?? category ?? "all"} layoutId={layoutId} label="内容形态" size={size} />
-    <PillTabs items={[["all", "全部来源"], ["firstParty", "一手来源"], ["news", "资讯"], ["x", "X"]].map(([key, label]) => ({ key: key!, label: label!, to: hrefWith(base, params, { channel: key === "all" ? null : key! }) }))} active={channel} layoutId={`${layoutId}-source`} label="来源" size="xs" />
+    <PillTabs items={topics.length ? subjects : items} active={topics.length ? topic ?? "all" : tag ?? category ?? "all"} layoutId={layoutId} label={topics.length ? "频道分类" : "内容形态"} size={size} />
+    <div className="flex min-w-0 flex-wrap gap-x-3 gap-y-2">
+      {topics.length > 0 && <PillTabs items={items} active={tag ?? category ?? "all"} layoutId={`${layoutId}-form`} label="内容形态" size="xs" className="min-w-0" />}
+      <PillTabs items={sources.map(([key, label]) => ({ key: key!, label: label!, to: hrefWith(base, params, { channel: key === "all" ? null : key! }) }))} active={channel} layoutId={`${layoutId}-source`} label="来源" size="xs" className="min-w-0" />
+    </div>
   </div>;
 }
 

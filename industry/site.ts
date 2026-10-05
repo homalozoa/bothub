@@ -12,11 +12,11 @@ export const SITE = {
    */
   subject: "资讯",
   /** 首页的完整标题（浏览器标签、搜索结果）。 */
-  homeTitle: "ZooRadar · 智能、生命与社会的新进展",
+  homeTitle: "ZooRadar · 智能、动物与演化的新进展",
   /** 一句话介绍：搜索引擎、分享卡片、RSS、llms.txt 会用。 */
-  description: "追踪 AI 与机器人、生物学与社会学的新进展。沿着原始来源阅读，用中文摘要连接智能、生命与日常生活。",
+  description: "追踪 AI 与机器人、动物与人类研究的新进展。沿着原始来源阅读，用中文摘要连接智能、动物与演化。",
   /** 首页左上角和侧边栏下面的一行小字。 */
-  tagline: "追踪智能、生命与社会",
+  tagline: "追踪智能、动物与演化",
   /** 界面语言（HTML lang、og:locale）。 */
   locale: "zh-CN",
   /** 默认域名，只在没设置 SITE_URL 时使用。 */

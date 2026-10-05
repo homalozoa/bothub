@@ -47,7 +47,7 @@ export function DomainNav({ active = "all", base }: { active?: SiteDomainKey | "
       if (key === "all" || !topicsForDomain(key).some(t => t.slug === sp.get("topic"))) sp.delete("topic");
       return key === "all" ? "/" : `/channels/${key}${sp.toString() ? `?${sp}` : ""}`;
     }
-    const sp = new URLSearchParams(search); sp.delete("page"); sp.delete("cursor"); sp.delete("category"); sp.delete("topic");
+    const sp = new URLSearchParams(search); sp.delete("page"); sp.delete("cursor"); sp.delete("category"); sp.delete("topic"); sp.delete("tag");
     if (key === "all") sp.delete("domain"); else sp.set("domain", key);
     return base + (sp.toString() ? `?${sp}` : "");
   };

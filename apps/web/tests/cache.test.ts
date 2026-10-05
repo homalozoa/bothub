@@ -30,14 +30,14 @@ const api = createServer((req, res) => {
   if (url.pathname === "/api/site/channels") return res.end(JSON.stringify({ channels: showEditorialExample ? DOMAINS.map(d=>({...d,total:8,featured:d.key === "biology" ? {key:"abio-fixture",anchorAt:"2026-09-28T00:00:00Z",group:null,item:{id:"bio-fixture",title:"公开生物学精选示例",source:{name:"科学期刊"},publishedAt:"2026-09-28T00:00:00Z",timelineAt:"2026-09-28T00:00:00Z"}} : null})) : [], refreshAt: null }));
   if (url.pathname === "/api/site/timeline") {
     siteQueries.push(url.pathname+url.search);
-    const filters = { domain:url.searchParams.get("domain") ?? "all", channel:url.searchParams.get("channel") ?? "all", category: url.searchParams.get("category"), tag:url.searchParams.get("tag"), topic: null };
+    const filters = { domain:url.searchParams.get("domain") ?? "all", channel:url.searchParams.get("channel") ?? "all", category: url.searchParams.get("category"), tag:url.searchParams.get("tag"), topic: url.searchParams.get("topic") };
     res.setHeader("X-Accel-Expires", `@${deadline}`);
     res.setHeader("Cache-Control", "public, max-age=30, s-maxage=30");
     return res.end(JSON.stringify({ filters, cards: [], nextCursor: null, refreshAt, dayCounts: [], hot: null, generatedAt: "2026-09-28T00:00:00Z" }));
   }
   if (url.pathname === "/api/site/pool") {
     siteQueries.push(url.pathname+url.search);
-    return res.end(JSON.stringify({filters:{domain:url.searchParams.get("domain") ?? "all",channel:"all",category:null,tag:url.searchParams.get("tag"),topic:null,q:url.searchParams.get("q"),tab:"time"},items:[],page:1,pageCount:1,total:0,todayCount:0,freshness:"2026-09-28T00:00:00Z",generatedAt:"2026-09-28T00:00:00Z"}));
+    return res.end(JSON.stringify({filters:{domain:url.searchParams.get("domain") ?? "all",channel:"all",category:null,tag:url.searchParams.get("tag"),topic:url.searchParams.get("topic"),q:url.searchParams.get("q"),tab:"time"},items:[],page:1,pageCount:1,total:0,todayCount:0,freshness:"2026-09-28T00:00:00Z",generatedAt:"2026-09-28T00:00:00Z"}));
   }
   if (url.pathname === "/api/site/topics" || url.pathname === "/api/site/topics/test-topic") {
     siteQueries.push(url.pathname+url.search);
@@ -280,11 +280,11 @@ test("home domain selections reach the publication query and scope stays present
   assert.ok(siteQueries.some(q=>q.startsWith('/api/site/timeline?')&&new URL(q,'http://api.local').searchParams.get('domain')==='biology'));
   assert.match(html,/生物学精选/);assert.match(html,/name="domain" value="biology"/);
   assert.doesNotMatch(html,/THE OPENZOO READING ROOM/);
-  assert.match(html,/domain=sociology/);
+  assert.match(html,/domain=ai-robotics/);assert.doesNotMatch(html,/domain=sociology/);
 });
 test("latest-domain navigation keeps the latest view and keyword search instead of switching into selected pages",async()=>{
   const r=await fetch(origin+'/all?domain=biology&q=learning');assert.equal(r.status,200);const html=await r.text();
-  assert.match(html,/\/all\?domain=sociology(?:&amp;|&)q=learning/);
+  assert.match(html,/\/all\?domain=ai-robotics(?:&amp;|&)q=learning/);
   assert.match(html,/name="domain" value="biology"/);assert.doesNotMatch(html,/产品与商业化/);
 });
 
@@ -320,8 +320,8 @@ test("channel topics match their subject and incompatible topic filters do not f
   assert.ok(nav);
   assert.match(nav, /href="\/channels\/biology"/);
   assert.doesNotMatch(nav, /biology\?topic=human-interaction/);
-  assert.match(nav, /sociology\?topic=human-interaction/);
-  assert.match(html, /<option value="agent-tools">Agent 工具与权限<\/option>/);
+  assert.doesNotMatch(nav, /sociology/);
+  assert.match(html, /<option value="agent-tools">Agent<\/option>/);
   const biology = await (await fetch(origin + '/channels/biology')).text();
   assert.match(biology, /<option value="learning-cognition">学习与认知<\/option>/);
   assert.doesNotMatch(biology, /<option value="games-and-characters"/);
@@ -347,4 +347,27 @@ test("topic HTML defaults to all readable material and still supports explicit s
     assert.match(html, /aria-label="主题阅读方式"/);
     assert.match(html, /全部资料/);
   }
+});
+
+test("biology and AI use different subcategories and biology omits technical content forms", async () => {
+  const bio = await (await fetch(origin + '/?domain=biology&topic=paleontology')).text();
+  const subjects = bio.match(/<nav[^>]*aria-label="频道分类"[\s\S]*?<\/nav>/)?.[0];
+  const forms = bio.match(/<nav[^>]*aria-label="内容形态"[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(subjects); assert.ok(forms);
+  assert.match(subjects, /动物学/); assert.match(subjects, /人类学/); assert.match(subjects, /古生物学/);
+  assert.doesNotMatch(forms, /模型发布|产品更新|开源\/仓库/);
+  assert.doesNotMatch(bio, /href="\/channels\/sociology"/);
+  assert.ok(siteQueries.some(q => new URL(q, origin).searchParams.get('topic') === 'paleontology'));
+  const ai = await (await fetch(origin + '/?domain=ai-robotics')).text();
+  const aiSubjects = ai.match(/<nav[^>]*aria-label="频道分类"[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(aiSubjects); assert.match(aiSubjects, /人机交互|具身智能/); assert.doesNotMatch(aiSubjects, /古生物学|人类学/);
+});
+
+test("retired sociology and game website entrances leave the active navigation", async () => {
+  for (const path of ['/channels/sociology', '/channels/play', '/topics/games-and-characters', '/topics/virtual-life']) {
+    const r = await fetch(origin + path, { redirect: 'manual' });
+    assert.equal(r.status, 308); assert.ok(['/channels', '/topics'].includes(r.headers.get('Location')!));
+  }
+  const r = await fetch(origin + '/all?domain=sociology&q=primate&page=2', { redirect: 'manual' });
+  assert.equal(r.status, 302); assert.equal(r.headers.get('Location'), '/all?q=primate');
 });
