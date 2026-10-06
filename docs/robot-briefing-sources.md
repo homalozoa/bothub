@@ -26,7 +26,7 @@ arXiv cs.RO、NVIDIA 机器人博客等已有来源沿用现有 ID；不为单�
 | IDC Research | 机器人市场研究；保留方法与统计口径 | [HTML](https://www.idc.com/resource-center/blog/) |
 | Viam Blog | 机器人软件、数据工具与集成案例 | [HTML](https://www.viam.com/blog) |
 
-新源每 12 小时检查一次，首次最多导入 3 篇，保持原始发布时间。HTML 列表按原发布时间排序，避免首页置顶旧文挤掉新文章。FANUC 的 YYYYMMDD 公告标识与页面日期核对后按日本时区解析，非法日历日期被拒绝。OMNIVISION 仅订阅 Machine Vision 分类，避免移动设备等泛产品公告挤入机器人频道。
+新源初始每 12 小时检查一次，后续沿用原 worker 按来源活跃度调整频率的机制。首次最多导入 3 篇，保持原始发布时间。HTML 列表按原发布时间排序，避免首页置顶旧文挤掉新文章。FANUC 的 YYYYMMDD 公告标识与页面日期核对后按日本时区解析，非法日历日期被拒绝。OMNIVISION 仅订阅 Machine Vision 分类，避免移动设备等泛产品公告挤入机器人频道。
 
 Boston Dynamics 博客与新闻共用厂商身份；两条 feed 不能当作两家独立信源。厂商案例、合作公告、市场研究仍需区分自报、独立证据、统计口径与营销内容。所有新增来源保持摘要和原文链接，全文公开开关关闭；采集频率不改变原模型预算。
 
@@ -48,27 +48,33 @@ seed 只幂等插入新增 ID，保留已有后台设置。条目按原 URL 去�
 
 | 报告刊期 | 资源 | 原始链接 |
 |---|---|---|
-| 2026年9月27日 | RAPID论文与项目页 | [source](https://yuyaoliu.me/projects/rapid/) |
-| 2026年9月27日 | PolyUMI项目页 | [source](https://polyumi-vista.github.io/) |
-| 2026年9月30日 | 论文全文 | [source](https://arxiv.org/abs/2609.32550) |
-| 2026年10月1日 | Anthropic原始研究 | [source](https://www.anthropic.com/research/what-work-can-robots-do) |
-| 2026年10月1日 | 原论文 | [source](https://arxiv.org/abs/2609.38178) |
-| 2026年10月1日 | IDC原始数据 | [source](https://www.idc.com/resource-center/blog/%E5%8D%8A%E5%B9%B4%E5%87%BA%E8%B4%A7-2-5-%E4%B8%87%E5%8F%B0%EF%BC%8C%E5%90%8C%E6%AF%94%E5%A2%9E%E9%95%BF432-1%EF%BC%9A%E5%85%A8%E7%90%83%E4%BA%BA%E5%BD%A2%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%95%86%E4%B8%9A/) |
-| 2026年10月3日 | EIDA论文 | [source](https://arxiv.org/abs/2610.01219) |
-| 2026年10月3日 | 启元产品官网 | [source](https://www.primebot.com/) |
-| 2026年10月3日 | GlassGuard项目与代码 | [source](https://glassguardproject.github.io/) |
-| 2026年10月4日 | VAPS论文 | [source](https://arxiv.org/abs/2610.01397) |
-| 2026年10月4日 | WBAG论文 | [source](https://arxiv.org/abs/2610.01083) |
-| 2026年10月4日 | FANUC官方公告 | [source](https://www.fanuc.co.jp/en/profile/pr/newsrelease/2026/notice20260930.html) |
-| 2026年10月5日 | Recova论文 | [source](https://arxiv.org/abs/2610.01178) |
-| 2026年10月5日 | 项目页 | [source](https://www.liuisabella.com/Recova) |
-| 2026年10月5日 | UniTrackPLA论文 | [source](https://arxiv.org/abs/2610.00878) |
-| 2026年10月5日 | 项目页 | [source](https://tw5775.github.io/UniTrackPLA) |
-| 2026年10月5日 | HHS TAGGS项目记录 | [source](https://taggs.hhs.gov/Detail/AwardDetail?arg_AwardNum=R44AG072982&arg_ProgOfficeCode=102) |
-| 2026年10月6日 | HexVIO论文 | [source](https://arxiv.org/abs/2610.03283) |
-| 2026年10月6日 | MiNI-Q论文 | [source](https://arxiv.org/abs/2610.02728) |
-| 2026年10月6日 | Deliveroo合作公告 | [source](https://deliveroo.co.uk/more/news-articles/autonomous-robot-launch) |
+| 2026年9月27日 | RAPID论文与项目页 | [原文](https://yuyaoliu.me/projects/rapid/) |
+| 2026年9月27日 | PolyUMI项目页 | [原文](https://polyumi-vista.github.io/) |
+| 2026年9月30日 | 论文全文 | [原文](https://arxiv.org/abs/2609.32550) |
+| 2026年10月1日 | Anthropic原始研究 | [原文](https://www.anthropic.com/research/what-work-can-robots-do) |
+| 2026年10月1日 | 原论文 | [原文](https://arxiv.org/abs/2609.38178) |
+| 2026年10月1日 | IDC原始数据 | [原文](https://www.idc.com/resource-center/blog/%E5%8D%8A%E5%B9%B4%E5%87%BA%E8%B4%A7-2-5-%E4%B8%87%E5%8F%B0%EF%BC%8C%E5%90%8C%E6%AF%94%E5%A2%9E%E9%95%BF432-1%EF%BC%9A%E5%85%A8%E7%90%83%E4%BA%BA%E5%BD%A2%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%95%86%E4%B8%9A/) |
+| 2026年10月3日 | EIDA论文 | [原文](https://arxiv.org/abs/2610.01219) |
+| 2026年10月3日 | 启元产品官网 | [原文](https://www.primebot.com/) |
+| 2026年10月3日 | GlassGuard项目与代码 | [原文](https://glassguardproject.github.io/) |
+| 2026年10月4日 | VAPS论文 | [原文](https://arxiv.org/abs/2610.01397) |
+| 2026年10月4日 | WBAG论文 | [原文](https://arxiv.org/abs/2610.01083) |
+| 2026年10月4日 | FANUC官方公告 | [原文](https://www.fanuc.co.jp/en/profile/pr/newsrelease/2026/notice20260930.html) |
+| 2026年10月5日 | Recova论文 | [原文](https://arxiv.org/abs/2610.01178) |
+| 2026年10月5日 | 项目页 | [原文](https://www.liuisabella.com/Recova) |
+| 2026年10月5日 | UniTrackPLA论文 | [原文](https://arxiv.org/abs/2610.00878) |
+| 2026年10月5日 | 项目页 | [原文](https://tw5775.github.io/UniTrackPLA) |
+| 2026年10月5日 | HHS TAGGS项目记录 | [原文](https://taggs.hhs.gov/Detail/AwardDetail?arg_AwardNum=R44AG072982&arg_ProgOfficeCode=102) |
+| 2026年10月6日 | HexVIO论文 | [原文](https://arxiv.org/abs/2610.03283) |
+| 2026年10月6日 | MiNI-Q论文 | [原文](https://arxiv.org/abs/2610.02728) |
+| 2026年10月6日 | Deliveroo合作公告 | [原文](https://deliveroo.co.uk/more/news-articles/autonomous-robot-launch) |
 
 ## 检查与部署
 
-离线检查覆盖来源 ID 唯一性、配置支持情况、启用状态和原始验证元数据；日期测试覆盖时区、闰日和非法日期。生产采集核对将在部署后补记。
+离线检查覆盖来源 ID 唯一性、数据库 tier、配置支持情况、启用状态和原始验证元数据；日期测试覆盖时区、闰日和非法日期。完整来源包在独立 CI 库首次 seed 导入 50 个来源，再次运行新增 0 个。
+
+2026-10-06 已部署 API/worker `89adc84`。网页和静态主页继续使用 `3589201`。生产 seed 新增 11 个 ID，全站共 54 个来源记录、45 个启用。已有来源配置与部署前一致，模型预算一致；web、数据库和无关服务没有重建。
+
+首次真实采集 11/11 成功，新增 32 条原始资料；检查时 26 条分析完成、5 条被预筛拒绝、1 条等待后续处理，没有失败状态。通过原 publication 读取条件及 AI与机器人频道条件确认 26 条可在资料池公开阅读；OG05D、Claude 的公开搜索返回了新增来源内容。首次回填没有自动挤入精选，过期材料仍保留原日期及原新闻新鲜度规则。
+
+验证：后端 607、前端 49、来源检查 9 项全通过，类型检查与网页构建通过；生产公开 smoke 43/43 通过，私有后台登录、Secure/HttpOnly/SameSite Cookie、CSRF 拒绝和退出会话检查通过。私有备份和部署日志保存在服务器 release 目录，未提交配置密钥、数据库备份或报告全文。
