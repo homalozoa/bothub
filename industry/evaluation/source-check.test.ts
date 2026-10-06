@@ -22,7 +22,7 @@ test("network checks require explicit opt-in before importing collectors", async
 });
 test("enabled source configuration and generated verification metadata agree", () => {
   const sources = JSON.parse(readFileSync(new URL("../sources.json", import.meta.url), "utf8")).sources;
-  const records = [...JSON.parse(readFileSync(new URL("../../docs/source-validation.json", import.meta.url), "utf8")).records, ...JSON.parse(readFileSync(new URL("../../docs/channel-source-validation.json", import.meta.url), "utf8")).records, ...JSON.parse(readFileSync(new URL("../../docs/life-source-validation.json", import.meta.url), "utf8")).records];
+  const records = [...JSON.parse(readFileSync(new URL("../../docs/source-validation.json", import.meta.url), "utf8")).records, ...JSON.parse(readFileSync(new URL("../../docs/channel-source-validation.json", import.meta.url), "utf8")).records, ...JSON.parse(readFileSync(new URL("../../docs/life-source-validation.json", import.meta.url), "utf8")).records, ...JSON.parse(readFileSync(new URL("../../docs/briefing-source-validation.json", import.meta.url), "utf8")).records];
   assert.ok(sources.length >= 15);
   assert.equal(new Set(sources.map((s: any) => s.id)).size, sources.length);
   for (const source of sources) {

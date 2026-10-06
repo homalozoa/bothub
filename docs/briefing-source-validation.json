@@ -1,0 +1,727 @@
+{
+  "checkedAt": "2026-10-06T06:13:32.777Z",
+  "method": "Merged explicit free checks of production parsers and SSRF guards; URL, original date and readable body on the same sample. No database writes, models or paid fallback. Source-level verification does not establish editorial quality.",
+  "records": [
+    {
+      "sourceId": "web-anthropic-research",
+      "name": "Anthropic Research",
+      "kind": "web_list",
+      "enabled": true,
+      "endpoint": "https://www.anthropic.com/research",
+      "language": "en",
+      "coverage": [
+        "AI研究",
+        "Agent",
+        "机器人经济与能力"
+      ],
+      "identity": "company-research",
+      "homepage": "https://www.anthropic.com/research",
+      "limitations": [
+        "厂商与机构自报不等于独立验证；收录需通过范围、原始日期和编辑价值筛选，默认仅展示中文摘要与原文。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "agents",
+        "robotics"
+      ],
+      "checkedAt": "2026-10-06T05:46:52.328Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "Claude-shaped science",
+          "url": "https://www.anthropic.com/research/claude-shaped-science",
+          "publishedAt": "2026-10-01T07:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 29216,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "What work can robots do?",
+          "url": "https://www.anthropic.com/research/what-work-can-robots-do",
+          "publishedAt": "2026-09-30T07:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "What do you want from AI?",
+          "url": "https://www.anthropic.com/research/your-thoughts-on-ai",
+          "publishedAt": "2026-09-29T07:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "web-agility-research",
+      "name": "Agility Robotics · News & Research",
+      "kind": "web_list",
+      "enabled": true,
+      "endpoint": "https://www.agilityrobotics.com/content",
+      "language": "en",
+      "coverage": [
+        "人形机器人",
+        "部署",
+        "安全"
+      ],
+      "identity": "company",
+      "homepage": "https://www.agilityrobotics.com/content",
+      "limitations": [
+        "厂商与机构自报不等于独立验证；收录需通过范围、原始日期和编辑价值筛选，默认仅展示中文摘要与原文。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "robotics"
+      ],
+      "checkedAt": "2026-10-06T05:46:56.370Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 34,
+      "datedItems": 24,
+      "samples": [
+        {
+          "title": "Agility’s Humanoid Deployment Process",
+          "url": "https://www.agilityrobotics.com/content/agilitys-humanoid-deployment-process",
+          "publishedAt": "2026-08-04T07:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 7972,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "The Realistic Pathway to Home",
+          "url": "https://www.agilityrobotics.com/content/the-realistic-pathway-to-home",
+          "publishedAt": "2026-05-26T07:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Agility and AI",
+          "url": "https://www.agilityrobotics.com/content/agility-and-ai",
+          "publishedAt": "2026-03-16T07:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "web-fanuc-news",
+      "name": "FANUC Official News",
+      "kind": "web_list",
+      "enabled": true,
+      "endpoint": "https://www.fanuc.co.jp/en/profile/pr/newsrelease/",
+      "language": "en",
+      "coverage": [
+        "工业机器人",
+        "Physical AI",
+        "部署"
+      ],
+      "identity": "company",
+      "homepage": "https://www.fanuc.co.jp/en/profile/pr/newsrelease/",
+      "limitations": [
+        "厂商与机构自报不等于独立验证；收录需通过范围、原始日期和编辑价值筛选，默认仅展示中文摘要与原文。",
+        "发布日期取官方noticeYYYYMMDD文件标识，本次已与正文署期及目录日期交叉核对；不得把抓取时间用作发布日期。"
+      ],
+      "validation_status": "verified",
+      "verified_at": "2026-10-06T05:47:00.272Z",
+      "validation_scope": "feed-url-date-readable-material; not editorial classification",
+      "sample": {
+        "title": "Hitachi and FANUC enter strategic partnership toward joint commercialization of physical AI implementation",
+        "url": "https://www.fanuc.co.jp/en/profile/pr/newsrelease/2026/notice20260930.html",
+        "publishedAt": "2026-09-29T15:00:00.000Z",
+        "bodyStatus": "readability",
+        "bodyChars": 9433,
+        "roboticsCue": true,
+        "relevanceBasis": "material-text"
+      },
+      "channelHints": [
+        "robotics"
+      ],
+      "checkedAt": "2026-10-06T06:13:32.777Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 69,
+      "datedItems": 69,
+      "samples": [
+        {
+          "title": "Hitachi and FANUC enter strategic partnership toward joint commercialization of physical AI implementation",
+          "url": "https://www.fanuc.co.jp/en/profile/pr/newsrelease/2026/notice20260930.html",
+          "publishedAt": "2026-09-29T15:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 9433,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "FANUC Accelerates Physical AI in Arc Welding with the New \"AI Welding Agent\"",
+          "url": "https://www.fanuc.co.jp/en/profile/pr/newsrelease/2026/notice20260911.html",
+          "publishedAt": "2026-09-10T15:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Ultra-Lightweight, Easy-to-Install Portable Collaborative Robot Accelerates Automation on Construction Sites",
+          "url": "https://www.fanuc.co.jp/en/profile/pr/newsrelease/2026/notice20260911-03.html",
+          "publishedAt": "2026-09-10T15:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-boston-dynamics",
+      "name": "Boston Dynamics Blog",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://bostondynamics.com/feed/?post_type=blog",
+      "language": "en",
+      "coverage": [
+        "人形机器人",
+        "运动操作",
+        "工程"
+      ],
+      "identity": "company",
+      "homepage": "https://bostondynamics.com",
+      "limitations": [
+        "厂商与机构自报不等于独立验证；收录需通过范围、原始日期和编辑价值筛选，默认仅展示中文摘要与原文。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "robotics"
+      ],
+      "checkedAt": "2026-10-06T05:47:05.765Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "Spot to the Rescue",
+          "url": "https://bostondynamics.com/blog/spot-to-the-rescue/",
+          "publishedAt": "2026-10-05T19:23:58.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 10423,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Robot Hands for Modern AI and Real Work",
+          "url": "https://bostondynamics.com/blog/robot-hands-for-modern-ai-and-real-work/",
+          "publishedAt": "2026-10-01T13:10:02.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 14245,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Ask a Roboticist: Meet Diane",
+          "url": "https://bostondynamics.com/blog/ask-a-roboticist-meet-diane/",
+          "publishedAt": "2026-09-23T13:59:17.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 5009,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-boston-news",
+      "name": "Boston Dynamics Official News",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://bostondynamics.com/feed/?post_type=news",
+      "language": "en",
+      "coverage": [
+        "产品与部署",
+        "合作"
+      ],
+      "identity": "company",
+      "homepage": "https://bostondynamics.com",
+      "limitations": [
+        "厂商与机构自报不等于独立验证；收录需通过范围、原始日期和编辑价值筛选，默认仅展示中文摘要与原文。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "robotics"
+      ],
+      "checkedAt": "2026-10-06T05:47:09.491Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "Inside the Robotics Race",
+          "url": "https://bostondynamics.com/news/inside-the-robotics-race/",
+          "publishedAt": "2026-10-01T13:54:38.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 309,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Police Demonstrate Robot Dog Used in Critical Incidents",
+          "url": "https://bostondynamics.com/news/police-demonstrate-robot-dog-used-in-critical-incidents/",
+          "publishedAt": "2026-09-21T15:23:49.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Boston Dynamics Opens Robotics Metaplant Application Center to Train Humanoid Robots for Manufacturing Tasks",
+          "url": "https://bostondynamics.com/news/boston-dynamics-opens-robotics-metaplant-application-center-to-train-humanoid-robots-for-manufacturing-tasks/",
+          "publishedAt": "2026-09-21T13:31:44.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 3526,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-omnivision-press",
+      "name": "OMNIVISION · Machine Vision",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://www.ovt.com/press-application/machine-vision/feed/",
+      "language": "en",
+      "coverage": [
+        "机器视觉",
+        "图像传感器",
+        "端侧硬件"
+      ],
+      "identity": "company",
+      "homepage": "https://www.ovt.com/press-application/machine-vision/",
+      "limitations": [
+        "厂商与机构自报不等于独立验证；收录需通过范围、原始日期和编辑价值筛选，默认仅展示中文摘要与原文。",
+        "使用机器视觉专题订阅，避免通用RSS回灌662条医疗、手机、财报及旧资料。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "robotics"
+      ],
+      "checkedAt": "2026-10-06T06:02:01.866Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 16,
+      "datedItems": 16,
+      "samples": [
+        {
+          "title": "OMNIVISION Launches New 12MP Global Shutter Sensor for Factory Automation and Intelligent Transportation Systems",
+          "url": "https://www.ovt.com/press-releases/omnivision-launches-new-12mp-global-shutter-sensor-for-factory-automation-and-intelligent-transportation-systems/",
+          "publishedAt": "2026-10-05T13:05:50.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 2575,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "OMNIVISION Launches Industry’s First 2.2‑micron Global Shutter HDR Sensor for Flagship Industrial and Robotics Machine Vision Cameras",
+          "url": "https://www.ovt.com/press-releases/omnivision-launches-industrys-first-2-2-micron-global-shutter-hdr-sensor-for-flagship-industrial-and-robotics-machine-vision-cameras/",
+          "publishedAt": "2026-10-05T13:05:41.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 3025,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "OMNIVISION High-Performance Global Shutter Image Sensor and Processor Now Available on NVIDIA Holoscan and NVIDIA Jetson Platforms",
+          "url": "https://www.ovt.com/press-releases/omnivision-high-performance-global-shutter-image-sensor-and-processor-now-available-on-nvidia-holoscan-and-nvidia-jetson-platforms/",
+          "publishedAt": "2024-10-08T08:00:14.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 3441,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-leopard-imaging",
+      "name": "Leopard Imaging News",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://leopardimaging.com/feed/",
+      "language": "en",
+      "coverage": [
+        "相机",
+        "深度感知",
+        "集成模组"
+      ],
+      "identity": "company",
+      "homepage": "https://leopardimaging.com",
+      "limitations": [
+        "厂商与机构自报不等于独立验证；收录需通过范围、原始日期和编辑价值筛选，默认仅展示中文摘要与原文。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "robotics"
+      ],
+      "checkedAt": "2026-10-06T05:47:16.620Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "Leopard Imaging® to Showcase Advanced AI Perception and Imaging Solutions at VISION 2026",
+          "url": "https://leopardimaging.com/leopard-imaging-to-showcase-advanced-ai-perception-and-imaging-solutions-at-vision-2026/",
+          "publishedAt": "2026-09-29T17:00:53.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 3659,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Leopard Imaging® and Lumotive Introduce “Sirius Max” — A Long-Range Software-Defined 3D Perception Platform for Robotics and AI",
+          "url": "https://leopardimaging.com/leopard-imaging-and-lumotive-introduce-sirius-max-a-long-range-software-defined-3d-perception-platform-for-robotics-and-ai/",
+          "publishedAt": "2026-09-24T19:00:03.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 5714,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Leopard Imaging to Showcase Advanced Embedded Vision Solutions with Future Electronics at World of Technology & Science 2026",
+          "url": "https://leopardimaging.com/leopard-imaging-to-showcase-advanced-embedded-vision-solutions-with-future-electronics-at-world-of-technology-science-2026/",
+          "publishedAt": "2026-09-18T21:32:42.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 3665,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-lumotive-news",
+      "name": "Lumotive Official Releases",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://lumotive.com/feed/?post_type=nooz_release",
+      "language": "en",
+      "coverage": [
+        "主动深度",
+        "光束控制",
+        "机器视觉"
+      ],
+      "identity": "company",
+      "homepage": "https://lumotive.com/news",
+      "limitations": [
+        "厂商与机构自报不等于独立验证；收录需通过范围、原始日期和编辑价值筛选，默认仅展示中文摘要与原文。"
+      ],
+      "validation_status": "verified",
+      "verified_at": "2026-10-06T05:47:24.853Z",
+      "validation_scope": "feed-url-date-readable-material; not editorial classification",
+      "sample": {
+        "title": "Lumotive Joins with Tech Leaders to Demo Digital Beam Steering at CES 2024",
+        "url": "https://lumotive.com/2024/01/lumotive-joins-with-tech-leaders-to-demo-digital-beam-steering-at-ces-2024/",
+        "publishedAt": "2024-01-26T01:54:08.000Z",
+        "bodyStatus": "feed",
+        "bodyChars": 7210,
+        "roboticsCue": true,
+        "relevanceBasis": "material-text"
+      },
+      "channelHints": [
+        "robotics"
+      ],
+      "checkedAt": "2026-10-06T06:09:22.504Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "Lumotive’s LCM Optical Semiconductor Platform Enables First Solid-State 180° dTOF LiDAR at 30 FPS",
+          "url": "https://lumotive.com/press-releases/lumotives-lcm-optical-semiconductor-platform-enables-first-solid-state-180-dtof-lidar-at-30-fps/",
+          "publishedAt": "2026-04-09T16:58:32.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 6076,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Lumotive Creates World’s First 2D Photonic Beamforming Semiconductor",
+          "url": "https://lumotive.com/press-releases/lumotive-creates-worlds-first-2d-photonic-beamforming-semiconductor/",
+          "publishedAt": "2026-03-19T17:21:58.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4664,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Lumotive Expands Global Footprint and Adds Key Leaders Amid Growing Demand for Programmable Optical Semiconductors",
+          "url": "https://lumotive.com/press-releases/lumotive-expands-global-footprint-and-adds-key-leaders-amid-growing-demand-for-programmable-optical-semiconductors/",
+          "publishedAt": "2025-12-09T19:19:51.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4359,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-idc-research",
+      "name": "IDC Research Blog",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://www.idc.com/resource-center/blog/feed/",
+      "language": "en",
+      "coverage": [
+        "机器人市场统计",
+        "AI产业研究"
+      ],
+      "identity": "research-institution",
+      "homepage": "https://www.idc.com/resource-center/blog",
+      "limitations": [
+        "只公开摘要和原文；市场统计保留定义与口径，厂商自报和研究计划不等于独立验证或实际交付。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "robotics",
+        "agents"
+      ],
+      "checkedAt": "2026-10-06T05:52:11.214Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "empty_feed",
+      "itemCount": 0,
+      "datedItems": 0,
+      "samples": []
+    },
+    {
+      "sourceId": "rss-hello-robot",
+      "name": "Hello Robot Blog",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://hello-robot.com/feed/",
+      "language": "en",
+      "coverage": [
+        "家庭机器人",
+        "人机交互",
+        "长期部署"
+      ],
+      "identity": "company",
+      "homepage": "https://hello-robot.com",
+      "limitations": [
+        "只公开摘要和原文；市场统计保留定义与口径，厂商自报和研究计划不等于独立验证或实际交付。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "robotics"
+      ],
+      "checkedAt": "2026-10-06T05:52:13.603Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "Devlog: Multi-Interface Teleoperation",
+          "url": "https://hello-robot.com/devlog-multi-interface-teleoperation/",
+          "publishedAt": "2026-09-26T17:23:42.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 16361,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Stretch4 Nav Webapp",
+          "url": "https://hello-robot.com/stretch4-nav-webapp/",
+          "publishedAt": "2026-09-16T16:59:38.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 14896,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Devlog: First Steps with Stretch at Home",
+          "url": "https://hello-robot.com/devlog-first-steps-with-stretch-at-home/",
+          "publishedAt": "2026-09-15T15:42:48.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 4726,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-ros2-control-releases",
+      "name": "ros2_control Releases",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://github.com/ros-controls/ros2_control/releases.atom",
+      "language": "en",
+      "coverage": [
+        "ROS控制",
+        "主控与执行接口"
+      ],
+      "identity": "open-source-project",
+      "homepage": "https://github.com/ros-controls/ros2_control",
+      "limitations": [
+        "只公开摘要和原文；市场统计保留定义与口径，厂商自报和研究计划不等于独立验证或实际交付。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "robotics"
+      ],
+      "checkedAt": "2026-10-06T05:52:16.446Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "body_or_date_unconfirmed",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "6.11.0",
+          "url": "https://github.com/ros-controls/ros2_control/releases/tag/6.11.0",
+          "publishedAt": "2026-10-05T16:51:57.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "robotics-project-url"
+        },
+        {
+          "title": "5.19.0",
+          "url": "https://github.com/ros-controls/ros2_control/releases/tag/5.19.0",
+          "publishedAt": "2026-10-05T16:25:12.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "robotics-project-url"
+        },
+        {
+          "title": "4.49.0",
+          "url": "https://github.com/ros-controls/ros2_control/releases/tag/4.49.0",
+          "publishedAt": "2026-10-05T16:27:27.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "robotics-project-url"
+        }
+      ]
+    },
+    {
+      "sourceId": "web-idc-research",
+      "name": "IDC Research Blog",
+      "kind": "web_list",
+      "enabled": true,
+      "endpoint": "https://www.idc.com/resource-center/blog/",
+      "language": "en",
+      "coverage": [
+        "AI产业与机器人市场"
+      ],
+      "identity": "research-institution",
+      "homepage": "https://www.idc.com/resource-center/blog/",
+      "limitations": [
+        "只公开摘要与原文，保留统计定义与验证条件；厂商数据、计划与演示不等于独立部署证据。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "agents",
+        "robotics"
+      ],
+      "checkedAt": "2026-10-06T06:02:04.001Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 10,
+      "datedItems": 10,
+      "samples": [
+        {
+          "title": "The New Battleground for Enterprise Software: The UI Layer",
+          "url": "https://www.idc.com/resource-center/blog/the-new-battleground-for-enterprise-software-the-ui-layer/",
+          "publishedAt": "2026-10-05T04:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 3714,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "AI Strategy Is Easier to Define Than to Deliver. IDC’s Benchmark Shows the Gap",
+          "url": "https://www.idc.com/resource-center/blog/ai-strategy-is-easier-to-define-than-to-deliver-idcs-benchmark-shows-the-gap/",
+          "publishedAt": "2026-10-02T04:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Stop Trusting the Model: The AI Enforcement Layer Every Organization Needs",
+          "url": "https://www.idc.com/resource-center/blog/stop-trusting-the-model-the-ai-enforcement-layer-every-organization-needs/",
+          "publishedAt": "2026-09-30T04:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "web-viam-blog",
+      "name": "Viam Robotics Blog",
+      "kind": "web_list",
+      "enabled": true,
+      "endpoint": "https://www.viam.com/blog",
+      "language": "en",
+      "coverage": [
+        "机器人系统工程",
+        "VLA部署"
+      ],
+      "identity": "company",
+      "homepage": "https://www.viam.com/blog",
+      "limitations": [
+        "只公开摘要与原文，保留统计定义与验证条件；厂商数据、计划与演示不等于独立部署证据。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "robotics"
+      ],
+      "checkedAt": "2026-10-06T05:59:40.783Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 21,
+      "datedItems": 21,
+      "samples": [
+        {
+          "title": "What is Viam? The software platform for robotics development",
+          "url": "https://www.viam.com/post/what-is-viam-the-software-platform-for-robotics-development",
+          "publishedAt": "2026-02-06T04:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 6851,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "How Viam works: From config to deployment",
+          "url": "https://www.viam.com/post/how-viam-works-from-config-to-deployment",
+          "publishedAt": "2026-02-06T04:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Viam for production: Scaling from prototype to fleet",
+          "url": "https://www.viam.com/post/viam-for-production-scaling-from-prototype-to-fleet",
+          "publishedAt": "2026-02-06T04:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    }
+  ]
+}

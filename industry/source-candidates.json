@@ -82,46 +82,6 @@
       }
     },
     {
-      "id": "rss-boston-dynamics",
-      "name": "Boston Dynamics Blog",
-      "kind": "rss",
-      "config": {
-        "feedUrl": "https://bostondynamics.com/feed/",
-        "_aihot": {
-          "initialBackfillLimit": 8
-        }
-      },
-      "tier": "T1",
-      "first_party": true,
-      "owner_entity_id": "boston-dynamics",
-      "participation_mode": "editorial",
-      "interval_minutes": 120,
-      "tags": [
-        "en",
-        "company"
-      ],
-      "site_fulltext": false,
-      "syndicate_fulltext": false,
-      "enabled": false,
-      "robotics": {
-        "language": "en",
-        "coverage": [
-          "industry",
-          "hardware"
-        ],
-        "identity": "company",
-        "homepage": "https://bostondynamics.com/blog/",
-        "limitations": [
-          "性能和部署信息是厂商自报；营销稿与真实交付记录分别处理。"
-        ],
-        "lastValidation": {
-          "checkedAt": "2026-10-02T11:29:50.068Z",
-          "status": "empty_feed",
-          "itemCount": 0
-        }
-      }
-    },
-    {
       "id": "rss-clearpath",
       "name": "Clearpath Robotics Blog",
       "kind": "rss",
@@ -355,8 +315,8 @@
           "官方 release 说明只证明该版本发布及其陈述；代码、权重、数据、硬件文件和许可证分别检查。"
         ],
         "lastValidation": {
-          "checkedAt": "2026-10-02T11:31:34.586Z",
-          "status": "body_unconfirmed",
+          "checkedAt": "2026-10-06T05:52:16.446Z",
+          "status": "body_or_date_unconfirmed",
           "itemCount": 10
         }
       }
@@ -721,6 +681,54 @@
         "validation_status": "verified",
         "validation_scope": "feed-url-date-readable-material; not editorial classification",
         "pause_reason": "四主频道调整：暂停泛游戏开发更新或项目运营博客，保留历史内容。"
+      }
+    },
+    {
+      "id": "rss-idc-research",
+      "name": "IDC Research Blog",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.idc.com/resource-center/blog/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T1.5",
+      "first_party": true,
+      "owner_entity_id": null,
+      "participation_mode": "editorial",
+      "interval_minutes": 720,
+      "tags": [
+        "en",
+        "official"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "channel_hints": [
+        "robotics",
+        "agents"
+      ],
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "机器人市场统计",
+          "AI产业研究"
+        ],
+        "identity": "research-institution",
+        "homepage": "https://www.idc.com/resource-center/blog",
+        "limitations": [
+          "只公开摘要和原文；市场统计保留定义与口径，厂商自报和研究计划不等于独立验证或实际交付。"
+        ],
+        "validation_status": "empty_feed",
+        "verified_at": null,
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": null,
+        "lastValidation": {
+          "checkedAt": "2026-10-06T05:52:11.214Z",
+          "status": "empty_feed",
+          "itemCount": 0
+        }
       }
     }
   ]
