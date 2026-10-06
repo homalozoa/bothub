@@ -29,6 +29,14 @@ export function parseLooseDate(value: string | null | undefined, utcOffset = "+0
   if (!value) return null;
   const v = value.trim();
   if (!v) return null;
+  // ISO basic calendar dates used in official release identifiers, e.g. 20260930.
+  const basic = /^(\d{4})(\d{2})(\d{2})$/.exec(v);
+  if (basic) {
+    const civil = `${basic[1]}-${basic[2]}-${basic[3]}`;
+    const calendar = new Date(`${civil}T00:00:00Z`);
+    if (!Number.isFinite(calendar.getTime()) || calendar.toISOString().slice(0, 10) !== civil) return null;
+    return atOffset(basic[1]!, basic[2]!, basic[3]!, "00", "00", "00", utcOffset);
+  }
   if (EXPLICIT_ZONE.test(v) || /^\d{4}-\d{2}-\d{2}$/.test(v)) {
     const direct = Date.parse(v);
     if (Number.isFinite(direct) && /\d{4}/.test(v)) return new Date(direct);

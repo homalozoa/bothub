@@ -33,3 +33,11 @@ test("no date at all is null", () => {
   assert.equal(iso(""), null);
   assert.equal(iso("yesterday"), null);
 });
+
+test("official release basic dates use the source offset and reject impossible calendar days", () => {
+  assert.equal(iso("20260930", "+09:00"), "2026-09-29T15:00:00.000Z");
+  assert.equal(iso("20240229", "+09:00"), "2024-02-28T15:00:00.000Z");
+  for (const value of ["20230229", "20260431", "20261301", "20260900", "notice20260930.html"]) {
+    assert.equal(iso(value, "+09:00"), null, value);
+  }
+});

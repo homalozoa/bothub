@@ -52,7 +52,7 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
     process.env[name] = "false";
   }
   // A deliberately free path: no Jina, X, WeChat, models, publication, or database calls.
-  const [{ fetchRss }, { fetchJsonList }, { fetchWebList }, { guardedFetch }, { readable }, { assertSupportedConfig }] = await Promise.all([
+  const [{ fetchRss }, { fetchJsonList }, { fetchWebList, fetchDetail }, { guardedFetch }, { readable }, { assertSupportedConfig }] = await Promise.all([
     import("../packages/backend/src/sources/rss.ts"), import("../packages/backend/src/sources/json-list.ts"),
     import("../packages/backend/src/sources/web-list.ts"),
     import("../packages/backend/src/lib/http-fetch.ts"), import("../packages/backend/src/content/extract.ts"),
@@ -87,15 +87,21 @@ export async function main(argv = process.argv.slice(2)): Promise<void> {
         let bodyStatus: SampleCheck["bodyStatus"] = body.length >= 200 ? "feed" : "missing";
         // Relevance uses original material. Repository releases may have numeric titles;
         // their robot-specific scope is documented in source identity, not invented by a model.
-        if (bodyStatus === "missing" && !detailUsed && (!!source.editorial || roboticsCue(candidate.title + " " + (candidate.excerpt ?? "")) || /releases/.test(source.id))) {
+        if ((bodyStatus === "missing" || !candidate.publishedAt) && !detailUsed && (!!source.editorial || roboticsCue(candidate.title + " " + (candidate.excerpt ?? "")) || /releases/.test(source.id))) {
           detailUsed = true;
           bodyFetches += 1;
           await pause();
           try {
-            const response = await guardedFetch(candidate.url, { timeoutMs: 20_000, maxBytes: 6 * 1024 * 1024 });
-            if (response.status === 200 && /html/.test(response.headers.get("content-type") ?? "")) {
-              const extracted = readable(response.text(), response.url);
-              if (extracted) { body = extracted.text; bodyStatus = "readability"; }
+            if (source.kind === "web_list" && source.config.detail && !candidate.publishedAt) {
+              const detail = await fetchDetail(candidate.url, row, { date: !candidate.publishedAt, title: false, summary: false, body: true });
+              candidate.publishedAt ??= detail.publishedAt;
+              if (detail.body) { body = detail.body.text; bodyStatus = "readability"; }
+            } else {
+              const response = await guardedFetch(candidate.url, { timeoutMs: 20_000, maxBytes: 6 * 1024 * 1024 });
+              if (response.status === 200 && /html/.test(response.headers.get("content-type") ?? "")) {
+                const extracted = readable(response.text(), response.url);
+                if (extracted) { body = extracted.text; bodyStatus = "readability"; }
+              }
             }
           } catch { /* Missing bodies are an explicit status, never silently verified. */ }
         }
