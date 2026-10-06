@@ -693,7 +693,7 @@
           "initialBackfillLimit": 3
         }
       },
-      "tier": "T1.5",
+      "tier": "T1_5",
       "first_party": true,
       "owner_entity_id": null,
       "participation_mode": "editorial",

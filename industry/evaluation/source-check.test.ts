@@ -26,6 +26,7 @@ test("enabled source configuration and generated verification metadata agree", (
   assert.ok(sources.length >= 15);
   assert.equal(new Set(sources.map((s: any) => s.id)).size, sources.length);
   for (const source of sources) {
+    assert.ok(["T1", "T1_5", "T2", "EXCLUDE_MP"].includes(source.tier), `database tier: ${source.id}`);
     assert.deepEqual(unsupportedConfig(source.kind, source.config), []);
     if (!source.enabled) continue;
     const record = records.find((r: any) => r.sourceId === source.id);
