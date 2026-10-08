@@ -1,35 +1,13 @@
-# 名称与图标候选
+# 品牌候选（历史）
 
-2026-10-03。按 OpenZoo 下属的机器人与AI资讯站设计，继续使用 `news.openzoo.ai`。用户已确认 **机闻｜OpenZoo News + C 折页 Z**。本页保留候选探索，正式标记与尺寸导出位于 `industry/brand/`，源路径定义在 `industry/branding.ts`。
+2026-10-03 为原机器人资讯站探索名称：机闻、机见、机野、具身信号、OpenZoo 新知。原选择为“机闻 / OpenZoo News + 折页 Z”；现名 ZooRadar，自有标记和导出位于 [industry/brand](../../industry/brand/)。
 
-## 名称
+| 候选 | 原图 |
+|---|---|
+| 机器人信使 | [robot-message.png](robot-message.png) |
+| 信号观察器 | [optic-signal.png](optic-signal.png) |
+| 折页 Z | [folded-z.png](folded-z.png) |
 
-| 中文候选 | 英文使用建议 | 气质与适用方向 |
-|---|---|---|
-| 机闻 | OpenZoo News | 推荐。短、新闻属性清楚，适合资讯首页、日报和RSS |
-| 机见 | OpenZoo Insight | 强调观察与判断，适合技术解读和产业专题 |
-| 机野 | OpenZoo Field | 探索感更强，适合多巴胺视觉、开源项目与机器人实践社区 |
-| 具身信号 | OpenZoo Signal | 更专业，适合研发读者及机器人研究、工程和产品线索 |
-| OpenZoo 新知 | OpenZoo Brief | 母品牌关系最直接，适合研究与产品进展速读 |
+三图由内置 image_gen 生成，为 1254×1254 RGBA 概念稿，透明度已检查；正式矢量路径见 industry/branding.ts。名称语感与少量同名查询不构成商标注册结论。
 
-“机闻”的推荐展示方式：导航短名“机闻”，英文名“OpenZoo News”，完整标题“机闻｜OpenZoo 机器人与 AI 资讯”。一句话介绍可用“机器人与 AI，值得跟进的新进展。”
-
-以上是命名创意与语感判断，不是商标可注册性结论。只做了少量公开同名抽查，不能据未检索到结果推断名称无人使用。抽查中 [ZooPulseUK](https://zoopulse.uk/about) 已用于动物园新闻聚合，[ZooScope](https://zooscope.group.shef.ac.uk/about/) 已用于动物电影资料项目，[ZooScope应用](https://apps.apple.com/in/app/zooscope/id6754417522)也存在，因此没有采用这些无母品牌限定的英文组合。正式定名前需根据使用地区、业务类别核查名称和标识。
-
-## 三套图标
-
-| 候选 | 视觉 | 建议搭配 |
-|---|---|---|
-| A 机器人信使 | 带双眼与天线的机器人对话气泡 | 机闻 / 机野 |
-| B 信号观察器 | 开放式O形光学环、薄荷色瞳孔、黄色信号点 | 机见 / 具身信号 |
-| C 折页Z | 紫、薄荷绿、黄色的三段折页 | OpenZoo News / OpenZoo 新知 |
-
-图像均使用 **内置 image_gen** 生成，原图复制入本目录，未使用服务器的模型密钥。三个文件均为1254×1254 RGBA PNG，已实际解码检查alpha最小0、最大255。它们是带轻微色彩层次的概念图，不是已经完成小尺寸像素对齐的正式矢量Logo。
-
-- [A 机器人信使](robot-message.png)
-- [B 信号观察器](optic-signal.png)
-- [C 折页Z](folded-z.png)
-- [同屏预览截图](preview.jpg) / [预览页面](index.html)：包含浅/深色背景与16/32/64px显示比较，无外部脚本或图片。
-- [完整生成提示词](prompts.json)：每个候选独立调用一次，要求独立标记、紫/薄荷绿/黄色、透明背景、无文字和水印。
-
-确定方向后绘制干净的正式SVG，制作单色/反白版本，再导出favicon、Apple及192/512px图标，并统一导航、主页、分享图和日报品牌。没有把候选直接冒充最终商标或替换线上资产。
+[生成提示词](prompts.json) · [预览](index.html) · [历史落地](../jiwen-brand-rollout.md)
