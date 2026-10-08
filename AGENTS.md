@@ -39,7 +39,7 @@
 - 不要使用 AIHOT 的名字和 Logo。
 - 本机 `.env` 默认关闭采集、模型、推送。真实来源验证单独运行 `check-sources.ts --live`；有限入库试跑需要显式 `COLLECT_ENABLED=true` 和1–3个source ID。付费模型须获服务和预算授权。
 - 演示只写独立 `bothot_demo*_test` / `bothot_demo*_ci` 数据库，通过 `SITE_DEMO=true` 显示合成数据标记；不能作为真实编辑质量证据。
-- 小步可回溯迭代，提交使用 Conventional Commits。默认不新增 hash、冻结 contract、baseline 或 gate；保留既有认证、数据安全及发布措施。
+- 小步可回溯迭代，提交使用 Conventional Commits、本地 Git 配置与 GPG 签名，提交后核验签名。默认不新增 hash、冻结 contract、baseline 或 gate；保留既有认证、数据安全及发布措施。
 - 额外离线源/样本检查：`npm run test:sources`。候选样本由 Agent 暂标，未经人工确认不得报准确率。
 
 ## 写代码
