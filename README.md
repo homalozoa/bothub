@@ -1,67 +1,35 @@
 # ZooRadar · OpenZoo
 
-ZooRadar 是 OpenZoo 的资讯站：综合、AI与机器人、生物学三个入口。生物学聚焦动物、行为、学习认知、人类学、古生物、动物生态与演化。社会学和游戏角色栏目已撤下，人机交互留在AI与机器人。真实来源共用采集、中文摘要、事件归组与发布链路，读者无需注册。
+![机器人、鸟与研究笔记连接智能和生命世界](docs/illustrations/overview.jpg)
 
-外观默认跟随系统亮暗模式，系统切换后即时更新；桌面侧栏和手机「更多 → 外观」可手动选择深色、浅色或跟随系统，偏好仅保存在浏览器。
+追踪 AI 与机器人、动物与人类研究的新进展，用中文摘要连接原始来源。
 
-主题目录按两个领域组织研究方向，内容形态与来源独立筛选；主题页默认全部资料，可切到精选。分类边界、兼容与验证见 [分类整理](docs/taxonomy-audit.md)。
+[资讯站](https://news.openzoo.ai/) · [OpenZoo](https://openzoo.ai/) · [内容范围](docs/life-focus.md)
 
-线上入口：[OpenZoo](https://openzoo.ai/) · [资讯站](https://news.openzoo.ai/)。综合加两个阅读频道已正式上线；网页与静态主页版本 `3589201`，API/worker版本 `89adc84`。当前范围、来源与上线实测见 [动物与人类研究方向](docs/life-focus.md)及[机器人简报信源接入](docs/robot-briefing-sources.md)。历史合并记录、兼容与订阅说明保留；后台继续仅通过 SSH 隧道访问。
+| 整理资讯 | 阅读与接入 |
+|---|---|
+| ![原始材料经过筛选、摘要与事件归组的示意](docs/illustrations/editorial-flow.jpg) | ![网页、报刊、RSS、API与MCP共享发布内容的示意](docs/illustrations/reading-outlets.jpg) |
+| 采集 → 筛选 → 中文摘要 → 事件归组 | 网页 · 日报 · RSS · API · MCP |
 
-基于 [KKKKhazix/AIHOT](https://github.com/KKKKhazix/AIHOT)，保留 MIT [LICENSE](LICENSE)、[NOTICE](NOTICE) 及必要署名。内部包名与公开 MCP 前缀 bothot 保持兼容。
+公开阅读无需注册；自动摘要请以原文为准，编辑质量仍待人工校准。
 
 ## 运行
 
-需要 Node.js **24.11+** 与 PostgreSQL 16/17，或 Docker Compose。完整操作见 [运行说明](docs/robotics.md)。
+需要 Node.js **24.11+**、PostgreSQL 16/17，或 Docker Compose。
 
-```bash
+~~~bash
 npm ci
 node scripts/init-env.ts
-# 编辑 .env：本机加 DATABASE_URL 与 API_BASE_URL；默认采集/模型/推送关闭。
+# 在 .env 配置数据库与 API 地址。
 node --env-file=.env scripts/migrate.ts
 node --env-file=.env scripts/seed.ts
-npm run doctor -- --database
 npm run build -w @aihot/web
-```
+~~~
 
-分别启动三个进程：
-
-```bash
-node --env-file=.env apps/api/src/main.ts
-node --env-file=.env apps/worker/src/main.ts
-node --env-file=.env apps/web/server.ts
-```
-
-网站默认 [localhost:3000](http://localhost:3000)，后台 `/admin`。管理员密码保存在本机 `.env`。Docker 使用 `docker compose up -d --build`，不会自动启用采集与付费服务。
-
-缺少模型密钥时，网站可以读取已有发布内容，新资料不完成模型筛选。可用独立 `bothot_demo_test` 库运行 `scripts/demo.ts`，配合 `SITE_DEMO=true` 启动演示；详见运行说明。合成演示不得当作真实运营结果。
-
-## 编辑与来源
-
-- 各阅读频道有自己的小分类和内容形态；biology不显示模型/产品/仓库等技术选项。动物、人类学、古生物研究不要求AI关联。原机器人订阅保持范围，历史key和单篇地址保留。
-- 精选看信息增量与决策价值，热点看事件传播讨论。模型分数是编辑排序依据，双次评分不等于两个独立来源核验。
-- [动物与人类研究信源](docs/life-focus.md)及[机器人来源记录](docs/sources-robotics.md)，配置在 `industry/sources.json`；公开短摘要和原文链接，默认不展示全文或抓取图片。
-- 日报默认 Asia/Shanghai 08:00，通常最多 3 条、配置上限 5 条；允许空刊，核对近 14 天已刊事实。数据库时间使用 UTC，刊期时区可配置。
-- [42 条真实候选与人工复核方法](industry/evaluation/README.md)。当前标签由 Agent 暂拟，全为待人工确认；原门槛保持 60/65/76，机器人领域尚未校准。
-
-## 验证
-
-```bash
-npm run typecheck
-# 使用全新独立 *_test / *_ci 数据库，先运行迁移。
-DATABASE_URL=postgres://127.0.0.1:5432/bothot_ci npm test
-npm run test:sources
-npm run build -w @aihot/web
-node --test apps/web/tests/*.test.ts
-node scripts/smoke.ts --base http://localhost:3000
-# 显式联网，不调用模型、不写数据库：
-node scripts/check-sources.ts --live --out .data/source-validation.json
-```
-
-首版开发验证见 [验收记录](docs/verification.md)。后续已完成 [生产部署](docs/server-deployment.md)，真实采集、模型处理和公开发布已运行；机器人领域准确率、召回率与门槛仍待人工校准，运营费用还需与服务商账单对账。
+按[运行说明](docs/robotics.md)启动 API、worker 和网页。开发默认关闭采集、模型与推送；生产后台仅通过 SSH 隧道访问。
 
 ## 文档
 
-[运行与纠错](docs/robotics.md) · [信源验证](docs/sources-robotics.md) · [精选校准](docs/selection.md) · [事件归组](docs/grouping.md) · [部署与备份](docs/deploy.md) · [架构](docs/architecture.md)
+[运行与检查](docs/robotics.md) · [部署与备份](docs/deploy.md) · [信源](docs/sources.md) · [人工评测](docs/selection.md) · [架构](docs/architecture.md) · [定制](docs/customize.md) · [待办](docs/launch-todos.md)
 
-资讯站名为 ZooRadar，标记为折页 Z；由 [Homalozoa](https://github.com/homalozoa) 个人维护，邮箱 [homalozoax@gmail.com](mailto:homalozoax@gmail.com)；隐私与使用规则的保存期限等内容仍待完善。资讯域名 `news.openzoo.ai` 已部署。当前待办见 [清单](docs/launch-todos.md)，名称/icon候选见 [方案](docs/brand-exploration/README.md)。`industry/pages/` 为未生效草稿。模型排行榜及 Codex 重置监控已关闭。内部包名与既有安全、回执、预算、授权和迁移体系沿用上游。
+由 [Homalozoa](https://github.com/homalozoa) 维护。基于 [AIHOT](https://github.com/KKKKhazix/AIHOT)，保留 [MIT LICENSE](LICENSE) 和 [NOTICE](NOTICE)；内部包名与 MCP 前缀 bothot 保持兼容。
