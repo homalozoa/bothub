@@ -25,6 +25,14 @@ docker compose --env-file .env -f deploy/production.compose.yml logs --tail 100 
 docker compose --env-file .env -f deploy/production.compose.yml exec -T api node scripts/doctor.ts --database
 ~~~
 
+更换服务器 `.env` 中的 token 或其他后端配置后，在服务器源码目录执行：
+
+~~~bash
+./scripts/restart-backend.sh
+~~~
+
+脚本验证 Compose 配置后，使用已有镜像重新创建 API 和 worker，加载新的环境变量；不构建或拉取镜像，不运行 setup，不重启数据库和网页。保留 worker 的 210 秒停机宽限，已有请求可能需要等待。普通 `docker compose restart` 不会更新容器环境变量。重启后可运行上面的 doctor 命令检查配置与数据库。
+
 整站更新先保存数据库、文件卷、旧代码、环境、镜像及静态主页，再设置 BOTHOT_RELEASE/WEB_RELEASE 为发布提交：
 
 ~~~bash
