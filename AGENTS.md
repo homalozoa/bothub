@@ -1,6 +1,6 @@
 # 给 Agent 的说明
 
-这是基于AIHOT的ZooRadar网站（内部bothot）：综合、AI与机器人、生物学三个入口。生物学侧重动物学、动物行为、人类学、古生物学、动物生态与演化。采集、模型筛选、中文摘要、事件归组、日报和公开出口共用原链路。先读README，历史改造记录见docs/multichannel.md，当前范围见docs/life-focus.md。
+仓库为homalozoa/bothub，网站为基于AIHOT的ZooRadar（既有MCP与部署名称bothot保持兼容）：综合、AI与机器人、生物学三个入口。生物学侧重动物学、动物行为、人类学、古生物学、动物生态与演化。采集、模型筛选、中文摘要、事件归组、日报和公开出口共用原链路。先读README，历史改造记录见docs/multichannel.md，当前范围见docs/life-focus.md。
 
 ## 最常见的任务：改成另一个行业
 

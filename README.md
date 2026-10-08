@@ -6,6 +6,8 @@
 
 [资讯站](https://news.openzoo.ai/) · [OpenZoo](https://openzoo.ai/) · [内容范围](docs/life-focus.md)
 
+代码仓库：[homalozoa/bothub](https://github.com/homalozoa/bothub)。
+
 | 整理资讯 | 阅读与接入 |
 |---|---|
 | ![原始材料经过筛选、摘要与事件归组的示意](docs/illustrations/editorial-flow.jpg) | ![网页、报刊、RSS、API与MCP共享发布内容的示意](docs/illustrations/reading-outlets.jpg) |

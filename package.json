@@ -1,6 +1,14 @@
 {
-  "name": "aihot",
+  "name": "bothub",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/homalozoa/bothub.git"
+  },
+  "bugs": {
+    "url": "https://github.com/homalozoa/bothub/issues"
+  },
+  "homepage": "https://github.com/homalozoa/bothub#readme",
   "type": "module",
   "workspaces": [
     "packages/*",

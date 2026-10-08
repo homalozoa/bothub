@@ -1,6 +1,6 @@
 # 贡献
 
-[Issues](https://github.com/homalozoa/bothot/issues) 接收可复现问题与明确场景；安全问题按 [SECURITY.md](SECURITY.md) 私密报告。
+[Issues](https://github.com/homalozoa/bothub/issues) 接收可复现问题与明确场景；安全问题按 [SECURITY.md](SECURITY.md) 私密报告。
 
 1. 阅读 [AGENTS.md](AGENTS.md)，从 main 建分支，一次 PR 解决一个问题。
 2. 使用[独立环境](docs/robotics.md)，关闭采集、付费模型和推送，不使用生产库测试。
