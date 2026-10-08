@@ -1,49 +1,9 @@
-# Neural Workshop 视觉改版 · 2026-10-03
+# Neural Workshop（历史）· 2026-10-03
 
-本页记录此前的赛博朋克版本。用户后续要求亮色主题，当前版本见 [多巴胺改版](dopamine-redesign.md)。
+网页 69f8823，新增独立 WEB_RELEASE，仅替换 web 与静态主页。此前采用暗色、青/品红视觉，后被[亮色改版](dopamine-redesign.md)替代。
 
-用户授权把OpenZoo主页和机器人热点站重构为更酷的赛博朋克风格，并使用Three.js。
+共享 Three.js 场景自托管，无外部模型/纹理/CDN；30fps、DPR上限、离屏/后台/减少动态效果暂停、手动暂停、WebGL/SVG 回退与卸载释放通过。场景为概念视觉，不是实机或新闻质量证据。
 
-## 结果
+588 后端、39 前端、8 来源共 635 项，类型/构建、本机 36/36 和公开 43/43 smoke 通过；390px 无溢出，WebGL与回退浏览器检查通过。CSP、TLS、静态只读、后端容器、模型配置和预算保留。
 
-黑蓝底色、青色与紫红点缀、轨道网格、光学机器人标记、切角面板及更清楚的资讯层次。OpenZoo是较完整的三维展示主页，Hub首页用紧凑的机械伙伴信号面板，阅读、搜索、主题、事件与日报仍使用原流程和数据。没有编造仪表读数、置信度或运营统计。
-
-共享程序化Three.js场景在`apps/web/app/visuals/robot-scene.ts`，包含机械身体、关节、光学传感器、轨道和粒子网格；不加载外部模型、纹理或CDN。库为three0.186.1，声明类型0.186.0，未升级其他原有依赖。主页脚本由`npm run build:home`自托管打包；许可随资源发布。
-
-首次访问默认深色，保留浅色及跟随系统。原浏览器存储key、旧light/dark及JSON引号形式、书签、已读记录和version1导入导出均保留；显式系统选择写入已有auto形式，存储拒绝时当页选择仍可工作。
-
-## 动效与回退
-
-- 自动动画最多30fps，DPR上限1.8（Hub紧凑场景1.5），使用低功耗偏好。
-- 用户可暂停；离屏、后台标签、系统减少动态效果时停止动画。系统设置恢复后继续遵守用户此前的手动暂停。
-- WebGL不可用或丢失时显示SVG概念图，文字与导航仍可读。观察器初始化失败也释放已申请资源。
-- 页面卸载释放RAF、观察器、监听器、几何、材质和renderer/context；主页适配bfcache恢复。
-- 场景是概念视觉，不是机器人真机演示或验证结果。指针姿态只在浏览器内使用，不保存或上传。
-
-## 验证
-
-| 检查 | 实测结果 |
-|---|---|
-| 类型检查 | 通过 |
-| 首页静态打包、Web构建 | 通过 |
-| 独立`bothot_cyber_ci`后端测试 | 588/588 |
-| 前端测试，含新增8项主题兼容用例 | 39/39 |
-| 离线来源/样本测试 | 8/8 |
-| 本地独立演示站smoke | 36/36 |
-| 公网Hub smoke含私有路径隐藏 | 43/43 |
-| 独立Chrome实际WebGL | canvas1，ready/running，SVG回退隐藏；错误/异常/警告均0 |
-| 暂停/恢复、减少动态效果启动/动态切换 | 通过，手动暂停在系统ON/OFF后保留 |
-| 强制WebGL-null | SVG显示、canvas0、按钮隐藏、阅读链接保留；错误/异常0 |
-| 390px手机 | DOM宽度390，无横向溢出 |
-| 深/浅主题和新闻阅读 | 实际浏览器检查通过 |
-| 线上主页与Hub | 实际canvas1、ready/running，无浏览器错误；真实资讯列表可读 |
-
-本次程序测试总635项（588+39+8），使用独立本机数据库与本地HTTP桩，不请求真实模型。浏览器读取生产内容不会启动模型。没有调整评分、分类、采集规则、日报容量或权限读取层。
-
-## 发布与权限
-
-本次前端镜像为`bothot-app:69f8823`。新增前端`WEB_RELEASE`，保留API/worker的`BOTHOT_RELEASE`。构建并只替换Web容器；部署前后的API、worker、数据库容器ID、启动时间、镜像逐项相同，正在运行的处理任务未被重启。前端没有私有密钥或数据库网络，服务器`.env`保持0600。
-
-静态主页CSP仅允许同源JS；不允许unsafe-inline/eval，不引入CDN。静态目录仍root拥有且Nginx只读，HTTPS、隐藏文件、私有/admin及写入接口的限制保持。生产模型配置和开关保留。发布使用普通Git版本参数处理CSS/JS缓存，未增加自定义hash、冻结合同或评测基线。
-
-在线图：[OpenZoo桌面](screenshots/openzoo-cyber-live-desktop.jpg)、[OpenZoo手机](screenshots/openzoo-cyber-live-mobile.jpg)、[真实资讯站桌面](screenshots/bothot-cyber-live-desktop.jpg)。这些是实际浏览器截图；Three.js视觉和程序检查不代表新闻编辑质量已校准。
+[主页](screenshots/openzoo-cyber-live-desktop.jpg) · [资讯站](screenshots/bothot-cyber-live-desktop.jpg)

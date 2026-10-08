@@ -1,27 +1,9 @@
-# ZooRadar 跟随系统亮暗色
+# 跟随系统外观 · 2026-10-03
 
-2026-10-03发布网页版本 `d5d118f`，资讯站默认跟随系统亮暗色。API/worker版本仍是 `d2803dd`，OpenZoo品牌主页未改。`930b115`实现默认跟随与实时同步，`d5d118f`补充系统外观监听不可用时的兼容处理。
+网页 d5d118f，API/worker d2803dd，品牌主页未改。默认按 prefers-color-scheme，打开期间实时同步系统及其他标签页；手动选择优先。旧 aihot-theme、light/dark/auto、JSON形式、收藏与导入导出保留；查询/存储不可用时安全回退亮色。
 
-## 使用与实现
+604 后端、42 前端、类型/构建、本机及公开 43/43 smoke 通过；浏览器验证首次绘制、实时切换、手动刷新、跨页签及API异常兼容，1440/390px无溢出。截图为首轮 930b115，d5d118f 只加兼容处理。
 
-- 首次访问、无有效偏好或浏览器存储不可用时，都根据`prefers-color-scheme`决定外观。页面绘制前的原有脚本与React读取采用同一默认值，避免首次打开先亮后暗；系统主题API不可用时退回亮色。
-- 页面打开期间监听系统模式变化，所有路由共用一个同步组件。同一浏览器其他标签页改变偏好后，也通过原有storage订阅更新页面。
-- 桌面侧栏、手机「更多 → 外观」保留深色、跟随系统、浅色三种选择。手动偏好优先于系统变化，刷新后仍保留；选择跟随系统恢复自动更新。
-- 原`aihot-theme`键、light/dark/auto及旧JSON引号形式、version1导入导出保留。默认跟随系统不会覆盖用户保存的手动偏好；收藏和已读数据不变。
-- 首页标题、按钮、插画标签改用既有语义颜色，补齐暗色插画的背景、边框与图标；列表、表单、频道及文章正文沿用原亮暗色变量，不新增模型或服务器偏好请求。
+仅更新 web，无 setup/迁移/seed，后端容器、预算、密钥、静态主页与 SSH后台保留。回滚恢复旧网页环境与镜像，不重建数据库；私有备份未做恢复演练。
 
-## 验证
-
-类型检查、Web构建、604项完整后端测试、42项前端测试和本机smoke通过。已有外观回归改为覆盖默认跟随系统、损坏/拒绝存储、首次绘制、旧格式偏好及导入导出兼容，没有为简单样式新增测试。
-
-Playwright本机实测系统亮暗实时切换、手动选择刷新保留、恢复跟随系统、另一标签页同步；模拟prefers-color-scheme查询抛错时，首页退回亮色且无页面脚本异常。线上实测新访客默认系统暗色、无需刷新切到亮色、文章页切回暗色、手机生物学频道及外观入口。桌面页面宽度1440/1440，手机390/390；本机合成演示只用于程序检查，下面截图均为首轮930b115上线的真实内容，d5d118f仅增加兼容处理，亮暗效果一致。
-
-[亮色首页](screenshots/zooradar-system-theme-live-light.jpg) · [暗色首页](screenshots/zooradar-system-theme-live-dark.jpg) · [暗色文章](screenshots/zooradar-system-theme-live-article.jpg) · [手机频道](screenshots/zooradar-system-theme-live-mobile.jpg)
-
-公网43项smoke复验全部通过；首轮首页请求发生一次连接失败，完整重跑通过。私有端生产登录、Secure/HttpOnly/SameSite=Lax会话、缺少CSRF的写请求403、退出后旧会话401也通过；验证脚本没有修改来源，临时容器脚本已删除。
-
-## 发布与回滚
-
-遵循既有仅更新网页流程：Git源码归档构建`bothot-app:d5d118f`，服务器仅将WEB_RELEASE更新为d5d118f，`up -d --no-deps web`。未启动setup、迁移或seed，也未更新静态品牌主页。API/worker/数据库与无关项目容器的ID、启动时间及预算表前后相同，模型配置和其他环境项不变。Nginx检查通过，18090仍仅绑定127.0.0.1，后台仍仅通过SSH访问。
-
-回滚资料在服务器`${DEPLOY_ROOT}`，目录0700，环境和源代码备份0600，源码gzip可读；上一web镜像`bothot-app:930b115`与本轮前的`bothot-app:d2803dd`仍保留，首轮资料在相邻的`system-theme-20261003-930b115/`目录。此次没有数据库写入，沿用之前的数据库与文件卷备份，无需停止采集作新的数据迁移备份。回滚时恢复env-before和source-before.tar.gz，再仅更新web容器；不恢复或重建生产数据库。本轮未执行恢复演练。
+[亮色](screenshots/zooradar-system-theme-live-light.jpg) · [暗色](screenshots/zooradar-system-theme-live-dark.jpg) · [手机](screenshots/zooradar-system-theme-live-mobile.jpg)
