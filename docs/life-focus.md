@@ -17,6 +17,14 @@
 
 PLOS Biology、eLife、ZooKeys、BHL 按研究问题筛选。Pew、OWID、Sociological Science、SocOpen、NNG 和原游戏来源停采。已有源使用 scripts/apply-life-focus-sources.ts，先 dry-run，再按后台版本检查 apply，只改指定策略，保留许可、预算和管理员其他设置。
 
+## 2026-10-25 更新
+
+线上近七天生物学来源新增 29 篇，预筛阻断 10 篇、普通动态 19 篇、精选 1 篇；11 个启用来源的采集无失败。该快照按首次发现计数，不能代表学科整体产出或人工编辑质量。发现无脊椎动物分类被错误排除，且五轴具体说明仍偏机器人，已修正相关提示词，见[精选说明](selection.md)。
+
+新增 [Nature Ecology & Evolution](https://www.nature.com/natecolevol/) 及 Phys.org 的[生态](https://phys.org/biology-news/ecology/)、[演化](https://phys.org/biology-news/evolution/)、[古生物](https://phys.org/biology-news/paleontology/)订阅。四个入口来自两个发布方；Phys.org 专题有交叉，媒体转载不能计作独立核验。新来源每六小时采集，首次最多三条，后续读取公开正文再分析，仅展示摘要与链接。Nature 中植物、微生物及纯分子材料仍按研究问题排除。
+
+本次原采集器验证了同条目的 URL、原日期与可读材料，结果追加至[来源记录](life-source-validation.json)。Journal of Experimental Biology 的 RSS 有日期但未确认可读正文，保留为禁用候选，不绕过访问控制。真实文章复查属于有限的运行诊断，不是人工标注评测，也不据此降低 60/65/76 门槛。
+
 ## 2026-10-06 记录
 
 网页/主页 3589201、API/worker df60697 上线；606 后端、49 网页、9 来源检查及公开 smoke 43/43 通过，登录/CSRF/注销复查通过。36 次亮暗/宽度页面读取无横向溢出。

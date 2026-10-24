@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-05T15:44:10.518Z",
+  "checkedAt": "2026-10-24T17:19:00.491Z",
   "method": "Production fetchRss/fetchJsonList, guardedFetch and readable; up to 3 candidates (legacy robotics checks prioritize robotics cues; editorial checks validate URL, source date and readable material), <=1 article fetch/source; no model or paid fallback",
   "limits": {
     "sources": 6,
@@ -387,6 +387,292 @@
           "title": "Young Golden Eagles leave their parents’ territory late",
           "url": "https://www.ab.mpg.de/1454543/news_publication_26938584_transferred?c=3273",
           "publishedAt": "2026-08-24T22:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-life-nature-ecology-evolution",
+      "name": "Nature Ecology & Evolution",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://www.nature.com/natecolevol.rss",
+      "language": "en",
+      "coverage": [
+        "动物生态",
+        "演化",
+        "动物行为"
+      ],
+      "identity": "journal",
+      "homepage": "https://www.nature.com/natecolevol/",
+      "limitations": [
+        "仅展示中文摘要与原文链接，不绕过付费墙或访问控制。",
+        "按动物、行为、人类学与古生物研究问题筛选；植物、微生物和纯分子/临床材料不因刊物名称收录。",
+        "论文发表不等于结论已获独立复现；只用公开可读材料评价。"
+      ],
+      "validation_status": "verified",
+      "channelHints": [
+        "biology"
+      ],
+      "checkedAt": "2026-10-24T17:18:34.436Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 8,
+      "datedItems": 8,
+      "samples": [
+        {
+          "title": "Protecting the deep ocean under mining threat by connecting existing reserves",
+          "url": "https://www.nature.com/articles/s41559-026-03192-1",
+          "publishedAt": "2026-10-23T00:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 449,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Dispersal corridors enhance modelled near-bed larval connectivity across deep-sea protected area networks",
+          "url": "https://www.nature.com/articles/s41559-026-03172-5",
+          "publishedAt": "2026-10-23T00:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 381,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Grazing cements kelp collapse",
+          "url": "https://www.nature.com/articles/s41559-026-03236-6",
+          "publishedAt": "2026-10-22T00:00:00.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 2751,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-life-jeb",
+      "name": "Journal of Experimental Biology",
+      "kind": "rss",
+      "enabled": false,
+      "endpoint": "https://journals.biologists.com/rss/site_1000009/LatestOpenIssueArticles_1000007.xml",
+      "language": "en",
+      "coverage": [
+        "动物行为",
+        "感觉认知",
+        "生理适应"
+      ],
+      "identity": "journal",
+      "homepage": "https://journals.biologists.com/jeb",
+      "limitations": [
+        "仅展示中文摘要与原文链接，不绕过付费墙或访问控制。",
+        "按动物、行为、人类学与古生物研究问题筛选；植物、微生物和纯分子/临床材料不因刊物名称收录。",
+        "论文发表不等于结论已获独立复现；只用公开可读材料评价。"
+      ],
+      "validation_status": "pending",
+      "channelHints": [
+        "biology"
+      ],
+      "checkedAt": "2026-10-24T17:18:41.849Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "body_or_date_unconfirmed",
+      "itemCount": 3,
+      "datedItems": 3,
+      "samples": [
+        {
+          "title": "Muscle power amplification may enhance sprint performance and broaden the thermal performance of the lizard Sceloporus occidentalis . II: Muscle power and series elastic element properties",
+          "url": "https://journals.biologists.com/jeb/article/229/20/jeb252629/373254/Muscle-power-amplification-may-enhance-sprint",
+          "publishedAt": "2026-10-23T00:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Muscle power amplification may enhance sprint performance and broaden the thermal performance of the lizard Sceloporus occidentalis . I: Sprint performance and joint powers",
+          "url": "https://journals.biologists.com/jeb/article/229/20/jeb252628/373252/Muscle-power-amplification-may-enhance-sprint",
+          "publishedAt": "2026-10-23T00:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Interdependency of nutrition and oxidative stress in feeding and resource allocation",
+          "url": "https://journals.biologists.com/jeb/article/229/20/jeb253367/373250/Interdependency-of-nutrition-and-oxidative-stress",
+          "publishedAt": "2026-10-23T00:00:00.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-life-phys-ecology",
+      "name": "Phys.org · Ecology",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://phys.org/rss-feed/breaking/biology-news/ecology/",
+      "language": "en",
+      "coverage": [
+        "动物生态"
+      ],
+      "identity": "media",
+      "homepage": "https://phys.org/biology-news/ecology/",
+      "limitations": [
+        "仅展示中文摘要与原文链接，不绕过付费墙或访问控制。",
+        "按动物、行为、人类学与古生物研究问题筛选；植物、微生物和纯分子/临床材料不因刊物名称收录。",
+        "同一媒体不同专题可重叠，转载与同源通稿不作为独立核验。"
+      ],
+      "validation_status": "verified",
+      "channelHints": [
+        "biology"
+      ],
+      "checkedAt": "2026-10-24T17:18:48.038Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 30,
+      "datedItems": 30,
+      "samples": [
+        {
+          "title": "Marine heat waves suppress nutrient use, reproductive flexibility in humpback whales",
+          "url": "https://phys.org/news/2026-10-marine-suppress-nutrient-reproductive-flexibility.html",
+          "publishedAt": "2026-10-23T17:20:19.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 5814,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Iris patterns offer a noninvasive way to recognize individual Amazonian treefrogs",
+          "url": "https://phys.org/news/2026-10-iris-patterns-noninvasive-individual-amazonian.html",
+          "publishedAt": "2026-10-23T08:00:01.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Mother bats' hearts beat faster at the sound of their own babies' cries",
+          "url": "https://phys.org/news/2026-10-mother-hearts-faster-babies-cries.html",
+          "publishedAt": "2026-10-23T04:00:01.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-life-phys-evolution",
+      "name": "Phys.org · Evolution",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://phys.org/rss-feed/breaking/biology-news/evolution/",
+      "language": "en",
+      "coverage": [
+        "演化",
+        "人类演化"
+      ],
+      "identity": "media",
+      "homepage": "https://phys.org/biology-news/evolution/",
+      "limitations": [
+        "仅展示中文摘要与原文链接，不绕过付费墙或访问控制。",
+        "按动物、行为、人类学与古生物研究问题筛选；植物、微生物和纯分子/临床材料不因刊物名称收录。",
+        "同一媒体不同专题可重叠，转载与同源通稿不作为独立核验。"
+      ],
+      "validation_status": "verified",
+      "channelHints": [
+        "biology"
+      ],
+      "checkedAt": "2026-10-24T17:18:52.292Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 30,
+      "datedItems": 30,
+      "samples": [
+        {
+          "title": "Seabird family tree predicts which species accumulate plastic better than diet, global analysis finds",
+          "url": "https://phys.org/news/2026-10-seabird-family-tree-species-accumulate.html",
+          "publishedAt": "2026-10-24T14:00:01.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 6300,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Bacteria reinvent their weapons through selection, chance and gene swapping",
+          "url": "https://phys.org/news/2026-10-bacteria-reinvent-weapons-chance-gene.html",
+          "publishedAt": "2026-10-23T20:00:01.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "An ancient virus in chimpanzee DNA switches off a gene that is active in humans",
+          "url": "https://phys.org/news/2026-10-ancient-virus-chimpanzee-dna-gene.html",
+          "publishedAt": "2026-10-23T18:00:26.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      ]
+    },
+    {
+      "sourceId": "rss-life-phys-paleontology",
+      "name": "Phys.org · Paleontology",
+      "kind": "rss",
+      "enabled": true,
+      "endpoint": "https://phys.org/rss-feed/breaking/biology-news/paleontology/",
+      "language": "en",
+      "coverage": [
+        "古生物学",
+        "化石"
+      ],
+      "identity": "media",
+      "homepage": "https://phys.org/biology-news/paleontology/",
+      "limitations": [
+        "仅展示中文摘要与原文链接，不绕过付费墙或访问控制。",
+        "按动物、行为、人类学与古生物研究问题筛选；植物、微生物和纯分子/临床材料不因刊物名称收录。",
+        "同一媒体不同专题可重叠，转载与同源通稿不作为独立核验。"
+      ],
+      "validation_status": "verified",
+      "channelHints": [
+        "biology"
+      ],
+      "checkedAt": "2026-10-24T17:18:55.350Z",
+      "validationScope": "feed-url-date-readable-material; not editorial classification",
+      "status": "verified",
+      "itemCount": 30,
+      "datedItems": 30,
+      "samples": [
+        {
+          "title": "Rare fossils reveal what ancient Denisovans may have looked like",
+          "url": "https://phys.org/news/2026-10-rare-fossils-reveal-ancient-denisovans.html",
+          "publishedAt": "2026-10-23T18:30:01.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 4622,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        },
+        {
+          "title": "Ancient fish bones reveal how Arctic cod species survived the last ice age",
+          "url": "https://phys.org/news/2026-10-ancient-fish-bones-reveal-arctic.html",
+          "publishedAt": "2026-10-21T19:20:01.000Z",
+          "bodyStatus": "missing",
+          "bodyChars": 0,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        },
+        {
+          "title": "Keeping to warm climates may have helped crocodiles outlast the dinosaurs",
+          "url": "https://phys.org/news/2026-10-climates-crocodiles-outlast-dinosaurs.html",
+          "publishedAt": "2026-10-21T18:00:49.000Z",
           "bodyStatus": "missing",
           "bodyChars": 0,
           "roboticsCue": false,

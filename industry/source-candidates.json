@@ -1,5 +1,5 @@
 {
-  "comment": "默认不启用的来源：9个尚未接入候选及1个按运营者语言偏好停用的量子位。保留原端点和验证记录，不能计作启用来源；不删除历史文章。",
+  "comment": "默认不启用的来源，包括尚未验证可用的候选及按运营者语言偏好停用的量子位。保留原端点和验证记录，不能计作启用来源；不删除历史文章。",
   "sources": [
     {
       "id": "rss-robotics-business-review",
@@ -729,6 +729,50 @@
           "status": "empty_feed",
           "itemCount": 0
         }
+      }
+    },
+    {
+      "id": "rss-life-jeb",
+      "name": "Journal of Experimental Biology",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://journals.biologists.com/rss/site_1000009/LatestOpenIssueArticles_1000007.xml",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        }
+      },
+      "tier": "T1_5",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "biology"
+      ],
+      "tags": [
+        "en",
+        "journal"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "动物行为",
+          "感觉认知",
+          "生理适应"
+        ],
+        "identity": "journal",
+        "homepage": "https://journals.biologists.com/jeb",
+        "limitations": [
+          "仅展示中文摘要与原文链接，不绕过付费墙或访问控制。",
+          "按动物、行为、人类学与古生物研究问题筛选；植物、微生物和纯分子/临床材料不因刊物名称收录。",
+          "论文发表不等于结论已获独立复现；只用公开可读材料评价。"
+        ],
+        "validation_status": "body_or_date_unconfirmed",
+        "verified_at": "2026-10-24T17:18:41.849Z",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": null
       }
     }
   ]

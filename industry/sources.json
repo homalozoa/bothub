@@ -2297,6 +2297,214 @@
           "relevanceBasis": "material-text"
         }
       }
+    },
+    {
+      "id": "rss-life-nature-ecology-evolution",
+      "name": "Nature Ecology & Evolution",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.nature.com/natecolevol.rss",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        },
+        "fetchPublicContent": true
+      },
+      "tier": "T1_5",
+      "first_party": true,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "biology"
+      ],
+      "tags": [
+        "en",
+        "journal"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "动物生态",
+          "演化",
+          "动物行为"
+        ],
+        "identity": "journal",
+        "homepage": "https://www.nature.com/natecolevol/",
+        "limitations": [
+          "仅展示中文摘要与原文链接，不绕过付费墙或访问控制。",
+          "按动物、行为、人类学与古生物研究问题筛选；植物、微生物和纯分子/临床材料不因刊物名称收录。",
+          "论文发表不等于结论已获独立复现；只用公开可读材料评价。"
+        ],
+        "validation_status": "verified",
+        "verified_at": "2026-10-24T17:18:34.436Z",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": {
+          "title": "Protecting the deep ocean under mining threat by connecting existing reserves",
+          "url": "https://www.nature.com/articles/s41559-026-03192-1",
+          "publishedAt": "2026-10-23T00:00:00.000Z",
+          "bodyStatus": "feed",
+          "bodyChars": 449,
+          "roboticsCue": false,
+          "relevanceBasis": "none"
+        }
+      }
+    },
+    {
+      "id": "rss-life-phys-ecology",
+      "name": "Phys.org · Ecology",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://phys.org/rss-feed/breaking/biology-news/ecology/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        },
+        "fetchPublicContent": true
+      },
+      "tier": "T2",
+      "first_party": false,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "biology"
+      ],
+      "tags": [
+        "en",
+        "media"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "动物生态"
+        ],
+        "identity": "media",
+        "homepage": "https://phys.org/biology-news/ecology/",
+        "limitations": [
+          "仅展示中文摘要与原文链接，不绕过付费墙或访问控制。",
+          "按动物、行为、人类学与古生物研究问题筛选；植物、微生物和纯分子/临床材料不因刊物名称收录。",
+          "同一媒体不同专题可重叠，转载与同源通稿不作为独立核验。"
+        ],
+        "validation_status": "verified",
+        "verified_at": "2026-10-24T17:18:48.038Z",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": {
+          "title": "Marine heat waves suppress nutrient use, reproductive flexibility in humpback whales",
+          "url": "https://phys.org/news/2026-10-marine-suppress-nutrient-reproductive-flexibility.html",
+          "publishedAt": "2026-10-23T17:20:19.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 5814,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      }
+    },
+    {
+      "id": "rss-life-phys-evolution",
+      "name": "Phys.org · Evolution",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://phys.org/rss-feed/breaking/biology-news/evolution/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        },
+        "fetchPublicContent": true
+      },
+      "tier": "T2",
+      "first_party": false,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "biology"
+      ],
+      "tags": [
+        "en",
+        "media"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "演化",
+          "人类演化"
+        ],
+        "identity": "media",
+        "homepage": "https://phys.org/biology-news/evolution/",
+        "limitations": [
+          "仅展示中文摘要与原文链接，不绕过付费墙或访问控制。",
+          "按动物、行为、人类学与古生物研究问题筛选；植物、微生物和纯分子/临床材料不因刊物名称收录。",
+          "同一媒体不同专题可重叠，转载与同源通稿不作为独立核验。"
+        ],
+        "validation_status": "verified",
+        "verified_at": "2026-10-24T17:18:52.292Z",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": {
+          "title": "Seabird family tree predicts which species accumulate plastic better than diet, global analysis finds",
+          "url": "https://phys.org/news/2026-10-seabird-family-tree-species-accumulate.html",
+          "publishedAt": "2026-10-24T14:00:01.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 6300,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      }
+    },
+    {
+      "id": "rss-life-phys-paleontology",
+      "name": "Phys.org · Paleontology",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://phys.org/rss-feed/breaking/biology-news/paleontology/",
+        "_aihot": {
+          "initialBackfillLimit": 3
+        },
+        "fetchPublicContent": true
+      },
+      "tier": "T2",
+      "first_party": false,
+      "participation_mode": "editorial",
+      "interval_minutes": 360,
+      "channel_hints": [
+        "biology"
+      ],
+      "tags": [
+        "en",
+        "media"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": true,
+      "editorial": {
+        "language": "en",
+        "coverage": [
+          "古生物学",
+          "化石"
+        ],
+        "identity": "media",
+        "homepage": "https://phys.org/biology-news/paleontology/",
+        "limitations": [
+          "仅展示中文摘要与原文链接，不绕过付费墙或访问控制。",
+          "按动物、行为、人类学与古生物研究问题筛选；植物、微生物和纯分子/临床材料不因刊物名称收录。",
+          "同一媒体不同专题可重叠，转载与同源通稿不作为独立核验。"
+        ],
+        "validation_status": "verified",
+        "verified_at": "2026-10-24T17:18:55.350Z",
+        "validation_scope": "feed-url-date-readable-material; not editorial classification",
+        "sample": {
+          "title": "Rare fossils reveal what ancient Denisovans may have looked like",
+          "url": "https://phys.org/news/2026-10-rare-fossils-reveal-ancient-denisovans.html",
+          "publishedAt": "2026-10-23T18:30:01.000Z",
+          "bodyStatus": "readability",
+          "bodyChars": 4622,
+          "roboticsCue": true,
+          "relevanceBasis": "material-text"
+        }
+      }
     }
   ]
 }
